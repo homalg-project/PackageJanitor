@@ -95,6 +95,11 @@
     dest: "{{ pkg_dir }}/{{ package_name }}/.github/workflows/Tests.yml"
     trim_blocks: false
 
+- name: .codecov.yml
+  template:
+    src: .codecov.yml.j2
+    dest: "{{ pkg_dir }}/{{ package_name }}/.codecov.yml"
+
 - name: .gitignore
   template:
     src: .gitignore.j2
