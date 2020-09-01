@@ -160,6 +160,12 @@
     src: testall.g.j2
     dest: "{{ pkg_dir }}/{{ package_name }}/tst/testall.g"
 
+- name: "Ensure {{ pkg_dir }}/{{ package_name }}/.github/workflows/ exists"
+  file:
+    path: "{{ pkg_dir }}/{{ package_name }}/.github/workflows/"
+    state: directory
+    recurse: yes
+
 - name: Tests.yml
   template:
     src: Tests.yml.j2
