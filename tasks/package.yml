@@ -1,4 +1,46 @@
 ---
+- name: PackageInfo.g PackageName
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package_name }}/PackageInfo.g"
+    regexp: "PackageInfo :="
+    line: 'PackageName := "{{ package_name }}",'
+
+- name: PackageInfo.g License
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package_name }}/PackageInfo.g"
+    regexp: "License :="
+    line: 'License := "GPL-2.0-or-later",'
+
+- name: PackageInfo.g Date
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package_name }}/PackageInfo.g"
+    regexp: "Date :="
+    line: 'Date := Concatenation( ~.Version{[ 9, 10 ]}, "/", ~.Version{[ 6, 7 ]}, "/", ~.Version{[ 1 .. 4 ]} ),'
+
+- name: PackageInfo.g SourceRepository.URL
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package_name }}/PackageInfo.g"
+    regexp: "^    URL := "
+    line: '    URL := Concatenation( "https://github.com/homalg-project/", ~.PackageName ),'
+
+- name: PackageInfo.g PackageWWWHome
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package_name }}/PackageInfo.g"
+    regexp: "PackageWWWHome  := "
+    line: 'PackageWWWHome  := Concatenation( "https://homalg-project.github.io/", ~.PackageName ),'
+
+- name: PackageInfo.g PackageDoc.BookName
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package_name }}/PackageInfo.g"
+    regexp: "^  BookName  := "
+    line: '  BookName  := "{{ package_name }}",'
+
+- name: PackageInfo.g PackageDoc.LongTitle
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package_name }}/PackageInfo.g"
+    regexp: "^  LongTitle := "
+    line: '  LongTitle := "{{ package_description }}",'
+
 - name: README.md header
   blockinfile:
     path: "{{ pkg_dir }}/{{ package_name }}/README.md"
