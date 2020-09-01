@@ -1,0 +1,31 @@
+---
+- name: localhost
+  hosts: localhost
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
+    - import_tasks: tasks/package.yml
+      vars:
+        package_name: InternalModules
+        package_description: "Modules over internal algebras"
+        ci_additional_packages:
+          - homalg_project
+          - CAP_project
+          - InfiniteLists
+          - GradedCategories
+    - import_tasks: tasks/package.yml
+      vars:
+        package_name: GradedCategories
+        package_description: "Graded closures of categories"
+        ci_additional_packages:
+          - homalg_project
+          - CAP_project
+          - InfiniteLists
+          - InternalModules
+    - import_tasks: tasks/package.yml
+      vars:
+        package_name: FinSetsForCAP
+        package_description: "The elementary topos of (skeletal) finite sets"
+        ci_additional_packages:
+          - CAP_project
