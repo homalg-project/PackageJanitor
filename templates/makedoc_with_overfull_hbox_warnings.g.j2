@@ -1,7 +1,7 @@
 #
 # {{ package_name }}: {{ package_description }}
 #
-# This file is a script which compiles the package manual.
+# This file is a script which compiles the package manual and prints overfull hbox warnings.
 #
 if fail = LoadPackage( "AutoDoc", "2019.05.20" ) then
     
@@ -16,8 +16,11 @@ AutoDoc( rec(
     ),
     gapdoc := rec(
         LaTeXOptions := rec(
-            LateExtraPreamble := """{% raw %}
-                % Many thanks to https://tex.stackexchange.com/questions/22466/how-to-convince-fancyvrb-to-give-overfull-warnings/534486#534486
+            LateExtraPreamble := """
+                {%- if additional_latex_preamble is defined %}
+                {{ additional_latex_preamble | trim | indent(16) }}
+                {%- endif %}
+                {% raw %}% Many thanks to https://tex.stackexchange.com/questions/22466/how-to-convince-fancyvrb-to-give-overfull-warnings/534486#534486
                 \makeatletter
                 \def\FV@ListProcessLine#1{%
                   \hbox to \hsize{%
@@ -29,8 +32,8 @@ AutoDoc( rec(
                       \FV@RightListFrame
                       \FV@RightListNumber}%
                     \hss}}
-                \makeatother
-            {% endraw %}""",
+                \makeatother{% endraw %}
+            """,
         ),
     ),
     scaffold := rec(

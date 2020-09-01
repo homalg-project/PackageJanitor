@@ -19,6 +19,9 @@ AutoDoc( rec(
     gapdoc := rec(
         LaTeXOptions := rec(
             LateExtraPreamble := """
+                {%- if additional_latex_preamble is defined %}
+                {{ additional_latex_preamble | trim | indent(16) }}
+                {%- endif %}
             """,
         ),
     ),

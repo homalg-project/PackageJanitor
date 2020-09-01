@@ -142,11 +142,13 @@
   template:
     src: makedoc.g.j2
     dest: "{{ pkg_dir }}/{{ package_name }}/makedoc.g"
+    trim_blocks: false
 
 - name: makedoc_with_overfull_hbox_warnings.g
   template:
     src: makedoc_with_overfull_hbox_warnings.g.j2
     dest: "{{ pkg_dir }}/{{ package_name }}/makedoc_with_overfull_hbox_warnings.g"
+    trim_blocks: false
 
 - name: makefile
   template:
