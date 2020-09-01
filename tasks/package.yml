@@ -10,6 +10,7 @@
     path: "{{ pkg_dir }}/{{ package_name }}/PackageInfo.g"
     regexp: "License :="
     line: 'License := "GPL-2.0-or-later",'
+    insertafter: "Date :="
 
 - name: PackageInfo.g Date
   lineinfile:
