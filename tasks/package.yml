@@ -49,9 +49,9 @@
     block: |
       # {{ package_name }} – {{ package_description }}
 
-      | **Documentation**                        | **Build Status**                                             |
-      |:----------------------------------------:|:------------------------------------------------------------:|
-      | [![][docs-stable-img]][docs-stable-url]  | [![][tests-img]][tests-url] [![][codecov-img]][codecov-url]  |
+      | **Documentation**                       | **Build Status**                                            |
+      |:---------------------------------------:|:-----------------------------------------------------------:|
+      | [![][docs-stable-img]][docs-stable-url] | [![][tests-img]][tests-url] [![][codecov-img]][codecov-url] |
 
 - name: README.md footer
   blockinfile:
