@@ -1,0 +1,18 @@
+---
+- name: PackageInfo.g PackageWWWHome (with GitHub Pages)
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package_name }}/PackageInfo.g"
+    regexp: "PackageWWWHome  := "
+    line: 'PackageWWWHome  := Concatenation( "https://homalg-project.github.io/", ~.PackageName, "/" ),'
+
+- name: PackageInfo.g PackageInfoURL (with GitHub Pages)
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package_name }}/PackageInfo.g"
+    regexp: "PackageInfoURL  :="
+    line: 'PackageInfoURL  := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),'
+
+- name: PackageInfo.g README_URL (with GitHub Pages)
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package_name }}/PackageInfo.g"
+    regexp: "README_URL      :="
+    line: 'README_URL      := Concatenation( ~.PackageWWWHome, "README.md" ),'
