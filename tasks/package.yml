@@ -151,6 +151,23 @@
     dest: "{{ pkg_dir }}/{{ package_name }}/makedoc_with_overfull_hbox_warnings.g"
     trim_blocks: false
 
+- name: "Ensure {{ pkg_dir }}/{{ package_name }}/doc/ exists"
+  file:
+    path: "{{ pkg_dir }}/{{ package_name }}/doc/"
+    state: directory
+
+- name: Doc.autodoc
+  copy:
+    src: Doc.autodoc
+    dest: "{{ pkg_dir }}/{{ package_name }}/doc/Doc.autodoc"
+    force: no
+
+- name: clean
+  copy:
+    src: clean
+    dest: "{{ pkg_dir }}/{{ package_name }}/doc/clean"
+    mode: a+x
+
 - name: makefile
   template:
     src: makefile.j2
