@@ -44,3 +44,58 @@
           - homalg_project
           - CAP_project
           - Toposes
+    - import_tasks: tasks/package.yml
+      vars:
+        package_name: FinGSetsForCAP
+        package_description: "The elementary topos of (skeletal) finite G-sets"
+        ci_additional_packages:
+          - homalg_project
+          - CAP_project
+          - Toposes
+          - FinSetsForCAP
+        ci_ubuntu_additional_apt_packages:
+          - texlive-science
+          - texlive-fonts-extra
+        additional_latex_preamble: |
+          \usepackage[T1]{fontenc}
+          \usepackage[british]{babel}
+          \usepackage{microtype}
+          \usepackage{amsmath}
+          \usepackage{calc}
+          \usepackage{amsthm}
+          \usepackage{amssymb}
+          \usepackage[dvipsnames]{xcolor}
+          \usepackage{hyperref}
+          \usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+          \usepackage{cite}
+          \usepackage{url}
+          \usepackage{tikz}
+          \usetikzlibrary{shapes,arrows,matrix}
+          \usepackage{tikz-cd}
+          \usepackage{makeidx}
+          \usepackage{listings}
+          \usepackage[scaled]{beramono}
+          \usepackage[figure]{hypcap}
+          \renewcommand{\hypcapspace}{2\baselineskip}
+          \usepackage{mathtools}
+          \usepackage{faktor}
+          \DeclareMathOperator{\Stab}{Stab}
+          \DeclareMathOperator{\fix}{fix}
+          \DeclareMathOperator{\coeq}{coeq}
+          \DeclareMathOperator{\im}{im}
+          \DeclareMathOperator{\rank}{rank}
+          \DeclareMathOperator{\CartProdExt}{CartProdExt}
+          \DeclareMathOperator{\End}{End}
+          \DeclareMathOperator{\Hom}{Hom}
+          \DeclareMathOperator{\op}{op}
+          \DeclareMathOperator{\id}{id}
+          \DeclareMathOperator{\Obj}{Obj}
+          \usepackage{ifthen}
+          % use \ell instead of l everywhere
+          \mathcode`l="8000
+          \begingroup
+          \makeatletter
+          \lccode`\~=`\l
+          \DeclareMathSymbol{\lsb@l}{\mathalpha}{letters}{`l}
+          \lowercase{\gdef~{\ifnum\the\mathgroup=\m@ne \ell \else \lsb@l \fi}}%
+          \endgroup
