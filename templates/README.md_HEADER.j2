@@ -1,0 +1,5 @@
+# {{ package_name }} – {{ package_description }}
+
+{% if gh_pages_response.status == 200 %}| **Documentation**                       {% endif %}| **Build Status**                                            |
+{% if gh_pages_response.status == 200 %}|:---------------------------------------:{% endif %}|:-----------------------------------------------------------:|
+{% if gh_pages_response.status == 200 %}| [![][docs-stable-img]][docs-stable-url] {% endif %}| [![][tests-img]][tests-url] [![][codecov-img]][codecov-url] |
