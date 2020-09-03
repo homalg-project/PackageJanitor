@@ -9,6 +9,7 @@
       vars:
         package_name: InternalModules
         package_description: "Modules over internal algebras"
+        has_HOMALG_IO: true
         ci_additional_packages:
           - homalg_project
           - CAP_project
@@ -27,6 +28,7 @@
       vars:
         package_name: GradedCategories
         package_description: "Graded closures of categories"
+        has_HOMALG_IO: true
         ci_additional_packages:
           - homalg_project
           - CAP_project

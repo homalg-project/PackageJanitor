@@ -11,4 +11,6 @@ gap> SetInfoLevel( InfoPackageLoading, PACKAGE_INFO );;
 gap> LoadPackage( "{{ package_name }}" );
 true
 gap> SetInfoLevel( InfoPackageLoading, package_loading_info_level );;
+{% if has_HOMALG_IO is defined and has_HOMALG_IO %}
 gap> HOMALG_IO.show_banners := false;;
+{% endif %}
