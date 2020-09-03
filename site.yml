@@ -39,4 +39,6 @@
         package_name: FinSetsForCAP
         package_description: "The elementary topos of (skeletal) finite sets"
         ci_additional_packages:
+          - homalg_project
           - CAP_project
+          - Toposes
