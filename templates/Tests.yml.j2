@@ -27,7 +27,7 @@ jobs:
           sudo apt update
           sudo apt dist-upgrade -y
           sudo apt install -y texlive-latex-extra{% if ci_ubuntu_additional_apt_packages is defined %}{% for package in ci_ubuntu_additional_apt_packages %} {{ package }}{% endfor %}{% endif %}
-          git clone --depth 1 https://github.com/homalg-project/AutoDoc.git
+          git clone --depth 1 https://github.com/gap-packages/AutoDoc.git
 {%- for package in ci_additional_packages %}
           git clone --depth 1 https://github.com/homalg-project/{{ package }}.git
 {%- endfor %}
