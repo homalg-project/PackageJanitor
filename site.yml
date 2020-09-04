@@ -124,11 +124,13 @@
               - RingsForHomalg
               - HomologicalAlgebraForCAP
               - DeductiveSystemForCAP
+            tests_only_basic: true
           - name: CompilerForCAP
             description: Speed up computations in CAP categories
             tests_additional_packages_to_load:
               - LinearAlgebraForCAP
               - RingsForHomalg
+            tests_only_basic: true
         ci_additional_packages:
           - homalg_project
         ci_ubuntu_additional_apt_packages:
