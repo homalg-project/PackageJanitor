@@ -1,5 +1,11 @@
 # {{ package_name }} – {{ package_description }}
 
-{% if gh_pages_response.status == 200 %}| **Documentation**                       {% endif %}| **Build Status**                                            |
-{% if gh_pages_response.status == 200 %}|:---------------------------------------:{% endif %}|:-----------------------------------------------------------:|
-{% if gh_pages_response.status == 200 %}| [![][docs-stable-img]][docs-stable-url] {% endif %}| [![][tests-img]][tests-url] [![][codecov-img]][codecov-url] |
+| **Documentation**         | **Build Status{% if meta_package_name is defined and not is_meta_package %} of [{{ meta_package_name }}](/../../){% endif %}**                                            |
+|:-------------------------:|:-----------------------------------------------------------:|
+{% if is_meta_package %}
+{% for package in doc_packages -%}
+| [![][docs-{{ package.package_name }}-img]][docs-{{ package.package_name }}-url] | {% if loop.first %}[![][tests-img]][tests-url] [![][codecov-img]][codecov-url] {% endif %}|
+{% endfor %}
+{% else %}
+| [![][docs-img]][docs-url] | [![][tests-img]][tests-url] [![][codecov-img]][codecov-url] |
+{% endif %}

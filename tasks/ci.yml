@@ -1,0 +1,18 @@
+---
+- name: "Ensure {{ pkg_dir }}/{{ package_name }}/.github/workflows/ exists"
+  file:
+    path: "{{ pkg_dir }}/{{ package_name }}/.github/workflows/"
+    state: directory
+    recurse: yes
+
+- name: Tests.yml
+  template:
+    src: Tests.yml.j2
+    dest: "{{ pkg_dir }}/{{ package_name }}/.github/workflows/Tests.yml"
+    trim_blocks: false
+
+- name: .codecov.yml
+  template:
+    src: .codecov.yml.j2
+    dest: "{{ pkg_dir }}/{{ package_name }}/.codecov.yml"
+

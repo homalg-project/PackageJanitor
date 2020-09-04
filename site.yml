@@ -99,3 +99,14 @@
           \DeclareMathSymbol{\lsb@l}{\mathalpha}{letters}{`l}
           \lowercase{\gdef~{\ifnum\the\mathgroup=\m@ne \ell \else \lsb@l \fi}}%
           \endgroup
+    - import_tasks: tasks/meta_package.yml
+      vars:
+        meta_package_name: CAP_project
+        meta_package_description: Categories, Algorithms, and Programming
+        ci_additional_packages:
+          - homalg_project
+        ci_ubuntu_additional_apt_packages:
+          - texlive-science
+        subpackages:
+          - package_name: CompilerForCAP
+            package_description: Speed up computations in CAP categories

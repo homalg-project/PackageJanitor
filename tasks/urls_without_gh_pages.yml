@@ -1,18 +1,34 @@
 ---
 - name: PackageInfo.g PackageWWWHome (without GitHub Pages)
   lineinfile:
-    path: "{{ pkg_dir }}/{{ package_name }}/PackageInfo.g"
+    path: "{{ pkg_dir }}/{{ package_path }}/PackageInfo.g"
     regexp: "PackageWWWHome  := "
-    line: 'PackageWWWHome  := Concatenation( "https://github.com/homalg-project/", ~.PackageName, "/" ),'
+    line: 'PackageWWWHome  := ~.SourceRepository.URL,'
 
 - name: PackageInfo.g PackageInfoURL (without GitHub Pages)
   lineinfile:
-    path: "{{ pkg_dir }}/{{ package_name }}/PackageInfo.g"
+    path: "{{ pkg_dir }}/{{ package_path }}/PackageInfo.g"
     regexp: "PackageInfoURL  :="
-    line: 'PackageInfoURL  := Concatenation( "https://raw.githubusercontent.com/homalg-project/", ~.PackageName, "/master/PackageInfo.g" ),'
+    line: 'PackageInfoURL  := "https://raw.githubusercontent.com/homalg-project/{{ package_name }}/master/PackageInfo.g",'
+  when: meta_package_name is not defined
 
 - name: PackageInfo.g README_URL (without GitHub Pages)
   lineinfile:
-    path: "{{ pkg_dir }}/{{ package_name }}/PackageInfo.g"
+    path: "{{ pkg_dir }}/{{ package_path }}/PackageInfo.g"
     regexp: "README_URL      :="
-    line: 'README_URL      := Concatenation( "https://raw.githubusercontent.com/homalg-project/", ~.PackageName, "/master/README.md" ),'
+    line: 'README_URL      := "https://raw.githubusercontent.com/homalg-project/{{ package_name }}/master/README.md",'
+  when: meta_package_name is not defined
+
+- name: PackageInfo.g PackageInfoURL (without GitHub Pages)
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package_path }}/PackageInfo.g"
+    regexp: "PackageInfoURL  :="
+    line: 'PackageInfoURL  := "https://raw.githubusercontent.com/homalg-project/{{ meta_package_name }}/master/{{ package_name }}/PackageInfo.g",'
+  when: meta_package_name is defined
+
+- name: PackageInfo.g README_URL (without GitHub Pages)
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package_path }}/PackageInfo.g"
+    regexp: "README_URL      :="
+    line: 'README_URL      := "https://raw.githubusercontent.com/homalg-project/{{ meta_package_name }}/master/{{ package_name }}/README.md",'
+  when: meta_package_name is defined

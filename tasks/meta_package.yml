@@ -1,0 +1,40 @@
+---
+- name: Check if GitHub Pages are available for this project
+  uri:
+    url: https://homalg-project.github.io/{{ meta_package_name }}/{{ item.package_name }}/PackageInfo.g
+  register: gh_pages_responses
+  failed_when: gh_pages_responses.status is not defined
+  check_mode: no
+  loop: "{{ subpackages }}"
+
+- name: Initialize subpackages_gh_pages
+  set_fact:
+    subpackages_gh_pages: "{{ [] }}"
+
+- name: Set subpackages_gh_pages
+  set_fact:
+    subpackages_gh_pages: "{{ subpackages_gh_pages + [ item[0] | combine( { 'package_path': meta_package_name + '/' + item[0].package_name, 'has_gh_pages': item[1].status == 200 } ) ] }}"
+  loop: "{{ subpackages | zip(gh_pages_responses.results) | list }}"
+
+- import_tasks: tasks/README.md.yml
+  vars:
+    package_name: "{{ meta_package_name }}"
+    package_path: "{{ meta_package_name }}"
+    package_description: "{{ meta_package_description }}"
+    doc_packages: "{{ subpackages_gh_pages }}"
+    is_meta_package: true
+
+- import_tasks: tasks/ci.yml
+  vars:
+    package_name: "{{ meta_package_name }}"
+    package_path: "{{ meta_package_name }}"
+    pdf_doc_packages: "{{ subpackages_gh_pages | selectattr('has_gh_pages', 'equalto', false) | list }}"
+
+- name: Import subpackage
+  include_tasks: tasks/package_common.yml
+  vars:
+    package_name: "{{ item.package_name }}"
+    package_path: "{{ meta_package_name }}/{{ item.package_name }}"
+    package_description: "{{ item.package_description }}"
+    has_gh_pages: "{{ item.has_gh_pages }}"
+  loop: "{{ subpackages_gh_pages }}"

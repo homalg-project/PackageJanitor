@@ -1,10 +1,36 @@
-{% if gh_pages_response.status == 200 -%}
-[docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
-[docs-stable-url]: https://homalg-project.github.io/{{ package_name }}/doc/chap0.html
+{% if is_meta_package %}
+{% for package in doc_packages -%}
+{% if package.has_gh_pages -%}
+[docs-{{ package.package_name }}-img]: https://img.shields.io/badge/{{ package.package_name }}-HTML-blue.svg
+[docs-{{ package.package_name }}-url]: https://homalg-project.github.io/{{ package_path }}/doc/chap0.html
+
+{% else -%}
+[docs-{{ package.package_name }}-img]: https://img.shields.io/badge/{{ package.package_name }}-PDF-blue.svg
+[docs-{{ package.package_name }}-url]: /../../raw/doc/{{ package_name }}.pdf
 
 {% endif -%}
+{% endfor %}
+{% else %}
+{% if has_gh_pages -%}
+[docs-img]: https://img.shields.io/badge/docs-stable-blue.svg
+[docs-url]: https://homalg-project.github.io/{{ package_path }}/doc/chap0.html
+
+{% else -%}
+[docs-img]: https://img.shields.io/badge/PDF-dev-blue.svg
+[docs-url]: /../../raw/doc/{{ package_name }}.pdf
+
+{% endif -%}
+{% endif %}
+{% if meta_package_name is defined -%}
+[tests-img]: https://github.com/homalg-project/{{ meta_package_name }}/workflows/Tests/badge.svg
+[tests-url]: https://github.com/homalg-project/{{ meta_package_name }}/actions?query=workflow%3ATests
+
+[codecov-img]: https://codecov.io/gh/homalg-project/{{ meta_package_name }}/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/homalg-project/{{ meta_package_name }}
+{% else %}
 [tests-img]: https://github.com/homalg-project/{{ package_name }}/workflows/Tests/badge.svg
 [tests-url]: https://github.com/homalg-project/{{ package_name }}/actions?query=workflow%3ATests
 
 [codecov-img]: https://codecov.io/gh/homalg-project/{{ package_name }}/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/homalg-project/{{ package_name }}
+{% endif -%}

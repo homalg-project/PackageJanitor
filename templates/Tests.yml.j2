@@ -28,9 +28,28 @@ jobs:
           sudo apt dist-upgrade -y
           sudo apt install -y texlive-latex-extra{% if ci_ubuntu_additional_apt_packages is defined %}{% for package in ci_ubuntu_additional_apt_packages %} {{ package }}{% endfor %}{% endif %}
           git clone --depth 1 https://github.com/gap-packages/AutoDoc.git
-{%- for package in ci_additional_packages %}
+{%- if ci_additional_packages is defined %}
+    {%- for package in ci_additional_packages %}
           git clone --depth 1 https://github.com/homalg-project/{{ package }}.git
-{%- endfor %}
+    {%- endfor %}
+{%- endif %}
           cd {{ package_name }}
           TERM=dumb make -j $(nproc) --output-sync ci-test
           curl -s https://codecov.io/bash | bash
+        {%- if pdf_doc_packages|length > 0 %}
+          CUR_SHA=$(git rev-parse --verify HEAD)
+          git worktree add branch_doc/ doc || (echo "There was an error. Make sure there is a branch named 'doc'."; exit 1)
+        {%- for package in pdf_doc_packages %}
+          cp {% if meta_package_name is defined %}{{ package.package_name }}/{% endif %}doc/manual.pdf branch_doc/{{ package.package_name }}.pdf
+          cd branch_doc
+          git add {{ package.package_name }}.pdf
+          git -c user.name='Doc Bot' -c user.email='empty' commit -m "Add {{ package.package_name }}.pdf for $CUR_SHA" --allow-empty
+          cd ..
+        {%- endfor %}
+          # push iff using gap-stable and if on master branch
+          if [ "{% raw %}${{ matrix.image }}{% endraw %}" = "gapsystem/gap-docker" ] && [ "$CUR_SHA" = "$(git rev-parse origin/master)" ]; then \
+            git push https://${GITHUB_ACTOR}:{% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}@github.com/${GITHUB_REPOSITORY}.git doc:doc; \
+          else \
+            echo "Not pushing result."; \
+          fi; \
+        {%- endif %}

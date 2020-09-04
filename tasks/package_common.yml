@@ -1,0 +1,181 @@
+---
+- name: Set URL with GitHub Pages
+  import_tasks: tasks/urls_with_gh_pages.yml
+  when: has_gh_pages
+
+- name: Set URL without GitHub Pages
+  import_tasks: tasks/urls_without_gh_pages.yml
+  when: not has_gh_pages
+
+- name: PackageInfo.g PackageName
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package_path }}/PackageInfo.g"
+    regexp: "PackageInfo :="
+    line: 'PackageName := "{{ package_name }}",'
+
+- name: PackageInfo.g Subtitle
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package_path }}/PackageInfo.g"
+    regexp: "Subtitle :="
+    line: 'Subtitle := "{{ package_description }}",'
+
+- name: PackageInfo.g License
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package_path }}/PackageInfo.g"
+    regexp: "License :="
+    line: 'License := "GPL-2.0-or-later",'
+    insertafter: "Date :="
+
+- name: PackageInfo.g Date
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package_path }}/PackageInfo.g"
+    regexp: "Date :="
+    line: 'Date := Concatenation( ~.Version{[ 9, 10 ]}, "/", ~.Version{[ 6, 7 ]}, "/", ~.Version{[ 1 .. 4 ]} ),'
+
+- name: PackageInfo.g SourceRepository.URL
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package_path }}/PackageInfo.g"
+    regexp: "^    URL := "
+    line: '    URL := "https://github.com/homalg-project/{{ package_name }}",'
+  when: meta_package_name is not defined
+
+- name: PackageInfo.g SourceRepository.URL
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package_path }}/PackageInfo.g"
+    regexp: "^    URL := "
+    line: '    URL := "https://github.com/homalg-project/{{ meta_package_name }}/tree/master/{{ package_name }}",'
+  when: meta_package_name is defined
+
+- name: PackageInfo.g PackageDoc.BookName
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package_path }}/PackageInfo.g"
+    regexp: "^  BookName  := "
+    line: '  BookName  := "{{ package_name }}",'
+
+- name: PackageInfo.g PackageDoc.LongTitle
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package_path }}/PackageInfo.g"
+    regexp: "^  LongTitle := "
+    line: '  LongTitle := "{{ package_description }}",'
+
+- name: init.g header
+  replace:
+    path: "{{ pkg_dir }}/{{ package_path }}/init.g"
+    regexp: "\\A(.*\n){5}"
+    replace: |
+      #
+      # {{ package_name }}: {{ package_description }}
+      #
+      # Reading the declaration part of the package.
+      #
+
+- name: read.g header
+  replace:
+    path: "{{ pkg_dir }}/{{ package_path }}/read.g"
+    regexp: "\\A(.*\n){5}"
+    replace: |
+      #
+      # {{ package_name }}: {{ package_description }}
+      #
+      # Reading the implementation part of the package.
+      #
+
+- name: PackageInfo.g header
+  replace:
+    path: "{{ pkg_dir }}/{{ package_path }}/PackageInfo.g"
+    regexp: "\\A(.*\n){8}"
+    replace: |
+      #
+      # {{ package_name }}: {{ package_description }}
+      #
+      # This file contains package meta data. For additional information on
+      # the meaning and correct usage of these fields, please consult the
+      # manual of the "Example" package as well as the comments in its
+      # PackageInfo.g file.
+      #
+
+- name: "Declaration headers"
+  replace:
+    path: "{{ cur_path }}"
+    regexp: "\\A(.*\n){5}"
+    replace: |
+      #
+      # {{ package_name }}: {{ package_description }}
+      #
+      # Declarations
+      #
+  with_fileglob: "{{ pkg_dir }}/{{ package_path }}/gap/*.gd"
+  loop_control:
+    loop_var: cur_path
+
+- name: "Implementation headers"
+  replace:
+    path: "{{ cur_path }}"
+    regexp: "\\A(.*\n){5}"
+    replace: |
+      #
+      # {{ package_name }}: {{ package_description }}
+      #
+      # Implementations
+      #
+  with_fileglob: "{{ pkg_dir }}/{{ package_path }}/gap/*.gi"
+  loop_control:
+    loop_var: cur_path
+
+- name: 000_LoadPackage.tst
+  template:
+    src: 000_LoadPackage.tst.j2
+    dest: "{{ pkg_dir }}/{{ package_path }}/tst/000_LoadPackage.tst"
+
+- name: LICENSE
+  template:
+    src: LICENSE.j2
+    dest: "{{ pkg_dir }}/{{ package_path }}/LICENSE"
+
+- name: makedoc.g
+  template:
+    src: makedoc.g.j2
+    dest: "{{ pkg_dir }}/{{ package_path }}/makedoc.g"
+    trim_blocks: false
+
+- name: makedoc_with_overfull_hbox_warnings.g
+  template:
+    src: makedoc_with_overfull_hbox_warnings.g.j2
+    dest: "{{ pkg_dir }}/{{ package_path }}/makedoc_with_overfull_hbox_warnings.g"
+    trim_blocks: false
+
+- name: "Ensure {{ pkg_dir }}/{{ package_path }}/doc/ exists"
+  file:
+    path: "{{ pkg_dir }}/{{ package_path }}/doc/"
+    state: directory
+
+- name: Doc.autodoc
+  copy:
+    src: Doc.autodoc
+    dest: "{{ pkg_dir }}/{{ package_path }}/doc/Doc.autodoc"
+    force: no
+
+- name: clean
+  copy:
+    src: clean
+    dest: "{{ pkg_dir }}/{{ package_path }}/doc/clean"
+    mode: a+x
+
+- name: makefile
+  template:
+    src: makefile.j2
+    dest: "{{ pkg_dir }}/{{ package_path }}/makefile"
+
+- name: testall.g
+  template:
+    src: testall.g.j2
+    dest: "{{ pkg_dir }}/{{ package_path }}/tst/testall.g"
+
+- name: .gitignore
+  template:
+    src: .gitignore.j2
+    dest: "{{ pkg_dir }}/{{ package_path }}/.gitignore"
+
+- import_tasks: tasks/README.md.yml
+  vars:
+    is_meta_package: false
