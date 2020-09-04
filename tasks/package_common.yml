@@ -122,6 +122,11 @@
   loop_control:
     loop_var: cur_path
 
+- name: "Ensure {{ pkg_dir }}/{{ package_path }}/tst/ exists"
+  file:
+    path: "{{ pkg_dir }}/{{ package_path }}/tst/"
+    state: directory
+
 - name: 000_LoadPackage.tst
   template:
     src: 000_LoadPackage.tst.j2
