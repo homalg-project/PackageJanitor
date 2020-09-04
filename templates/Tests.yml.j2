@@ -26,13 +26,11 @@ jobs:
           cd /home/gap/.gap/pkg/
           sudo apt update
           sudo apt dist-upgrade -y
-          sudo apt install -y texlive-latex-extra{% if ci_ubuntu_additional_apt_packages is defined %}{% for apt_package in ci_ubuntu_additional_apt_packages %} {{ apt_package }}{% endfor %}{% endif %}
+          sudo apt install -y texlive-latex-extra{% for apt_package in (ci_ubuntu_additional_apt_packages | default([ ])) %} {{ apt_package }}{% endfor %}
           git clone --depth 1 https://github.com/gap-packages/AutoDoc.git
-{%- if ci_additional_packages is defined %}
-    {%- for additional_package in ci_additional_packages %}
+        {%- for additional_package in (ci_additional_packages | default([ ])) %}
           git clone --depth 1 https://github.com/homalg-project/{{ additional_package }}.git
-    {%- endfor %}
-{%- endif %}
+        {%- endfor %}
           cd {{ package.name }}
           TERM=dumb make -j $(nproc) --output-sync ci-test
           curl -s https://codecov.io/bash | bash
