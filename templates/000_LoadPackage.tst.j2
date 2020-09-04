@@ -5,11 +5,15 @@
 #
 gap> package_loading_info_level := InfoLevel( InfoPackageLoading );;
 gap> SetInfoLevel( InfoPackageLoading, PACKAGE_ERROR );;
-gap> LoadPackage( "{{ package.name }}", false );
+{% for package_to_load in tests_packages_to_load %}
+gap> LoadPackage( "{{ package_to_load }}", false );
 true
+{% endfor %}
 gap> SetInfoLevel( InfoPackageLoading, PACKAGE_INFO );;
-gap> LoadPackage( "{{ package.name }}" );
+{% for package_to_load in tests_packages_to_load %}
+gap> LoadPackage( "{{ package_to_load }}" );
 true
+{% endfor %}
 gap> SetInfoLevel( InfoPackageLoading, package_loading_info_level );;
 {% if package.has_HOMALG_IO is defined and package.has_HOMALG_IO %}
 gap> HOMALG_IO.show_banners := false;;

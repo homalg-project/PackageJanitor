@@ -111,12 +111,24 @@
         subpackages:
           - name: CAP
             description: Categories, Algorithms, Programming
+            has_HOMALG_IO: true
             additional_latex_preamble: |
               \usepackage{tikz}
               \usetikzlibrary{arrows}
               \pgfarrowsdeclarecombine{twohead}{twohead}{latex}{latex}{latex}{latex}
+            tests_additional_packages_to_load:
+              - IO_ForHomalg
+              - GaussForHomalg
+              - ModulePresentationsForCAP
+              - LinearAlgebraForCAP
+              - RingsForHomalg
+              - HomologicalAlgebraForCAP
+              - DeductiveSystemForCAP
           - name: CompilerForCAP
             description: Speed up computations in CAP categories
+            tests_additional_packages_to_load:
+              - LinearAlgebraForCAP
+              - RingsForHomalg
         ci_additional_packages:
           - homalg_project
         ci_ubuntu_additional_apt_packages:

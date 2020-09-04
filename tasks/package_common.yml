@@ -144,6 +144,8 @@
   template:
     src: 000_LoadPackage.tst.j2
     dest: "{{ pkg_dir }}/{{ package.path }}/tst/000_LoadPackage.tst"
+  vars:
+    tests_packages_to_load: "{{ [ package.name ] + (package.tests_additional_packages_to_load | default([])) }}"
 
 - name: LICENSE
   template:
