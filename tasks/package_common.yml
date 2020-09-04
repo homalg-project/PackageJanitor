@@ -1,12 +1,4 @@
 ---
-- name: Set URL with GitHub Pages
-  import_tasks: tasks/urls_with_gh_pages.yml
-  when: has_gh_pages
-
-- name: Set URL without GitHub Pages
-  import_tasks: tasks/urls_without_gh_pages.yml
-  when: not has_gh_pages
-
 - name: PackageInfo.g PackageName
   lineinfile:
     path: "{{ pkg_dir }}/{{ package_path }}/PackageInfo.g"
@@ -32,19 +24,40 @@
     regexp: "Date :="
     line: 'Date := Concatenation( ~.Version{[ 9, 10 ]}, "/", ~.Version{[ 6, 7 ]}, "/", ~.Version{[ 1 .. 4 ]} ),'
 
-- name: PackageInfo.g SourceRepository.URL
-  lineinfile:
+- name: PackageInfo.g URLs
+  blockinfile:
     path: "{{ pkg_dir }}/{{ package_path }}/PackageInfo.g"
-    regexp: "^    URL := "
-    line: '    URL := "https://github.com/homalg-project/{{ package_name }}",'
-  when: meta_package_name is not defined
-
-- name: PackageInfo.g SourceRepository.URL
-  lineinfile:
-    path: "{{ pkg_dir }}/{{ package_path }}/PackageInfo.g"
-    regexp: "^    URL := "
-    line: '    URL := "https://github.com/homalg-project/{{ meta_package_name }}/tree/master/{{ package_name }}",'
-  when: meta_package_name is defined
+    marker: "# {mark} URLS"
+    block: |
+      SourceRepository := rec(
+          Type := "git",
+      {% if meta_package_name is defined %}
+          URL := "https://github.com/homalg-project/{{ meta_package_name }}",
+      {% else %}
+          URL := "https://github.com/homalg-project/{{ package_name }}",
+      {% endif %}
+      ),
+      IssueTrackerURL := Concatenation( ~.SourceRepository.URL, "/issues" ),
+      {% if has_gh_pages %}
+      PackageWWWHome  := "https://homalg-project.github.io/{{ package_path }}",
+      PackageInfoURL  := "https://homalg-project.github.io/{{ package_path }}/PackageInfo.g",
+      README_URL      := "https://homalg-project.github.io/{{ package_path }}/README.md",
+      {% else %}
+      {% if meta_package_name is defined %}
+      PackageWWWHome  := "https://github.com/homalg-project/{{ meta_package_name }}/tree/master/{{ package_name }}",
+      PackageInfoURL  := "https://raw.githubusercontent.com/homalg-project/{{ meta_package_name }}/master/{{ package_name }}/PackageInfo.g",
+      README_URL      := "https://raw.githubusercontent.com/homalg-project/{{ meta_package_name }}/master/{{ package_name }}/README.md",
+      {% else %}
+      PackageWWWHome  := "https://github.com/homalg-project/{{ package_name }}",
+      PackageInfoURL  := "https://raw.githubusercontent.com/homalg-project/{{ package_name }}/master/PackageInfo.g",
+      README_URL      := "https://raw.githubusercontent.com/homalg-project/{{ package_name }}/master/README.md",
+      {% endif %}
+      {% endif %}
+      {% if meta_package_name is defined -%}
+        ArchiveURL      := Concatenation( "https://github.com/homalg-project/{{ meta_package_name }}/releases/download/{{ package_name }}-", ~.Version, "/{{ package_name }}-", ~.Version ),
+      {% else -%}
+        ArchiveURL      := Concatenation( "https://github.com/homalg-project/{{ package_name }}/releases/download/v-", ~.Version, "/{{ package_name }}-", ~.Version ),
+      {% endif %}
 
 - name: PackageInfo.g PackageDoc.BookName
   lineinfile:
