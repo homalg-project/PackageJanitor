@@ -108,5 +108,7 @@
         ci_ubuntu_additional_apt_packages:
           - texlive-science
         subpackages:
+          - package_name: CAP
+            package_description: Categories, Algorithms, Programming
           - package_name: CompilerForCAP
             package_description: Speed up computations in CAP categories
