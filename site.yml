@@ -7,9 +7,17 @@
   tasks:
     - import_tasks: tasks/package.yml
       vars:
-        package_name: InternalModules
-        package_description: "Modules over internal algebras"
-        has_HOMALG_IO: true
+        package:
+          name: InternalModules
+          description: "Modules over internal algebras"
+          has_HOMALG_IO: true
+          additional_latex_preamble: |
+            \usepackage{bbm}
+            \DeclareUnicodeCharacter{1D7D9}{\ensuremath{\mathbbm{1}}}
+            \DeclareUnicodeCharacter{03C3}{\ensuremath{\sigma}}
+            \DeclareUnicodeCharacter{03C1}{\ensuremath{\rho}}
+            \DeclareUnicodeCharacter{03BD}{\ensuremath{\nu}}
+            \DeclareUnicodeCharacter{03C7}{\ensuremath{\chi}}
         ci_additional_packages:
           - homalg_project
           - CAP_project
@@ -17,18 +25,12 @@
           - GradedCategories
         ci_ubuntu_additional_apt_packages:
           - texlive-fonts-extra
-        additional_latex_preamble: |
-          \usepackage{bbm}
-          \DeclareUnicodeCharacter{1D7D9}{\ensuremath{\mathbbm{1}}}
-          \DeclareUnicodeCharacter{03C3}{\ensuremath{\sigma}}
-          \DeclareUnicodeCharacter{03C1}{\ensuremath{\rho}}
-          \DeclareUnicodeCharacter{03BD}{\ensuremath{\nu}}
-          \DeclareUnicodeCharacter{03C7}{\ensuremath{\chi}}
     - import_tasks: tasks/package.yml
       vars:
-        package_name: GradedCategories
-        package_description: "Graded closures of categories"
-        has_HOMALG_IO: true
+        package:
+          name: GradedCategories
+          description: "Graded closures of categories"
+          has_HOMALG_IO: true
         ci_additional_packages:
           - homalg_project
           - CAP_project
@@ -38,16 +40,61 @@
           - texlive-fonts-extra
     - import_tasks: tasks/package.yml
       vars:
-        package_name: FinSetsForCAP
-        package_description: "The elementary topos of (skeletal) finite sets"
+        package:
+          name: FinSetsForCAP
+          description: "The elementary topos of (skeletal) finite sets"
         ci_additional_packages:
           - homalg_project
           - CAP_project
           - Toposes
     - import_tasks: tasks/package.yml
       vars:
-        package_name: FinGSetsForCAP
-        package_description: "The elementary topos of (skeletal) finite G-sets"
+        package:
+          name: FinGSetsForCAP
+          description: "The elementary topos of (skeletal) finite G-sets"
+          additional_latex_preamble: |
+            \usepackage[T1]{fontenc}
+            \usepackage[british]{babel}
+            \usepackage{microtype}
+            \usepackage{amsmath}
+            \usepackage{calc}
+            \usepackage{amsthm}
+            \usepackage{amssymb}
+            \usepackage[dvipsnames]{xcolor}
+            \usepackage{hyperref}
+            \usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+            \usepackage{cite}
+            \usepackage{url}
+            \usepackage{tikz}
+            \usetikzlibrary{shapes,arrows,matrix}
+            \usepackage{tikz-cd}
+            \usepackage{makeidx}
+            \usepackage{listings}
+            \usepackage[scaled]{beramono}
+            \usepackage[figure]{hypcap}
+            \renewcommand{\hypcapspace}{2\baselineskip}
+            \usepackage{mathtools}
+            \usepackage{faktor}
+            \DeclareMathOperator{\Stab}{Stab}
+            \DeclareMathOperator{\fix}{fix}
+            \DeclareMathOperator{\coeq}{coeq}
+            \DeclareMathOperator{\im}{im}
+            \DeclareMathOperator{\rank}{rank}
+            \DeclareMathOperator{\CartProdExt}{CartProdExt}
+            \DeclareMathOperator{\End}{End}
+            \DeclareMathOperator{\Hom}{Hom}
+            \DeclareMathOperator{\op}{op}
+            \DeclareMathOperator{\id}{id}
+            \DeclareMathOperator{\Obj}{Obj}
+            \usepackage{ifthen}
+            % use \ell instead of l everywhere
+            \mathcode`l="8000
+            \begingroup
+            \makeatletter
+            \lccode`\~=`\l
+            \DeclareMathSymbol{\lsb@l}{\mathalpha}{letters}{`l}
+            \lowercase{\gdef~{\ifnum\the\mathgroup=\m@ne \ell \else \lsb@l \fi}}%
+            \endgroup
         ci_additional_packages:
           - homalg_project
           - CAP_project
@@ -56,59 +103,21 @@
         ci_ubuntu_additional_apt_packages:
           - texlive-science
           - texlive-fonts-extra
-        additional_latex_preamble: |
-          \usepackage[T1]{fontenc}
-          \usepackage[british]{babel}
-          \usepackage{microtype}
-          \usepackage{amsmath}
-          \usepackage{calc}
-          \usepackage{amsthm}
-          \usepackage{amssymb}
-          \usepackage[dvipsnames]{xcolor}
-          \usepackage{hyperref}
-          \usepackage[linesnumbered,ruled,vlined]{algorithm2e}
-          \usepackage{cite}
-          \usepackage{url}
-          \usepackage{tikz}
-          \usetikzlibrary{shapes,arrows,matrix}
-          \usepackage{tikz-cd}
-          \usepackage{makeidx}
-          \usepackage{listings}
-          \usepackage[scaled]{beramono}
-          \usepackage[figure]{hypcap}
-          \renewcommand{\hypcapspace}{2\baselineskip}
-          \usepackage{mathtools}
-          \usepackage{faktor}
-          \DeclareMathOperator{\Stab}{Stab}
-          \DeclareMathOperator{\fix}{fix}
-          \DeclareMathOperator{\coeq}{coeq}
-          \DeclareMathOperator{\im}{im}
-          \DeclareMathOperator{\rank}{rank}
-          \DeclareMathOperator{\CartProdExt}{CartProdExt}
-          \DeclareMathOperator{\End}{End}
-          \DeclareMathOperator{\Hom}{Hom}
-          \DeclareMathOperator{\op}{op}
-          \DeclareMathOperator{\id}{id}
-          \DeclareMathOperator{\Obj}{Obj}
-          \usepackage{ifthen}
-          % use \ell instead of l everywhere
-          \mathcode`l="8000
-          \begingroup
-          \makeatletter
-          \lccode`\~=`\l
-          \DeclareMathSymbol{\lsb@l}{\mathalpha}{letters}{`l}
-          \lowercase{\gdef~{\ifnum\the\mathgroup=\m@ne \ell \else \lsb@l \fi}}%
-          \endgroup
     - import_tasks: tasks/meta_package.yml
       vars:
-        meta_package_name: CAP_project
-        meta_package_description: Categories, Algorithms, and Programming
+        meta_package:
+          name: CAP_project
+          description: Categories, Algorithms, and Programming
+        subpackages:
+          - name: CAP
+            description: Categories, Algorithms, Programming
+            additional_latex_preamble: |
+              \usepackage{tikz}
+              \usetikzlibrary{arrows}
+              \pgfarrowsdeclarecombine{twohead}{twohead}{latex}{latex}{latex}{latex}
+          - name: CompilerForCAP
+            description: Speed up computations in CAP categories
         ci_additional_packages:
           - homalg_project
         ci_ubuntu_additional_apt_packages:
           - texlive-science
-        subpackages:
-          - package_name: CAP
-            package_description: Categories, Algorithms, Programming
-          - package_name: CompilerForCAP
-            package_description: Speed up computations in CAP categories

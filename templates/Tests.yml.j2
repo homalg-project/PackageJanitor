@@ -26,24 +26,24 @@ jobs:
           cd /home/gap/.gap/pkg/
           sudo apt update
           sudo apt dist-upgrade -y
-          sudo apt install -y texlive-latex-extra{% if ci_ubuntu_additional_apt_packages is defined %}{% for package in ci_ubuntu_additional_apt_packages %} {{ package }}{% endfor %}{% endif %}
+          sudo apt install -y texlive-latex-extra{% if ci_ubuntu_additional_apt_packages is defined %}{% for apt_package in ci_ubuntu_additional_apt_packages %} {{ apt_package }}{% endfor %}{% endif %}
           git clone --depth 1 https://github.com/gap-packages/AutoDoc.git
 {%- if ci_additional_packages is defined %}
-    {%- for package in ci_additional_packages %}
-          git clone --depth 1 https://github.com/homalg-project/{{ package }}.git
+    {%- for additional_package in ci_additional_packages %}
+          git clone --depth 1 https://github.com/homalg-project/{{ additional_package }}.git
     {%- endfor %}
 {%- endif %}
-          cd {{ package_name }}
+          cd {{ package.name }}
           TERM=dumb make -j $(nproc) --output-sync ci-test
           curl -s https://codecov.io/bash | bash
         {%- if pdf_doc_packages|length > 0 %}
           CUR_SHA=$(git rev-parse --verify HEAD)
           git worktree add branch_doc/ doc || (echo "There was an error. Make sure there is a branch named 'doc'."; exit 1)
-        {%- for package in pdf_doc_packages %}
-          cp {% if meta_package_name is defined %}{{ package.package_name }}/{% endif %}doc/manual.pdf branch_doc/{{ package.package_name }}.pdf
+        {%- for doc_package in pdf_doc_packages %}
+          cp {% if meta_package is defined %}{{ doc_package.name }}/{% endif %}doc/manual.pdf branch_doc/{{ doc_package.name }}.pdf
           cd branch_doc
-          git add {{ package.package_name }}.pdf
-          git -c user.name='Doc Bot' -c user.email='empty' commit -m "Add {{ package.package_name }}.pdf for $CUR_SHA" --allow-empty
+          git add {{ doc_package.name }}.pdf
+          git -c user.name='Doc Bot' -c user.email='empty' commit -m "Add {{ doc_package.name }}.pdf for $CUR_SHA" --allow-empty
           cd ..
         {%- endfor %}
           # push iff using gap-stable and if on master branch

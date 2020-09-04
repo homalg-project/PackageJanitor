@@ -1,36 +1,36 @@
 {% if is_meta_package %}
-{% for package in doc_packages -%}
-{% if package.has_gh_pages -%}
-[docs-{{ package.package_name }}-img]: https://img.shields.io/badge/{{ package.package_name }}-HTML-blue.svg
-[docs-{{ package.package_name }}-url]: https://homalg-project.github.io/{{ package_path }}/doc/chap0.html
+{% for doc_package in doc_packages -%}
+{% if doc_package.has_gh_pages -%}
+[docs-{{ doc_package.name }}-img]: https://img.shields.io/badge/{{ doc_package.name }}-HTML-blue.svg
+[docs-{{ doc_package.name }}-url]: https://homalg-project.github.io/{{ doc_package.path }}/doc/chap0.html
 
 {% else -%}
-[docs-{{ package.package_name }}-img]: https://img.shields.io/badge/{{ package.package_name }}-PDF-blue.svg
-[docs-{{ package.package_name }}-url]: /../../raw/doc/{{ package_name }}.pdf
+[docs-{{ doc_package.name }}-img]: https://img.shields.io/badge/{{ doc_package.name }}-PDF-blue.svg
+[docs-{{ doc_package.name }}-url]: /../../raw/doc/{{ doc_package.name }}.pdf
 
 {% endif -%}
 {% endfor %}
 {% else %}
-{% if has_gh_pages -%}
+{% if package.has_gh_pages -%}
 [docs-img]: https://img.shields.io/badge/docs-stable-blue.svg
-[docs-url]: https://homalg-project.github.io/{{ package_path }}/doc/chap0.html
+[docs-url]: https://homalg-project.github.io/{{ package.path }}/doc/chap0.html
 
 {% else -%}
 [docs-img]: https://img.shields.io/badge/PDF-dev-blue.svg
-[docs-url]: /../../raw/doc/{{ package_name }}.pdf
+[docs-url]: /../../raw/doc/{{ package.name }}.pdf
 
 {% endif -%}
 {% endif %}
-{% if meta_package_name is defined -%}
-[tests-img]: https://github.com/homalg-project/{{ meta_package_name }}/workflows/Tests/badge.svg
-[tests-url]: https://github.com/homalg-project/{{ meta_package_name }}/actions?query=workflow%3ATests
+{% if meta_package is defined -%}
+[tests-img]: https://github.com/homalg-project/{{ meta_package.name }}/workflows/Tests/badge.svg
+[tests-url]: https://github.com/homalg-project/{{ meta_package.name }}/actions?query=workflow%3ATests
 
-[codecov-img]: https://codecov.io/gh/homalg-project/{{ meta_package_name }}/branch/master/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/homalg-project/{{ meta_package_name }}
+[codecov-img]: https://codecov.io/gh/homalg-project/{{ meta_package.name }}/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/homalg-project/{{ meta_package.name }}
 {% else %}
-[tests-img]: https://github.com/homalg-project/{{ package_name }}/workflows/Tests/badge.svg
-[tests-url]: https://github.com/homalg-project/{{ package_name }}/actions?query=workflow%3ATests
+[tests-img]: https://github.com/homalg-project/{{ package.name }}/workflows/Tests/badge.svg
+[tests-url]: https://github.com/homalg-project/{{ package.name }}/actions?query=workflow%3ATests
 
-[codecov-img]: https://codecov.io/gh/homalg-project/{{ package_name }}/branch/master/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/homalg-project/{{ package_name }}
+[codecov-img]: https://codecov.io/gh/homalg-project/{{ package.name }}/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/homalg-project/{{ package.name }}
 {% endif -%}

@@ -1,5 +1,5 @@
 #
-# {{ package_name }}: {{ package_description }}
+# {{ package.name }}: {{ package.description }}
 #
 # This file is a script which compiles the package manual.
 #
@@ -19,8 +19,8 @@ AutoDoc( rec(
     gapdoc := rec(
         LaTeXOptions := rec(
             LateExtraPreamble := """
-                {%- if additional_latex_preamble is defined %}
-                {{ additional_latex_preamble | trim | indent(16) }}
+                {%- if package.additional_latex_preamble is defined %}
+                {{ package.additional_latex_preamble | trim | indent(16) }}
                 {%- endif %}
             """,
         ),

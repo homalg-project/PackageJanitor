@@ -1,10 +1,10 @@
-# {{ package_name }} – {{ package_description }}
+# {{ package.name }} – {{ package.description }}
 
-| **Documentation**         | **Build Status{% if meta_package_name is defined and not is_meta_package %} of [{{ meta_package_name }}](/../../){% endif %}**                                            |
+| **Documentation**         | **Build Status{% if meta_package is defined and not is_meta_package %} of [{{ meta_package.name }}](/../../){% endif %}**                                            |
 |:-------------------------:|:-----------------------------------------------------------:|
 {% if is_meta_package %}
-{% for package in doc_packages -%}
-| [![][docs-{{ package.package_name }}-img]][docs-{{ package.package_name }}-url] | {% if loop.first %}[![][tests-img]][tests-url] [![][codecov-img]][codecov-url] {% endif %}|
+{% for doc_package in doc_packages -%}
+| [![][docs-{{ doc_package.name }}-img]][docs-{{ doc_package.name }}-url] | {% if loop.first %}[![][tests-img]][tests-url] [![][codecov-img]][codecov-url] {% endif %}|
 {% endfor %}
 {% else %}
 | [![][docs-img]][docs-url] | [![][tests-img]][tests-url] [![][codecov-img]][codecov-url] |

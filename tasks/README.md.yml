@@ -1,14 +1,14 @@
 ---
 - name: README.md header
   blockinfile:
-    path: "{{ pkg_dir }}/{{ package_path }}/README.md"
+    path: "{{ pkg_dir }}/{{ package.path }}/README.md"
     insertbefore: BOF
     marker: "<!-- {mark} HEADER -->"
     block: "{{ lookup('template', 'templates/README.md_HEADER.j2') }}"
 
 - name: README.md footer
   blockinfile:
-    path: "{{ pkg_dir }}/{{ package_path }}/README.md"
+    path: "{{ pkg_dir }}/{{ package.path }}/README.md"
     insertafter: EOF
     marker: "<!-- {mark} FOOTER -->"
     block: "{{ lookup('template', 'templates/README.md_FOOTER.j2') }}"
