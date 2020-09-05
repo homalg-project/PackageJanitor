@@ -1,6 +1,6 @@
 ---
-- name: localhost
-  hosts: localhost
+- name: InternalModules
+  hosts: InternalModules
   connection: local
   vars:
     pkg_dir: "~/.gap/pkg/"
@@ -25,6 +25,13 @@
           - GradedCategories
         ci_ubuntu_additional_apt_packages:
           - texlive-fonts-extra
+
+- name: GradedCategories
+  hosts: GradedCategories
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
     - import_tasks: tasks/package.yml
       vars:
         package:
@@ -40,6 +47,13 @@
           - InternalModules
         ci_ubuntu_additional_apt_packages:
           - texlive-fonts-extra
+
+- name: FinSetsForCAP
+  hosts: FinSetsForCAP
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
     - import_tasks: tasks/package.yml
       vars:
         package:
@@ -49,6 +63,13 @@
           - homalg_project
           - CAP_project
           - Toposes
+
+- name: FinGSetsForCAP
+  hosts: FinGSetsForCAP
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
     - import_tasks: tasks/package.yml
       vars:
         package:
@@ -105,6 +126,13 @@
         ci_ubuntu_additional_apt_packages:
           - texlive-science
           - texlive-fonts-extra
+
+- name: CAP_project
+  hosts: CAP_project
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
     - import_tasks: tasks/meta_package.yml
       vars:
         meta_package:
