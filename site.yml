@@ -155,12 +155,26 @@
               - HomologicalAlgebraForCAP
               - DeductiveSystemForCAP
             tests_only_basic: true
+            docu_only: true
           - name: CompilerForCAP
             description: Speed up computations in CAP categories
             tests_additional_packages_to_load:
               - LinearAlgebraForCAP
               - RingsForHomalg
             tests_only_basic: true
+            docu_only: true
+          - name: ModulePresentationsForCAP
+            docu_only: true
+          - name: GradedModulePresentationsForCAP
+            docu_only: true
+          - name: LinearAlgebraForCAP
+            docu_only: true
+          - name: GeneralizedMorphismsForCAP
+            docu_only: true
+          - name: GroupRepresentationsForCAP
+            docu_only: true
+          - name: InternalExteriorAlgebraForCAP
+            docu_only: true
         ci_additional_packages_to_clone:
           - homalg_project
         ci_ubuntu_additional_apt_packages:

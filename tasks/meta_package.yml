@@ -17,8 +17,9 @@
 
 - name: Set subpackages_enriched
   set_fact:
-    subpackages_enriched: "{{ subpackages_enriched + [ item[0] | combine( { 'path': meta_package.name + '/' + item[0].name, 'has_gh_pages': item[1].status == 200 } ) ] }}"
+    subpackages_enriched: "{{ subpackages_enriched + [ item[0] | combine( { 'path': meta_package.name + '/' + item[0].name, 'has_gh_pages': item[1].status == 200, 'docu_only': item[0].docu_only|default(false) } ) ] }}"
   loop: "{{ subpackages | zip(gh_pages_responses.results) | list }}"
+  no_log: true
 
 - import_tasks: tasks/README.md.yml
   vars:
@@ -35,4 +36,4 @@
   include_tasks: tasks/package_common.yml
   vars:
     package: "{{ item }}"
-  loop: "{{ subpackages_enriched }}"
+  loop: "{{ subpackages_enriched | selectattr('docu_only', 'equalto', false) | list }}"
