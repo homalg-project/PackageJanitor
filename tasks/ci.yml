@@ -10,6 +10,8 @@
     src: Tests.yml.j2
     dest: "{{ pkg_dir }}/{{ package.name }}/.github/workflows/Tests.yml"
     trim_blocks: false
+  vars:
+    ci_packages_to_test: "{{ [ package.name ] + (ci_additional_packages_to_test | default([])) }}"
 
 - name: .codecov.yml
   template:

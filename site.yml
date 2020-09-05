@@ -18,7 +18,7 @@
             \DeclareUnicodeCharacter{03C1}{\ensuremath{\rho}}
             \DeclareUnicodeCharacter{03BD}{\ensuremath{\nu}}
             \DeclareUnicodeCharacter{03C7}{\ensuremath{\chi}}
-        ci_additional_packages:
+        ci_additional_packages_to_clone:
           - homalg_project
           - CAP_project
           - InfiniteLists
@@ -31,10 +31,12 @@
           name: GradedCategories
           description: "Graded closures of categories"
           has_HOMALG_IO: true
-        ci_additional_packages:
+        ci_additional_packages_to_clone:
           - homalg_project
           - CAP_project
           - InfiniteLists
+          - InternalModules
+        ci_additional_packages_to_test:
           - InternalModules
         ci_ubuntu_additional_apt_packages:
           - texlive-fonts-extra
@@ -43,7 +45,7 @@
         package:
           name: FinSetsForCAP
           description: "The elementary topos of (skeletal) finite sets"
-        ci_additional_packages:
+        ci_additional_packages_to_clone:
           - homalg_project
           - CAP_project
           - Toposes
@@ -95,7 +97,7 @@
             \DeclareMathSymbol{\lsb@l}{\mathalpha}{letters}{`l}
             \lowercase{\gdef~{\ifnum\the\mathgroup=\m@ne \ell \else \lsb@l \fi}}%
             \endgroup
-        ci_additional_packages:
+        ci_additional_packages_to_clone:
           - homalg_project
           - CAP_project
           - Toposes
@@ -131,7 +133,7 @@
               - LinearAlgebraForCAP
               - RingsForHomalg
             tests_only_basic: true
-        ci_additional_packages:
+        ci_additional_packages_to_clone:
           - homalg_project
         ci_ubuntu_additional_apt_packages:
           - texlive-science

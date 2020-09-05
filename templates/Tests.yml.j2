@@ -28,13 +28,15 @@ jobs:
           sudo apt dist-upgrade -y
           sudo apt install -y texlive-latex-extra{% for apt_package in (ci_ubuntu_additional_apt_packages | default([ ])) %} {{ apt_package }}{% endfor %}
           git clone --depth 1 https://github.com/gap-packages/AutoDoc.git
-        {%- for additional_package in (ci_additional_packages | default([ ])) %}
+        {%- for additional_package in (ci_additional_packages_to_clone | default([ ])) %}
           git clone --depth 1 https://github.com/homalg-project/{{ additional_package }}.git
         {%- endfor %}
-          cd {{ package.name }}
-          TERM=dumb make -j $(nproc) --output-sync ci-test
+        {%- for package_to_test in ci_packages_to_test %}
+          TERM=dumb make -C {{ package_to_test }} -j $(nproc) --output-sync ci-test
+        {%- endfor %}
           curl -s https://codecov.io/bash | bash
         {%- if pdf_doc_packages|length > 0 %}
+          cd {{ package.name }}
           CUR_SHA=$(git rev-parse --verify HEAD)
           git worktree add branch_doc/ doc || (echo "There was an error. Make sure there is a branch named 'doc'."; exit 1)
         {%- for doc_package in pdf_doc_packages %}
