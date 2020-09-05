@@ -3,9 +3,9 @@
 | **Documentation**         | **Build Status{% if meta_package is defined and not is_meta_package %} of [{{ meta_package.name }}](/../../){% endif %}**                                            |
 |:-------------------------:|:-----------------------------------------------------------:|
 {% if is_meta_package %}
-{% for doc_package in doc_packages -%}
-| [![][docs-{{ doc_package.name }}-img]][docs-{{ doc_package.name }}-url] | {% if loop.first %}[![][tests-img]][tests-url] [![][codecov-img]][codecov-url] {% endif %}|
-{% endfor %}
+| {% for doc_package in doc_packages -%}
+    [![][docs-{{ doc_package.name }}-img]][docs-{{ doc_package.name }}-url]{% if not loop.last %}<br> {% endif %}
+{%- endfor %} | [![][tests-img]][tests-url] [![][codecov-img]][codecov-url] |
 {% else %}
 | [![][docs-img]][docs-url] | [![][tests-img]][tests-url] [![][codecov-img]][codecov-url] |
 {% endif %}
