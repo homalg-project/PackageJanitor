@@ -158,11 +158,12 @@
             docu_only: true
           - name: CompilerForCAP
             description: Speed up computations in CAP categories
+            additional_latex_preamble: |
+              % this is the only way to suppress an overfull hbox in the signature of CapJitIterateOverTree
+              \geometry{left=26mm,right=26mm}
             tests_additional_packages_to_load:
               - LinearAlgebraForCAP
               - RingsForHomalg
-            tests_only_basic: true
-            docu_only: true
           - name: ModulePresentationsForCAP
             docu_only: true
           - name: GradedModulePresentationsForCAP
