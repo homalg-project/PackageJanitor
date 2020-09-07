@@ -179,3 +179,50 @@
           - homalg_project
         ci_ubuntu_additional_apt_packages:
           - texlive-science
+
+- name: homalg_project
+  hosts: homalg_project
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
+    - import_tasks: tasks/meta_package.yml
+      vars:
+        meta_package:
+          name: homalg_project
+          description: The packages of the homalg project
+        subpackages:
+          - name: homalg
+            docu_only: true
+          - name: 4ti2Interface
+            docu_only: true
+          - name: ExamplesForHomalg
+            docu_only: true
+          - name: Gauss
+            docu_only: true
+          - name: GaussForHomalg
+            docu_only: true
+          - name: GradedModules
+            docu_only: true
+          - name: GradedRingForHomalg
+            docu_only: true
+          - name: HomalgToCAS
+            docu_only: true
+          - name: IO_ForHomalg
+            docu_only: true
+          - name: LocalizeRingForHomalg
+            docu_only: true
+          - name: MatricesForHomalg
+            docu_only: true
+          - name: Modules
+            docu_only: true
+          - name: RingsForHomalg
+            docu_only: true
+          - name: SCO
+            docu_only: true
+          - name: ToolsForHomalg
+            docu_only: true
+        ci_ubuntu_additional_apt_packages:
+          - texlive-science
+          - time
+          - python-pathlib
