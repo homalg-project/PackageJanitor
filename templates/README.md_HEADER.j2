@@ -1,4 +1,4 @@
-# {{ package.name }} – {{ package.description }}
+# {{ package.name|replace("_", " ") }} – {{ package.description }}
 
 | **Documentation**         | **Build Status{% if meta_package is defined and not is_meta_package %} of [{{ meta_package.name }}](/../../){% endif %}**                                            |
 |:-------------------------:|:-----------------------------------------------------------:|
