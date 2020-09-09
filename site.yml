@@ -179,7 +179,6 @@
               - HomologicalAlgebraForCAP
               - DeductiveSystemForCAP
             tests_only_basic: true
-            docu_only: true
           - name: CompilerForCAP
             description: Speed up computations in CAP categories
             doc_additional_latex_preamble: |
@@ -197,8 +196,37 @@
           - name: GeneralizedMorphismsForCAP
             docu_only: true
           - name: GroupRepresentationsForCAP
-            docu_only: true
+            description: Skeletal category of group representations for CAP
+            has_HOMALG_IO: true
+            tests_additional_packages_to_load:
+              - IO_ForHomalg
+            tests_only_basic: true
           - name: InternalExteriorAlgebraForCAP
+            docu_only: true
+          - name: MonoidalCategories
+            description: Monoidal and monoidal (co)closed categories
+            tests_additional_packages_to_load:
+              - MatricesForHomalg
+              - GaussForHomalg
+            tests_only_basic: true
+            docu_only: true
+          - name: FreydCategoriesForCAP
+            description: Freyd categories - Formal (co)kernels for additive categories
+            has_HOMALG_IO: true
+            doc_additional_scan_dirs:
+              - gap/CategoryOfGradedRowsAndColumns
+              - gap/GradedModulePresentationsByFreyd
+            doc_additional_latex_preamble: |
+              \usepackage{tikz}
+              \usetikzlibrary{arrows}
+              \usetikzlibrary{calc}
+            tests_additional_packages_to_load:
+              - IO_ForHomalg
+              - RingsForHomalg
+              - GaussForHomalg
+              - GeneralizedMorphismsForCAP
+              - Algebroids
+            tests_only_basic: true
             docu_only: true
         ci_additional_packages_to_clone:
           - homalg_project
