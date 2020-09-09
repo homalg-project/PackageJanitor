@@ -11,7 +11,7 @@
         package:
           name: FunctorCategories
           description: "Categories of functors"
-          additional_latex_preamble: |
+          doc_additional_latex_preamble: |
             \usepackage{mathtools}
         ci_additional_packages_to_clone:
           - homalg_project
@@ -35,7 +35,7 @@
           name: InternalModules
           description: "Modules over internal algebras"
           has_HOMALG_IO: true
-          additional_latex_preamble: |
+          doc_additional_latex_preamble: |
             \usepackage{bbm}
             \DeclareUnicodeCharacter{1D7D9}{\ensuremath{\mathbbm{1}}}
             \DeclareUnicodeCharacter{03C3}{\ensuremath{\sigma}}
@@ -99,7 +99,7 @@
         package:
           name: FinGSetsForCAP
           description: "The elementary topos of (skeletal) finite G-sets"
-          additional_latex_preamble: |
+          doc_additional_latex_preamble: |
             \usepackage[T1]{fontenc}
             \usepackage[british]{babel}
             \usepackage{microtype}
@@ -166,7 +166,7 @@
           - name: CAP
             description: Categories, Algorithms, Programming
             has_HOMALG_IO: true
-            additional_latex_preamble: |
+            doc_additional_latex_preamble: |
               \usepackage{tikz}
               \usetikzlibrary{arrows}
               \pgfarrowsdeclarecombine{twohead}{twohead}{latex}{latex}{latex}{latex}
@@ -182,7 +182,7 @@
             docu_only: true
           - name: CompilerForCAP
             description: Speed up computations in CAP categories
-            additional_latex_preamble: |
+            doc_additional_latex_preamble: |
               % this is the only way to suppress an overfull hbox in the signature of CapJitIterateOverTree
               \geometry{left=26mm,right=26mm}
             tests_additional_packages_to_load:

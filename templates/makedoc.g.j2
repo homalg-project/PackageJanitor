@@ -12,6 +12,7 @@ fi;
 AutoDoc( rec(
     autodoc := rec(
         files := [ "doc/Doc.autodoc" ],
+        scan_dirs := [ "doc", "gap", "examples", "examples/doc"{% for scan_dir in (package.doc_additional_scan_dirs | default([ ])) %}, "{{ scan_dir }}"{% endfor %} ],
     ),
     extract_examples := rec(
         units := "Single",
@@ -19,8 +20,8 @@ AutoDoc( rec(
     gapdoc := rec(
         LaTeXOptions := rec(
             LateExtraPreamble := """
-                {%- if package.additional_latex_preamble is defined %}
-                {{ package.additional_latex_preamble | trim | indent(16) }}
+                {%- if package.doc_additional_latex_preamble is defined %}
+                {{ package.doc_additional_latex_preamble | trim | indent(16) }}
                 {%- endif %}
             """,
         ),

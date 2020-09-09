@@ -13,12 +13,13 @@ AutoDoc( rec(
     dir := "doc_tmp/",
     autodoc := rec(
         files := [ "doc/Doc.autodoc" ],
+        scan_dirs := [ "doc", "gap", "examples", "examples/doc"{% for scan_dir in (package.doc_additional_scan_dirs | default([ ])) %}, "{{ scan_dir }}"{% endfor %} ],
     ),
     gapdoc := rec(
         LaTeXOptions := rec(
             LateExtraPreamble := """
-                {%- if package.additional_latex_preamble is defined %}
-                {{ package.additional_latex_preamble | trim | indent(16) }}
+                {%- if package.doc_additional_latex_preamble is defined %}
+                {{ package.doc_additional_latex_preamble | trim | indent(16) }}
                 {%- endif %}
                 {% raw %}% Many thanks to https://tex.stackexchange.com/questions/22466/how-to-convince-fancyvrb-to-give-overfull-warnings/534486#534486
                 \makeatletter
