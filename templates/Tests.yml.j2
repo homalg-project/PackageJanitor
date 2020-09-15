@@ -32,6 +32,8 @@ jobs:
         {%- for additional_package in (ci_additional_packages_to_clone | default([ ])) %}
           git clone --depth 1 https://github.com/homalg-project/{{ additional_package }}.git
         {%- endfor %}
+          # set SOURCE_DATE_EPOCH for reproducible PDFs
+          export SOURCE_DATE_EPOCH=0
         {%- for package_to_test in ci_packages_to_test %}
           TERM=dumb make -C {{ package_to_test }} -j $(nproc) --output-sync ci-test
         {%- endfor %}
