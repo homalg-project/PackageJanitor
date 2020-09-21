@@ -56,7 +56,7 @@
       {% if meta_package is defined -%}
         ArchiveURL      := Concatenation( "https://github.com/homalg-project/{{ meta_package.name }}/releases/download/{{ package.name }}-", ~.Version, "/{{ package.name }}-", ~.Version ),
       {% else -%}
-        ArchiveURL      := Concatenation( "https://github.com/homalg-project/{{ package.name }}/releases/download/v-", ~.Version, "/{{ package.name }}-", ~.Version ),
+        ArchiveURL      := Concatenation( "https://github.com/homalg-project/{{ package.name }}/releases/download/v", ~.Version, "/{{ package.name }}-", ~.Version ),
       {% endif %}
 
 - name: PackageInfo.g PackageDoc.BookName
