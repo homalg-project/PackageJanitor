@@ -14,6 +14,7 @@
           has_HOMALG_IO: true
           doc_additional_latex_preamble: |
             \usepackage{mathtools}
+          tests_only_basic: true
         ci_additional_packages_to_clone:
           - homalg_project
           - CAP_project
