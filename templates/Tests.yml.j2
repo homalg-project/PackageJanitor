@@ -41,7 +41,7 @@ jobs:
         {%- if pdf_doc_packages|length > 0 %}
           cd {{ package.name }}
           CUR_SHA=$(git rev-parse --verify HEAD)
-          git worktree add branch_doc/ doc || (echo "There was an error. Make sure there is a branch named 'doc'."; exit 1)
+          git worktree add branch_doc/ doc || (echo "There was an error. Make sure there is a branch named 'doc'. See https://github.com/homalg-project/PackageJanitor#error-there-was-an-error-make-sure-there-is-a-branch-named-doc"; exit 1)
         {%- for doc_package in pdf_doc_packages %}
           cp {% if meta_package is defined %}{{ doc_package.name }}/{% endif %}doc/manual.pdf branch_doc/{{ doc_package.name }}.pdf
           cd branch_doc
