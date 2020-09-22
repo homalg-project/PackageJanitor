@@ -1,4 +1,30 @@
 ---
+- name: SubcategoriesForCAP
+  hosts: SubcategoriesForCAP
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+    ansible_python_interpreter: "{{ansible_playbook_python}}"
+  tasks:
+    - import_tasks: tasks/package.yml
+      vars:
+        package:
+          name: SubcategoriesForCAP
+          description: "Subcategory and other related constructors for CAP categories"
+          has_HOMALG_IO: true
+          doc_additional_latex_preamble: |
+            \usepackage{mathtools}
+        ci_additional_packages_to_clone:
+          - homalg_project
+          - CAP_project
+          - CategoryConstructor
+          - Toposes
+          - FinSetsForCAP
+          - HigherHomologicalAlgebra
+          - QPA2
+        ci_ubuntu_additional_apt_packages:
+          - texlive-fonts-extra
+
 - name: FunctorCategories
   hosts: FunctorCategories
   connection: local
