@@ -1,4 +1,33 @@
 ---
+- name: Locales
+  hosts: Locales
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+    ansible_python_interpreter: "{{ansible_playbook_python}}"
+  tasks:
+    - import_tasks: tasks/package.yml
+      vars:
+        package:
+          name: Locales
+          description: "Locales, frames, coframes, meet semi-lattices of locally closed subsets, and Boolean algebras of constructible sets"
+          has_HOMALG_IO: true
+          doc_additional_latex_preamble: |
+            \usepackage{mathtools}
+          tests_additional_packages_to_load:
+            - SubcategoriesForCAP
+            - LazyCategories
+          tests_only_basic: true
+        ci_additional_packages_to_clone:
+          - homalg_project
+          - CAP_project
+          - Toposes
+          - CategoryConstructor
+          - SubcategoriesForCAP
+          - LazyCategories
+        ci_ubuntu_additional_apt_packages:
+          - texlive-fonts-extra
+
 - name: SubcategoriesForCAP
   hosts: SubcategoriesForCAP
   connection: local
