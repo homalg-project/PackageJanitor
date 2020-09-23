@@ -1,4 +1,37 @@
 ---
+- name: Toposes
+  hosts: Toposes
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+    ansible_python_interpreter: "{{ansible_playbook_python}}"
+  tasks:
+    - import_tasks: tasks/package.yml
+      vars:
+        package:
+          name: Toposes
+          description: "Elementary toposes"
+          doc_additional_latex_preamble: |
+            \usepackage{mathtools}
+          tests_only_basic: true
+        ci_additional_packages_to_clone:
+          - homalg_project
+          - CAP_project
+          - CategoryConstructor
+          - SubcategoriesForCAP
+          - Locales
+          - ZariskiFrames
+          - LazyCategories
+          - FinSetsForCAP
+          - HigherHomologicalAlgebra
+          - QPA2
+        ci_additional_packages_to_test:
+          - Locales
+          - ZariskiFrames
+          - FinSetsForCAP
+        ci_ubuntu_additional_apt_packages:
+          - texlive-fonts-extra
+
 - name: Locales
   hosts: Locales
   connection: local
