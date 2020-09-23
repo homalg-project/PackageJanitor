@@ -28,6 +28,38 @@
         ci_ubuntu_additional_apt_packages:
           - texlive-fonts-extra
 
+- name: ZariskiFrames
+  hosts: ZariskiFrames
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+    ansible_python_interpreter: "{{ansible_playbook_python}}"
+  tasks:
+    - import_tasks: tasks/package.yml
+      vars:
+        package:
+          name: ZariskiFrames
+          description: "(Co)frames/Locales of Zariski closed/open subsets of affine, projective, or toric varieties"
+          has_HOMALG_IO: true
+          doc_additional_latex_preamble: |
+            \usepackage{mathtools}
+            \DeclareUnicodeCharacter{2205}{\O}
+            \DeclareUnicodeCharacter{222A}{\ensuremath{\cup}}
+            \DeclareUnicodeCharacter{22C3}{\ensuremath{\bigcup}}
+            \DeclareUnicodeCharacter{2229}{\ensuremath{\cap}}
+          tests_only_basic: true
+        ci_additional_packages_to_clone:
+          - homalg_project
+          - CAP_project
+          - Toposes
+          - CategoryConstructor
+          - Locales
+          - FinSetsForCAP
+          - HigherHomologicalAlgebra
+          - QPA2
+        ci_ubuntu_additional_apt_packages:
+          - texlive-fonts-extra
+
 - name: SubcategoriesForCAP
   hosts: SubcategoriesForCAP
   connection: local
