@@ -143,6 +143,13 @@
           - FunctorCategories
           - HigherHomologicalAlgebra
           - QPA2
+          - Toposes
+          - FinSetsForCAP
+          - SubcategoriesForCAP
+          - CatReps
+        ci_additional_packages_to_test:
+          - FunctorCategories
+          - CatReps
         ci_ubuntu_additional_apt_packages:
           - texlive-fonts-extra
 
@@ -163,10 +170,16 @@
         ci_additional_packages_to_clone:
           - homalg_project
           - CAP_project
+          - CategoryConstructor
+          - Algebroids
           - HigherHomologicalAlgebra
           - QPA2
-          - Algebroids
-          - CategoryConstructor
+          - Toposes
+          - FinSetsForCAP
+          - SubcategoriesForCAP
+          - CatReps
+        ci_additional_packages_to_test:
+          - CatReps
         ci_ubuntu_additional_apt_packages:
           - texlive-fonts-extra
 
