@@ -26,9 +26,9 @@
           - HigherHomologicalAlgebra
           - QPA2
         ci_additional_packages_to_test:
+          - FinSetsForCAP
           - Locales
           - ZariskiFrames
-          - FinSetsForCAP
         ci_ubuntu_additional_apt_packages:
           - texlive-fonts-extra
 
@@ -57,7 +57,13 @@
           - Toposes
           - CategoryConstructor
           - SubcategoriesForCAP
+          - ZariskiFrames
           - LazyCategories
+          - FinSetsForCAP
+          - HigherHomologicalAlgebra
+          - QPA2
+        ci_additional_packages_to_test:
+          - ZariskiFrames
         ci_ubuntu_additional_apt_packages:
           - texlive-fonts-extra
 
