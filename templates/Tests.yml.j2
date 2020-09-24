@@ -37,6 +37,7 @@ jobs:
         {%- for package_to_test in ci_packages_to_test %}
           TERM=dumb make -C {{ package_to_test }} -j $(nproc) --output-sync ci-test
         {%- endfor %}
+          cp ./{{ package.name }}/.codecov.yml ./
           curl -s https://codecov.io/bash | bash
         {%- if pdf_doc_packages|length > 0 %}
           cd {{ package.name }}
