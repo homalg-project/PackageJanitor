@@ -2,7 +2,7 @@
 {% for doc_package in doc_packages -%}
 {% if doc_package.has_gh_pages -%}
 [docs-{{ doc_package.name }}-img]: https://img.shields.io/badge/{{ doc_package.name }}-HTML-blue.svg
-[docs-{{ doc_package.name }}-url]: https://homalg-project.github.io/{{ doc_package.path }}/doc/chap0.html
+[docs-{{ doc_package.name }}-url]: https://homalg-project.github.io/{{ doc_package.path }}/doc/chap0_mj.html
 
 {% else -%}
 [docs-{{ doc_package.name }}-img]: https://img.shields.io/badge/{{ doc_package.name }}-PDF-blue.svg
@@ -13,7 +13,7 @@
 {% else %}
 {% if package.has_gh_pages -%}
 [docs-img]: https://img.shields.io/badge/docs-stable-blue.svg
-[docs-url]: https://homalg-project.github.io/{{ package.path }}/doc/chap0.html
+[docs-url]: https://homalg-project.github.io/{{ package.path }}/doc/chap0_mj.html
 
 {% else -%}
 [docs-img]: https://img.shields.io/badge/PDF-dev-blue.svg
