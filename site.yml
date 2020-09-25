@@ -383,6 +383,91 @@
           - texlive-science
           - texlive-fonts-extra
 
+- name: HigherHomologicalAlgebra
+  hosts: HigherHomologicalAlgebra
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
+    - import_tasks: tasks/meta_package.yml
+      vars:
+        meta_package:
+          name: HigherHomologicalAlgebra
+          description: Higher Homological Algebra
+        subpackages:
+          - name: BBGG
+            description: Beilinson monads and derived categories for coherent sheaves over P^n
+            has_HOMALG_IO: true
+            tests_additional_packages_to_load:
+              - IO_ForHomalg
+            tests_only_basic: true
+          - name: Bicomplexes
+            description: Bicomplexes for Abelian categories
+            tests_additional_packages_to_load:
+              - ModulePresentations
+            tests_only_basic: true
+          - name: ComplexesCategories
+            description: Category of (co)chain complexes of an additive category
+            has_HOMALG_IO: true
+            doc_additional_latex_preamble: |
+              \usepackage{amsmath}
+              \usepackage[T1]{fontenc}
+              \usepackage{tikz}
+              \usetikzlibrary{shapes,arrows,matrix}
+            tests_additional_packages_to_load:
+              - IO_ForHomalg
+              - ModulePresentations
+              - FreydCategoriesForCAP
+            tests_only_basic: true
+          - name: DerivedCategories
+            description: Derived categories of Abelian categories
+            has_HOMALG_IO: true
+            tests_only_basic: true
+            tests_additional_packages_to_load:
+              - IO_ForHomalg
+              - FreydCategoriesForCAP
+          - name: HomotopyCategories
+            description: Homotopy categories of additive categories
+            doc_additional_latex_preamble: |
+              \usepackage[T1]{fontenc}
+              \usepackage{tikz}
+              \usetikzlibrary{shapes,arrows,matrix}
+            tests_additional_packages_to_load:
+              - ModulePresentations
+            tests_only_basic: true
+          - name: QuotientCategories
+            description: Quotient categories of CAP categories by two-sided ideals
+            tests_additional_packages_to_load:
+              - ModulePresentations
+            tests_only_basic: true
+          - name: StableCategories
+            description: Stable categories of additive categories
+            tests_additional_packages_to_load:
+              - ModulePresentations
+            tests_only_basic: true
+          - name: TriangulatedCategories
+            description: Framework for triangulated categories
+            doc_additional_latex_preamble: |
+              \usepackage{amsmath}
+              \usepackage[T1]{fontenc}
+              \usepackage{tikz}
+              \usetikzlibrary{shapes,arrows,matrix}
+              \usepackage{tikz-cd}
+            tests_additional_packages_to_load:
+              - DerivedCategories
+            tests_only_basic: true
+        ci_additional_packages_to_clone:
+          - homalg_project
+          - CAP_project
+          - Toposes
+          - FinSetsForCAP
+          - QPA2
+          - Algebroids
+          - SubcategoriesForCAP
+          - CategoryConstructor
+        ci_ubuntu_additional_apt_packages:
+          - texlive-science
+
 - name: CAP_project
   hosts: CAP_project
   connection: local
