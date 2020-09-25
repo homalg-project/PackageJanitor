@@ -27,6 +27,10 @@
     doc_packages: "{{ subpackages_enriched }}"
     is_meta_package: true
 
+- import_tasks: tasks/GitHubPages.yml
+  vars:
+    package: "{{ meta_package_enriched }}"
+
 - import_tasks: tasks/ci.yml
   vars:
     package: "{{ meta_package_enriched }}"
