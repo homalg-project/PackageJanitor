@@ -4,7 +4,6 @@
   connection: local
   vars:
     pkg_dir: "~/.gap/pkg/"
-    ansible_python_interpreter: "{{ansible_playbook_python}}"
   tasks:
     - import_tasks: tasks/package.yml
       vars:
@@ -41,7 +40,6 @@
   connection: local
   vars:
     pkg_dir: "~/.gap/pkg/"
-    ansible_python_interpreter: "{{ansible_playbook_python}}"
   tasks:
     - import_tasks: tasks/package.yml
       vars:
@@ -74,7 +72,6 @@
   connection: local
   vars:
     pkg_dir: "~/.gap/pkg/"
-    ansible_python_interpreter: "{{ansible_playbook_python}}"
   tasks:
     - import_tasks: tasks/package.yml
       vars:
@@ -109,7 +106,6 @@
   connection: local
   vars:
     pkg_dir: "~/.gap/pkg/"
-    ansible_python_interpreter: "{{ansible_playbook_python}}"
   tasks:
     - import_tasks: tasks/package.yml
       vars:
@@ -141,7 +137,6 @@
   connection: local
   vars:
     pkg_dir: "~/.gap/pkg/"
-    ansible_python_interpreter: "{{ansible_playbook_python}}"
   tasks:
     - import_tasks: tasks/package.yml
       vars:
@@ -168,7 +163,6 @@
   connection: local
   vars:
     pkg_dir: "~/.gap/pkg/"
-    ansible_python_interpreter: "{{ansible_playbook_python}}"
   tasks:
     - import_tasks: tasks/package.yml
       vars:
@@ -201,7 +195,6 @@
   connection: local
   vars:
     pkg_dir: "~/.gap/pkg/"
-    ansible_python_interpreter: "{{ansible_playbook_python}}"
   tasks:
     - import_tasks: tasks/package.yml
       vars:
@@ -231,7 +224,6 @@
   connection: local
   vars:
     pkg_dir: "~/.gap/pkg/"
-    ansible_python_interpreter: "{{ansible_playbook_python}}"
   tasks:
     - import_tasks: tasks/package.yml
       vars:
