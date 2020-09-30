@@ -1,0 +1,18 @@
+### Packages based on [{{ meta_package.name }}](https://github.com/homalg-project/{{ meta_package.name }}):
+
+| Name | Description | Documentation | Build Status | Code Coverage | Status |
+| ---- | ----------- | ------------- | ------------ | ------------- | ------ |
+{% for package in packages_enriched %}
+| [{{ package.name }}](https://github.com/homalg-project/{{ package.name }}) | {# -#}
+  {{ package.description }} | {# -#}
+  {%- if package.has_html_docu -%}
+    [![HTML stable documentation](https://img.shields.io/badge/HTML-stable-blue.svg)](https://homalg-project.github.io/{{ meta_package.name }}/{{ package.name }}/doc/chap0_mj.html)
+  {%- elif package.has_pdf_docu -%}
+    [![PDF development documentation](https://img.shields.io/badge/PDF-dev-blue.svg)](https://raw.githubusercontent.com/homalg-project/{{ meta_package.name }}/doc/{{ package.name }}.pdf)
+  {%- else -%}
+    Not available
+  {%- endif %} | {# -#}
+  [![Build Status](https://github.com/homalg-project/{{ package.name }}/workflows/Tests/badge.svg)](https://github.com/homalg-project/{{ package.name }}/actions?query=workflow%3ATests) | {# -#}
+  [![Code Coverage](https://codecov.io/gh/homalg-project/{{ package.name }}/branch/master/graph/badge.svg)](https://codecov.io/gh/homalg-project/{{ package.name }}) | {# -#}
+  {{ package.status }} |
+{% endfor %}

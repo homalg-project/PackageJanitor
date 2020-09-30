@@ -1,0 +1,16 @@
+### Packages of [{{ meta_package.name }}](https://github.com/homalg-project/{{ meta_package.name }}):
+
+| Name | Description | Documentation | Status |
+| ---- | ----------- | ------------- | ------ |
+{% for package in packages_enriched %}
+| [{{ package.name }}](https://github.com/homalg-project/{{ meta_package.name }}/tree/master/{{ package.name }}) | {# -#}
+  {{ package.description }} | {# -#}
+  {%- if package.has_html_docu -%}
+    [![HTML stable documentation](https://img.shields.io/badge/HTML-stable-blue.svg)](https://homalg-project.github.io/{{ meta_package.name }}/{{ package.name }}/doc/chap0_mj.html)
+  {%- elif package.has_pdf_docu -%}
+    [![PDF development documentation](https://img.shields.io/badge/PDF-dev-blue.svg)](https://raw.githubusercontent.com/homalg-project/{{ meta_package.name }}/doc/{{ package.name }}.pdf)
+  {%- else -%}
+    Not available
+  {%- endif %} | {# -#}
+  {{ package.status }} |
+{% endfor %}

@@ -637,3 +637,84 @@
           - texlive-science
           - time
           - python-pathlib
+
+- name: homalg-project.github.io
+  hosts: homalg-project.github.io
+  connection: local
+  tasks:
+    - import_tasks: tasks/homalg-project.github.io.yml
+      vars:
+        packages:
+          - meta_package:
+              name: CAP_project
+              description: Categories, Algorithms, and Programming.
+            subpackages:
+              - name: CAP
+              - name: ActionsForCAP
+              - name: AttributeCategoryForCAP
+              - name: CompilerForCAP
+              - name: ComplexesAndFilteredObjectsForCAP
+              - name: DeductiveSystemForCAP
+              - name: FreydCategoriesForCAP
+              - name: GeneralizedMorphismsForCAP
+              - name: GradedModulePresentationsForCAP
+              - name: GroupRepresentationsForCAP
+              - name: HomologicalAlgebraForCAP
+              - name: InternalExteriorAlgebraForCAP
+              - name: LinearAlgebraForCAP
+              - name: ModulePresentationsForCAP
+              - name: ModulesOverLocalRingsForCAP
+              - name: MonoidalCategories
+              - name: ToricSheaves
+            used_by:
+              - name: Algebroids
+              - name: CategoryConstructor
+              - name: CategoriesWithAmbientObjects
+              - name: CatReps
+              - name: FinSetsForCAP
+              - name: FinGSetsForCAP
+              - name: FunctorCategories
+              - name: GradedCategories
+              - name: IntrinsicCategories
+              - name: IntrinsicModules
+              - name: InternalModules
+              - name: LazyCategories
+              - name: Locales
+              - name: QPA2
+              - name: SubcategoriesForCAP
+              - name: Toposes
+              - name: WrapperCategories
+              - name: ZariskiFrames
+          - meta_package:
+              name: homalg_project
+              description: The homalg project is a multi-author multi-package open source software project for constructive homological algebra.
+            subpackages:
+              - name: homalg
+              - name: 4ti2Interface
+              - name: ExamplesForHomalg
+              - name: Gauss
+              - name: GaussForHomalg
+              - name: GradedModules
+              - name: GradedRingForHomalg
+              - name: HomalgToCAS
+              - name: IO_ForHomalg
+              - name: LocalizeRingForHomalg
+              - name: MatricesForHomalg
+              - name: Modules
+              - name: RingsForHomalg
+              - name: SCO
+              - name: ToolsForHomalg
+            used_by:
+              - name: OscarForHomalg
+              - name: alcove
+              - name: AlgebraicThomas
+              - name: ArangoDBInterface
+              - name: Blocks
+              - name: D-Modules
+              - name: LessGenerators
+              - name: LoopIntegrals
+              - name: MatroidGeneration
+              - name: NConvex
+              - name: ParallelizedIterators
+              - name: PrimaryDecomposition
+              - name: Sheaves
