@@ -35,6 +35,30 @@
         ci_ubuntu_additional_apt_packages:
           - texlive-fonts-extra
 
+- name: WrapperCategories
+  hosts: WrapperCategories
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
+    - import_tasks: tasks/package.yml
+      vars:
+        package:
+          name: WrapperCategories
+          description: "Construct an equivalent wrapper category out of a CAP category"
+          doc_additional_latex_preamble: |
+            \usepackage{mathtools}
+          tests_additional_packages_to_load:
+            - LinearAlgebraForCAP
+            - GeneralizedMorphismsForCAP
+          tests_only_basic: true
+        ci_additional_packages_to_clone:
+          - homalg_project
+          - CAP_project
+          - CategoryConstructor
+        ci_ubuntu_additional_apt_packages:
+          - texlive-fonts-extra
+
 - name: Toposes
   hosts: Toposes
   connection: local
