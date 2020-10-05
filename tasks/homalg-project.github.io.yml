@@ -1,0 +1,8 @@
+---
+- name: Import meta package
+  include_tasks: tasks/homalg-project.github.io_package.yml
+  vars:
+    meta_package: "{{ item.meta_package }}"
+    subpackages: "{{ item.subpackages }}"
+    used_by: "{{ item.used_by }}"
+  loop: "{{ packages }}"
