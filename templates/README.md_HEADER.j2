@@ -9,3 +9,14 @@
 {% else %}
 | [![][docs-img]][docs-url] | [![][tests-img]][tests-url] [![][codecov-img]][codecov-url] |
 {% endif %}
+{% if package.needed_other_repositories is defined %}
+
+### Dependencies
+
+To obtain current versions of all dependencies, clone the following repositories:
+{% for repo in package.needed_other_repositories %}
+{{ loop.index }}. **{{ repo }}**: https://github.com/homalg-project/{{ repo }}
+{% endfor %}
+
+---
+{% endif %}
