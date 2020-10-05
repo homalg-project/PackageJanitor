@@ -31,6 +31,20 @@
   vars:
     package: "{{ meta_package_enriched }}"
 
+- name: Initialize ci_additional_repositories_enriched
+  set_fact:
+    ci_additional_repositories_enriched: "{{ ci_additional_repositories | default([]) }}"
+
+- name: Prepend needed_other_repositories of subpackages to ci_additional_repositories_enriched
+  set_fact:
+    ci_additional_repositories_enriched: "{{ (item.needed_other_repositories | default([])) + ci_additional_repositories_enriched }}"
+  loop: "{{ subpackages }}"
+  no_log: true
+
+- name: Remove duplicates from ci_additional_repositories_enriched
+  set_fact:
+    ci_additional_repositories_enriched: "{{ ci_additional_repositories_enriched | unique }}"
+
 - import_tasks: tasks/ci.yml
   vars:
     package: "{{ meta_package_enriched }}"
