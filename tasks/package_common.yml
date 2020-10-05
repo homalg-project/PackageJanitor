@@ -76,7 +76,7 @@
     path: "{{ pkg_dir }}/{{ package.path }}/init.g"
     regexp: "\\A(.*\n){5}"
     replace: |
-      #
+      # SPDX-License-Identifier: GPL-2.0-or-later
       # {{ package.name }}: {{ package.description }}
       #
       # Reading the declaration part of the package.
@@ -87,7 +87,7 @@
     path: "{{ pkg_dir }}/{{ package.path }}/read.g"
     regexp: "\\A(.*\n){5}"
     replace: |
-      #
+      # SPDX-License-Identifier: GPL-2.0-or-later
       # {{ package.name }}: {{ package.description }}
       #
       # Reading the implementation part of the package.
@@ -98,7 +98,7 @@
     path: "{{ pkg_dir }}/{{ package.path }}/PackageInfo.g"
     regexp: "\\A(.*\n){8}"
     replace: |
-      #
+      # SPDX-License-Identifier: GPL-2.0-or-later
       # {{ package.name }}: {{ package.description }}
       #
       # This file contains package meta data. For additional information on
@@ -112,7 +112,7 @@
     path: "{{ cur_path }}"
     regexp: "\\A(.*\n){5}"
     replace: |
-      #
+      # SPDX-License-Identifier: GPL-2.0-or-later
       # {{ package.name }}: {{ package.description }}
       #
       # Declarations
@@ -126,7 +126,7 @@
     path: "{{ cur_path }}"
     regexp: "\\A(.*\n){5}"
     replace: |
-      #
+      # SPDX-License-Identifier: GPL-2.0-or-later
       # {{ package.name }}: {{ package.description }}
       #
       # Implementations
@@ -148,8 +148,8 @@
     tests_packages_to_load: "{{ [ package.name ] + (package.tests_additional_packages_to_load | default([])) }}"
 
 - name: LICENSE
-  template:
-    src: LICENSE.j2
+  copy:
+    src: LICENSE
     dest: "{{ pkg_dir }}/{{ package.path }}/LICENSE"
 
 - name: makedoc.g
