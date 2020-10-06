@@ -1,13 +1,13 @@
 # {{ package.name|replace("_", " ") }} – {{ package.description }}
 
-| **Documentation**         | **Build Status{% if meta_package is defined and not is_meta_package %} of [{{ meta_package.name }}](/../../){% endif %}**                                            |
-|:-------------------------:|:-----------------------------------------------------------:|
 {% if is_meta_package %}
-| {% for doc_package in doc_packages -%}
-    [![Documentation][docs-{{ doc_package.name }}-img]][docs-{{ doc_package.name }}-url]{% if not loop.last %}<br> {% endif %}
-{%- endfor %} | [![Build Status][tests-img]][tests-url] [![Code Coverage][codecov-img]][codecov-url] |
+| Build Status | Code Coverage |
+| ------------ | ------------- |
+| [![Build Status][tests-img]][tests-url] | [![Code Coverage][codecov-img]][codecov-url] |
 {% else %}
-| [![Documentation][docs-img]][docs-url] | [![Build Status][tests-img]][tests-url] [![Code Coverage][codecov-img]][codecov-url] |
+| Documentation | Build Status{% if meta_package is defined %} of [{{ meta_package.name }}](/../../){% endif %} | Code Coverage{% if meta_package is defined %} of [{{ meta_package.name }}](/../../){% endif %} |
+| ------------- | ------------ | ------------- |
+| [![{% if package.has_gh_pages %}HTML stable documentation{% else %}PDF development documentation{% endif %}][docs-img]][docs-url] | [![Build Status][tests-img]][tests-url] | [![Code Coverage][codecov-img]][codecov-url] |
 {% endif %}
 
 {% if package.needed_other_repositories is defined %}

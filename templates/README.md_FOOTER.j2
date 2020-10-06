@@ -1,11 +1,23 @@
 {% if is_meta_package %}
+## Packages of [{{ meta_package.name }}](/../../):
+| Name | Documentation |
+| ---- | ------------- |
+{% for doc_package in doc_packages -%}
+| [{{ doc_package.name }}]({{ doc_package.name }}) | {# -#}
+  {%- if doc_package.has_gh_pages -%}
+    [![HTML stable documentation][docs-{{ doc_package.name }}-img]][docs-{{ doc_package.name }}-url]
+  {%- else -%}
+    [![PDF development documentation][docs-{{ doc_package.name }}-img]][docs-{{ doc_package.name }}-url]
+  {%- endif %} |
+{% endfor %}
+
 {% for doc_package in doc_packages -%}
 {% if doc_package.has_gh_pages -%}
-[docs-{{ doc_package.name }}-img]: https://img.shields.io/badge/{{ doc_package.name }}-HTML-blue.svg
+[docs-{{ doc_package.name }}-img]: https://img.shields.io/badge/HTML-stable-blue.svg
 [docs-{{ doc_package.name }}-url]: https://homalg-project.github.io/{{ doc_package.path }}/doc/chap0_mj.html
 
 {% else -%}
-[docs-{{ doc_package.name }}-img]: https://img.shields.io/badge/{{ doc_package.name }}-PDF-blue.svg
+[docs-{{ doc_package.name }}-img]: https://img.shields.io/badge/PDF-dev-blue.svg
 [docs-{{ doc_package.name }}-url]: /../../raw/doc/{{ doc_package.name }}.pdf
 
 {% endif -%}
