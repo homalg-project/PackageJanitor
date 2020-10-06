@@ -9,8 +9,8 @@
 {% else %}
 | [![Documentation][docs-img]][docs-url] | [![Build Status][tests-img]][tests-url] [![Code Coverage][codecov-img]][codecov-url] |
 {% endif %}
-{% if package.needed_other_repositories is defined %}
 
+{% if package.needed_other_repositories is defined %}
 ### Dependencies
 
 To obtain current versions of all dependencies, clone the following repositories:
@@ -19,4 +19,5 @@ To obtain current versions of all dependencies, clone the following repositories
 {% endfor %}
 
 ---
+
 {% endif %}
