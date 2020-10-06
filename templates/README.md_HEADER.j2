@@ -4,10 +4,10 @@
 |:-------------------------:|:-----------------------------------------------------------:|
 {% if is_meta_package %}
 | {% for doc_package in doc_packages -%}
-    [![][docs-{{ doc_package.name }}-img]][docs-{{ doc_package.name }}-url]{% if not loop.last %}<br> {% endif %}
-{%- endfor %} | [![][tests-img]][tests-url] [![][codecov-img]][codecov-url] |
+    [![Documentation][docs-{{ doc_package.name }}-img]][docs-{{ doc_package.name }}-url]{% if not loop.last %}<br> {% endif %}
+{%- endfor %} | [![Build Status][tests-img]][tests-url] [![Code Coverage][codecov-img]][codecov-url] |
 {% else %}
-| [![][docs-img]][docs-url] | [![][tests-img]][tests-url] [![][codecov-img]][codecov-url] |
+| [![Documentation][docs-img]][docs-url] | [![Build Status][tests-img]][tests-url] [![Code Coverage][codecov-img]][codecov-url] |
 {% endif %}
 {% if package.needed_other_repositories is defined %}
 
