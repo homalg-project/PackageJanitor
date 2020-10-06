@@ -641,6 +641,8 @@
 - name: homalg-project.github.io
   hosts: homalg-project.github.io
   connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
   tasks:
     - import_tasks: tasks/homalg-project.github.io.yml
       vars:
