@@ -2,8 +2,7 @@
 - name: Create header
   blockinfile:
     path: ~/index.md
-    marker: "<!-- {mark} {{ meta_package.name }} HEADER -->"
-    block: |
+    block: |+
       # {{ meta_package.name }}
       
       {{ meta_package.description }}
@@ -12,6 +11,8 @@
       | ------------ | ------------- |
       | [![Build Status](https://github.com/homalg-project/{{ meta_package.name }}/workflows/Tests/badge.svg)](https://github.com/homalg-project/{{ meta_package.name }}/actions?query=workflow%3ATests) | {# -#}
         [![Code Coverage](https://codecov.io/gh/homalg-project/{{ meta_package.name }}/branch/master/graph/badge.svg)](https://codecov.io/gh/homalg-project/{{ meta_package.name }}) |
+      
+    marker: "<!-- {mark} {{ meta_package.name }} HEADER -->"
 
 - name: Include table for subpackages
   include_tasks: tasks/homalg-project.github.io_subpackage_table.yml
