@@ -3,9 +3,6 @@
   blockinfile:
     path: "{{ pkg_dir }}/index.md"
     block: |+
-      # {{ meta_package.name }}
-      
-      {{ meta_package.description }}
       
       | Build Status | Code Coverage |
       | ------------ | ------------- |
@@ -14,10 +11,12 @@
       
       [tests-{{ meta_package.name }}-img]: https://github.com/homalg-project/{{ meta_package.name }}/workflows/Tests/badge.svg?branch=master
       [tests-{{ meta_package.name }}-url]: https://github.com/homalg-project/{{ meta_package.name }}/actions?query=workflow%3ATests+branch%3Amaster
-
+      
       [codecov-{{ meta_package.name }}-img]: https://codecov.io/gh/homalg-project/{{ meta_package.name }}/branch/master/graph/badge.svg
       [codecov-{{ meta_package.name }}-url]: https://codecov.io/gh/homalg-project/{{ meta_package.name }}
-
+      
+      {{ meta_package.description }}
+      
     marker: "<!-- {mark} {{ meta_package.name }} HEADER -->"
 
 - name: Include table for subpackages
