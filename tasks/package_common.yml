@@ -1,4 +1,8 @@
 ---
+- import_tasks: tasks/README.md.yml
+  vars:
+    is_meta_package: false
+
 - name: PackageInfo.g PackageName
   lineinfile:
     path: "{{ pkg_dir }}/{{ package.path }}/PackageInfo.g"
@@ -17,12 +21,14 @@
     regexp: "License :="
     line: 'License := "GPL-2.0-or-later",'
     insertafter: "Date :="
+  when: not package.docu_only
 
 - name: PackageInfo.g Date
   lineinfile:
     path: "{{ pkg_dir }}/{{ package.path }}/PackageInfo.g"
     regexp: "Date :="
     line: 'Date := Concatenation( ~.Version{[ 9, 10 ]}, "/", ~.Version{[ 6, 7 ]}, "/", ~.Version{[ 1 .. 4 ]} ),'
+  when: not package.docu_only
 
 - name: PackageInfo.g URLs
   blockinfile:
@@ -58,18 +64,21 @@
       {% else -%}
         ArchiveURL      := Concatenation( "https://github.com/homalg-project/{{ package.name }}/releases/download/v", ~.Version, "/{{ package.name }}-", ~.Version ),
       {% endif %}
+  when: not package.docu_only
 
 - name: PackageInfo.g PackageDoc.BookName
   lineinfile:
     path: "{{ pkg_dir }}/{{ package.path }}/PackageInfo.g"
     regexp: "^  BookName  := "
     line: '  BookName  := "{{ package.name }}",'
+  when: not package.docu_only
 
 - name: PackageInfo.g PackageDoc.LongTitle
   lineinfile:
     path: "{{ pkg_dir }}/{{ package.path }}/PackageInfo.g"
     regexp: "^  LongTitle := "
     line: '  LongTitle := "{{ package.description }}",'
+  when: not package.docu_only
 
 - name: init.g header
   replace:
@@ -81,6 +90,7 @@
       #
       # Reading the declaration part of the package.
       #
+  when: not package.docu_only
 
 - name: read.g header
   replace:
@@ -92,6 +102,7 @@
       #
       # Reading the implementation part of the package.
       #
+  when: not package.docu_only
 
 - name: PackageInfo.g header
   replace:
@@ -106,6 +117,7 @@
       # manual of the "Example" package as well as the comments in its
       # PackageInfo.g file.
       #
+  when: not package.docu_only
 
 - name: "Declaration headers"
   replace:
@@ -120,6 +132,7 @@
   with_fileglob: "{{ pkg_dir }}/{{ package.path }}/gap/*.gd"
   loop_control:
     loop_var: cur_path
+  when: not package.docu_only
 
 - name: "Implementation headers"
   replace:
@@ -134,11 +147,13 @@
   with_fileglob: "{{ pkg_dir }}/{{ package.path }}/gap/*.gi"
   loop_control:
     loop_var: cur_path
+  when: not package.docu_only
 
 - name: "Ensure {{ pkg_dir }}/{{ package.path }}/tst/ exists"
   file:
     path: "{{ pkg_dir }}/{{ package.path }}/tst/"
     state: directory
+  when: not package.docu_only
 
 - name: 000_LoadPackage.tst
   template:
@@ -146,56 +161,62 @@
     dest: "{{ pkg_dir }}/{{ package.path }}/tst/000_LoadPackage.tst"
   vars:
     tests_packages_to_load: "{{ [ package.name ] + (package.tests_additional_packages_to_load | default([])) }}"
+  when: not package.docu_only
 
 - name: LICENSE
   copy:
     src: LICENSE
     dest: "{{ pkg_dir }}/{{ package.path }}/LICENSE"
+  when: not package.docu_only
 
 - name: makedoc.g
   template:
     src: makedoc.g.j2
     dest: "{{ pkg_dir }}/{{ package.path }}/makedoc.g"
     trim_blocks: false
+  when: not package.docu_only
 
 - name: makedoc_with_overfull_hbox_warnings.g
   template:
     src: makedoc_with_overfull_hbox_warnings.g.j2
     dest: "{{ pkg_dir }}/{{ package.path }}/makedoc_with_overfull_hbox_warnings.g"
     trim_blocks: false
+  when: not package.docu_only
 
 - name: "Ensure {{ pkg_dir }}/{{ package.path }}/doc/ exists"
   file:
     path: "{{ pkg_dir }}/{{ package.path }}/doc/"
     state: directory
+  when: not package.docu_only
 
 - name: Doc.autodoc
   copy:
     src: Doc.autodoc
     dest: "{{ pkg_dir }}/{{ package.path }}/doc/Doc.autodoc"
     force: no
+  when: not package.docu_only
 
 - name: clean
   copy:
     src: clean
     dest: "{{ pkg_dir }}/{{ package.path }}/doc/clean"
     mode: a+x
+  when: not package.docu_only
 
 - name: makefile
   template:
     src: makefile.j2
     dest: "{{ pkg_dir }}/{{ package.path }}/makefile"
+  when: not package.docu_only
 
 - name: testall.g
   template:
     src: testall.g.j2
     dest: "{{ pkg_dir }}/{{ package.path }}/tst/testall.g"
+  when: not package.docu_only
 
 - name: .gitignore
   template:
     src: .gitignore.j2
     dest: "{{ pkg_dir }}/{{ package.path }}/.gitignore"
-
-- import_tasks: tasks/README.md.yml
-  vars:
-    is_meta_package: false
+  when: not package.docu_only

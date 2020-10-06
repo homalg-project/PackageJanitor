@@ -27,6 +27,14 @@
     doc_packages: "{{ subpackages_enriched }}"
     is_meta_package: true
 
+- name: Metapackage makefile
+  blockinfile:
+    path: "{{ pkg_dir }}/{{ meta_package.name }}/makefile"
+    marker: "# {mark} PACKAGE JANITOR"
+    block: "{{ lookup('template', 'templates/meta_package_makefile.j2') }}"
+  vars:
+    doc_packages: "{{ subpackages_enriched }}"
+
 - import_tasks: tasks/GitHubPages.yml
   vars:
     package: "{{ meta_package_enriched }}"
@@ -54,4 +62,4 @@
   include_tasks: tasks/package_common.yml
   vars:
     package: "{{ item }}"
-  loop: "{{ subpackages_enriched | selectattr('docu_only', 'equalto', false) | list }}"
+  loop: "{{ subpackages_enriched }}"

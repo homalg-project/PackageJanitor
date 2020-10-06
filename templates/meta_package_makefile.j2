@@ -1,0 +1,8 @@
+doc:{% for doc_package in doc_packages %} doc_{{ doc_package.name }}{% endfor %}
+
+
+{% for doc_package in doc_packages %}
+doc_{{ doc_package.name }}:
+	$(MAKE) -C {{ doc_package.name }} doc
+
+{% endfor %}

@@ -8,7 +8,7 @@
 
 - name: Set package_enriched
   set_fact:
-    package_enriched: "{{ package | combine( { 'path': package.name, 'has_gh_pages': gh_pages_response.status == 200 } ) }}"
+    package_enriched: "{{ package | combine( { 'path': package.name, 'has_gh_pages': gh_pages_response.status == 200, 'docu_only': package.docu_only|default(false) } ) }}"
 
 - import_tasks: tasks/ci.yml
   vars:

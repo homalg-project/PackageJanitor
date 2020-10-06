@@ -537,6 +537,12 @@
               - HomologicalAlgebraForCAP
               - DeductiveSystemForCAP
             tests_only_basic: true
+          - name: ActionsForCAP
+            description: Actions and Coactions for CAP
+            docu_only: true
+          - name: AttributeCategoryForCAP
+            description: Automatic enhancement with attributes of a CAP category
+            docu_only: true
           - name: CompilerForCAP
             description: Speed up computations in CAP categories
             doc_additional_latex_preamble: |
@@ -545,28 +551,11 @@
             tests_additional_packages_to_load:
               - LinearAlgebraForCAP
               - RingsForHomalg
-          - name: ModulePresentationsForCAP
+          - name: ComplexesAndFilteredObjectsForCAP
+            description: Implementation of complexes, cocomplexes and filtered objects for CAP
             docu_only: true
-          - name: GradedModulePresentationsForCAP
-            docu_only: true
-          - name: LinearAlgebraForCAP
-            docu_only: true
-          - name: GeneralizedMorphismsForCAP
-            docu_only: true
-          - name: GroupRepresentationsForCAP
-            description: Skeletal category of group representations for CAP
-            has_HOMALG_IO: true
-            tests_additional_packages_to_load:
-              - IO_ForHomalg
-            tests_only_basic: true
-          - name: InternalExteriorAlgebraForCAP
-            docu_only: true
-          - name: MonoidalCategories
-            description: Monoidal and monoidal (co)closed categories
-            tests_additional_packages_to_load:
-              - MatricesForHomalg
-              - GaussForHomalg
-            tests_only_basic: true
+          - name: DeductiveSystemForCAP
+            description: Deductive system for CAP
             docu_only: true
           - name: FreydCategoriesForCAP
             description: Freyd categories - Formal (co)kernels for additive categories
@@ -586,6 +575,43 @@
               - Algebroids
             tests_only_basic: true
             docu_only: true
+          - name: GeneralizedMorphismsForCAP
+            description: Implementations of generalized morphisms for the CAP project
+            docu_only: true
+          - name: GradedModulePresentationsForCAP
+            description: Presentations for graded modules
+            docu_only: true
+          - name: GroupRepresentationsForCAP
+            description: Skeletal category of group representations for CAP
+            has_HOMALG_IO: true
+            tests_additional_packages_to_load:
+              - IO_ForHomalg
+            tests_only_basic: true
+          - name: HomologicalAlgebraForCAP
+            description: Homological algebra algorithms for CAP
+            docu_only: true
+          - name: InternalExteriorAlgebraForCAP
+            description: Constructions for Modules over the Internal Exterior Algebra for CAP
+            docu_only: true
+          - name: LinearAlgebraForCAP
+            description: Category of Matrices over a Field for CAP
+            docu_only: true
+          - name: ModulePresentationsForCAP
+            description: Category R-pres for CAP
+            docu_only: true
+          - name: ModulesOverLocalRingsForCAP
+            description: Category of modules over a local ring modeled by Serre quotients for CAP
+            docu_only: true
+          - name: MonoidalCategories
+            description: Monoidal and monoidal (co)closed categories
+            tests_additional_packages_to_load:
+              - MatricesForHomalg
+              - GaussForHomalg
+            tests_only_basic: true
+            docu_only: true
+          - name: ToricSheaves
+            description: Toric sheaves as Serre quotients
+            docu_only: true
         ci_additional_repositories:
           - homalg_project
         ci_ubuntu_additional_apt_packages:
@@ -604,34 +630,49 @@
           description: The packages of the homalg project
         subpackages:
           - name: homalg
+            description: A homological algebra meta-package for computable Abelian categories
             docu_only: true
           - name: 4ti2Interface
+            description: A link to 4ti2
             docu_only: true
           - name: ExamplesForHomalg
+            description: Examples for the GAP Package homalg
             docu_only: true
           - name: Gauss
+            description: Extended Gauss functionality for GAP
             docu_only: true
           - name: GaussForHomalg
+            description: Gauss functionality for the homalg project
             docu_only: true
           - name: GradedModules
+            description: A homalg based package for the Abelian category of finitely presented graded modules over computable graded rings
             docu_only: true
           - name: GradedRingForHomalg
+            description: Endow Commutative Rings with an Abelian Grading
             docu_only: true
           - name: HomalgToCAS
+            description: A window to the outer world
             docu_only: true
           - name: IO_ForHomalg
+            description: IO capabilities for the homalg project
             docu_only: true
           - name: LocalizeRingForHomalg
+            description: A Package for Localization of Polynomial Rings
             docu_only: true
           - name: MatricesForHomalg
+            description: Matrices for the homalg project
             docu_only: true
           - name: Modules
+            description: A homalg based package for the Abelian category of finitely presented modules over computable rings
             docu_only: true
           - name: RingsForHomalg
+            description: Dictionaries of external rings
             docu_only: true
           - name: SCO
+            description: SCO - Simplicial Cohomology of Orbifolds
             docu_only: true
           - name: ToolsForHomalg
+            description: Special methods and knowledge propagation tools
             docu_only: true
         ci_ubuntu_additional_apt_packages:
           - texlive-science
