@@ -1,7 +1,7 @@
 ---
 - name: Create header
   blockinfile:
-    path: "{{ pkg_dir }}/index.md"
+    path: "{{ pkg_dir }}/website/_docs/{{ meta_package.name }}/index.md"
     block: |+
       
       | Build Status | Code Coverage |

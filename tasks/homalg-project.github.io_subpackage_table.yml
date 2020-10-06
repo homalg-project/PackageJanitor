@@ -43,6 +43,6 @@
 
 - name: Create subpackage table
   blockinfile:
-    path: "{{ pkg_dir }}/index.md"
+    path: "{{ pkg_dir }}/website/_docs/{{ meta_package.name }}/index.md"
     marker: "<!-- {mark} {{ meta_package.name }} SUBPACKAGES -->"
     block: "{{ lookup('template', 'templates/homalg-project.github.io_subpackage_table.j2') }}"
