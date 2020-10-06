@@ -38,7 +38,7 @@ AutoDoc( rec(
         ),
     ),
     scaffold := rec(
-        entities := [ "homalg", "CAP" ],
+        entities := [ "homalg", "CAP"{% if package.needed_other_repositories is defined and "QPA2" in package.needed_other_repositories %}, "QPA"{% endif %} ],
     ),
 ) );
 
