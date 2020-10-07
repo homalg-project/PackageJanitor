@@ -18,3 +18,7 @@
     src: .codecov.yml.j2
     dest: "{{ pkg_dir }}/{{ package.name }}/.codecov.yml"
 
+- name: release-gap-package
+  copy:
+    src: release-gap-package
+    dest: "{{ pkg_dir }}/{{ package.name }}/release-gap-package"
