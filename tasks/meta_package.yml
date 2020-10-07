@@ -57,6 +57,7 @@
   vars:
     package: "{{ meta_package_enriched }}"
     pdf_doc_packages: "{{ subpackages_enriched | selectattr('has_gh_pages', 'equalto', false) | list }}"
+    is_meta_package: true
 
 - name: Import subpackage
   include_tasks: tasks/package_common.yml

@@ -39,15 +39,17 @@ jobs:
         {%- endfor %}
           cp ./{{ package.name }}/.codecov.yml ./
           curl -s https://codecov.io/bash | bash
-        {%- if pdf_doc_packages|length > 0 %}
+          git config --global user.name "Bot"
+          git config --global user.email "empty"
           cd {{ package.name }}
           CUR_SHA=$(git rev-parse --verify HEAD)
+        {%- if pdf_doc_packages|length > 0 %}
           git worktree add branch_doc/ doc || (echo "There was an error. Make sure there is a branch named 'doc'. See https://github.com/homalg-project/PackageJanitor#error-there-was-an-error-make-sure-there-is-a-branch-named-doc"; exit 1)
         {%- for doc_package in pdf_doc_packages %}
           cp {% if meta_package is defined %}{{ doc_package.name }}/{% endif %}doc/manual.pdf branch_doc/{{ doc_package.name }}.pdf
           cd branch_doc
           git add {{ doc_package.name }}.pdf
-          git -c user.name='Doc Bot' -c user.email='empty' commit -m "Add {{ doc_package.name }}.pdf for $CUR_SHA" --allow-empty
+          git commit -m "Add {{ doc_package.name }}.pdf for $CUR_SHA" --allow-empty
           cd ..
         {%- endfor %}
           # push iff using gap-stable and if on master branch
@@ -55,5 +57,14 @@ jobs:
             git push https://${GITHUB_ACTOR}:{% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}@github.com/${GITHUB_REPOSITORY}.git doc:doc; \
           else \
             echo "Not pushing result."; \
-          fi; \
+          fi
+        {%- endif %}
+        {%- if ci_automated_release is defined and ci_automated_release %}
+          git worktree add gh-pages/ gh-pages || (echo "There was an error. Make sure there is a branch named 'gh-pages'. See https://github.com/homalg-project/PackageJanitor#error-there-was-an-error-make-sure-there-is-a-branch-named-gh-pages"; exit 1)
+          if [ "{% raw %}${{ matrix.image }}{% endraw %}" = "gapsystem/gap-docker" ] && [ "$CUR_SHA" = "$(git rev-parse origin/master)" ] && [ $(dirname "$GITHUB_REPOSITORY") = "homalg-project" ]; then \
+            git checkout master; \
+            ./make_dist.sh --token "{% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}"; \
+          else \
+            echo "Not making a release."; \
+          fi
         {%- endif %}

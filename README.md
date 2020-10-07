@@ -23,3 +23,16 @@
             - doc
    ```
    to disable CircleCI for the `doc` branch.
+2. #### Error: `There was an error. Make sure there is a branch named 'gh-pages'.`
+   If a package has an automated release process, the CI publishes the release via GitHub Pages and needs a branch named `gh-pages`.
+   You have to manually create this branch once.
+   If you have activated CircleCI for the repository, create the file `.circleci/config.yml` on the `gh-pages` branch with content
+   ```yaml
+   version: 2.0
+    jobs:
+      build:
+        branches:
+          ignore:
+            - gh-pages
+   ```
+   to disable CircleCI for the `gh-pages` branch.

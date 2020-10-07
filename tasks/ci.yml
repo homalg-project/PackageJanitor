@@ -22,3 +22,10 @@
   copy:
     src: release-gap-package
     dest: "{{ pkg_dir }}/{{ package.name }}/release-gap-package"
+    mode: a+x
+
+- name: make_dist.sh
+  template:
+    src: make_dist.sh.j2
+    dest: "{{ pkg_dir }}/{{ package.name }}/make_dist.sh"
+    mode: a+x
