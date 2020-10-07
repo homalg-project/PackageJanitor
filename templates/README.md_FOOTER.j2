@@ -1,9 +1,10 @@
 {% if is_meta_package %}
 ## Packages of [{{ meta_package.name }}](/../../):
-| Name | Documentation |
-| ---- | ------------- |
+| Name | Description | Documentation |
+| ---- | ----------- | ------------- |
 {% for doc_package in doc_packages -%}
 | [{{ doc_package.name }}]({{ doc_package.name }}) | {# -#}
+  {{ doc_package.description }} | {# -#}
   {%- if doc_package.has_gh_pages -%}
     [![HTML stable documentation][docs-{{ doc_package.name }}-img]][docs-{{ doc_package.name }}-url]
   {%- else -%}
