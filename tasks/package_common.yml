@@ -64,7 +64,6 @@
       {% else -%}
         ArchiveURL      := Concatenation( "https://github.com/homalg-project/{{ package.name }}/releases/download/v", ~.Version, "/{{ package.name }}-", ~.Version ),
       {% endif %}
-  when: not package.docu_only
 
 - name: PackageInfo.g PackageDoc.BookName
   lineinfile:
