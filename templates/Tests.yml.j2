@@ -60,8 +60,8 @@ jobs:
           fi
         {%- endif %}
         {%- if ci_automated_release is defined and ci_automated_release %}
-          git worktree add gh-pages/ gh-pages || (echo "There was an error. Make sure there is a branch named 'gh-pages'. See https://github.com/homalg-project/PackageJanitor#error-there-was-an-error-make-sure-there-is-a-branch-named-gh-pages"; exit 1)
           if [ "{% raw %}${{ matrix.image }}{% endraw %}" = "gapsystem/gap-docker" ] && [ "$CUR_SHA" = "$(git rev-parse origin/master)" ] && [ $(dirname "$GITHUB_REPOSITORY") = "homalg-project" ]; then \
+            git worktree add gh-pages/ gh-pages || (echo "There was an error. Make sure there is a branch named 'gh-pages'. See https://github.com/homalg-project/PackageJanitor#error-there-was-an-error-make-sure-there-is-a-branch-named-gh-pages"; exit 1); \
             git checkout master; \
             ./make_dist.sh --token "{% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}"; \
           else \
