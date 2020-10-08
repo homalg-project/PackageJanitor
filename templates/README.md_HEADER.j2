@@ -14,8 +14,10 @@
 ### Dependencies
 
 To obtain current versions of all dependencies, clone the following repositories:
+|   | Repository | URL |
+| - | ---------- | --- |
 {% for repo in package.needed_other_repositories %}
-{{ loop.index }}. **{{ repo }}**: https://github.com/homalg-project/{{ repo }}
+| {{ loop.index }}. | **{{ repo }}** | https://github.com/homalg-project/{{ repo }} |
 {% endfor %}
 
 ---
