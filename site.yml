@@ -12,6 +12,10 @@
           description: "Construct an equivalent lazy category out of a CAP category"
           doc_additional_latex_preamble: |
             \usepackage{mathtools}
+          needed_other_repositories:
+            - homalg_project
+            - CAP_project
+            - CategoryConstructor
           tests_additional_packages_to_load:
             - LinearAlgebraForCAP
             - GeneralizedMorphismsForCAP
@@ -19,10 +23,7 @@
             - Algebroids
           tests_only_basic: true
         ci_additional_repositories:
-          - homalg_project
-          - CAP_project
           - Toposes
-          - CategoryConstructor
           - SubcategoriesForCAP
           - Locales
           - ZariskiFrames
