@@ -59,7 +59,7 @@ jobs:
             echo "Not pushing result."; \
           fi
         {%- endif %}
-        {%- if ci_automated_release is defined and ci_automated_release %}
+        {%- if ci_automated_release is not defined or ci_automated_release %}
           if [ "{% raw %}${{ matrix.image }}{% endraw %}" = "gapsystem/gap-docker" ] && [ "$CUR_SHA" = "$(git rev-parse origin/master)" ] && [ $(dirname "$GITHUB_REPOSITORY") = "homalg-project" ]; then \
             git worktree add gh-pages/ gh-pages || (echo "There was an error. Make sure there is a branch named 'gh-pages'. See https://github.com/homalg-project/PackageJanitor#error-there-was-an-error-make-sure-there-is-a-branch-named-gh-pages"; exit 1); \
             git checkout master; \

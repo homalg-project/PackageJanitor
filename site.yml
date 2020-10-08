@@ -360,7 +360,6 @@
             - homalg_project
             - CAP_project
             - Toposes
-        ci_automated_release: true
 
 - name: FinGSetsForCAP
   hosts: FinGSetsForCAP
@@ -617,6 +616,7 @@
           - homalg_project
         ci_ubuntu_additional_apt_packages:
           - texlive-science
+        ci_automated_release: false
 
 - name: homalg_project
   hosts: homalg_project
@@ -679,7 +679,6 @@
           - texlive-science
           - time
           - python-pathlib
-        ci_automated_release: true
 
 - name: homalg-project.github.io
   hosts: homalg-project.github.io
