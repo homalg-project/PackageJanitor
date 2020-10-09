@@ -442,6 +442,7 @@
             has_HOMALG_IO: true
             tests_additional_packages_to_load:
               - IO_ForHomalg
+              - FreydCategoriesForCAP
             tests_only_basic: true
           - name: Bicomplexes
             description: Bicomplexes for Abelian categories
@@ -476,6 +477,7 @@
               \usetikzlibrary{shapes,arrows,matrix}
             tests_additional_packages_to_load:
               - ModulePresentations
+              - FreydCategoriesForCAP
             tests_only_basic: true
           - name: QuotientCategories
             description: Quotient categories of CAP categories by two-sided ideals
@@ -486,6 +488,11 @@
             description: Stable categories of additive categories
             tests_additional_packages_to_load:
               - ModulePresentations
+            tests_only_basic: true
+          - name: ToolsForHigherHomologicalAlgebra
+            description: Tools for the Higher Homological Algebra project
+            tests_additional_packages_to_load:
+              - FreydCategoriesForCAP
             tests_only_basic: true
           - name: TriangulatedCategories
             description: Framework for triangulated categories
