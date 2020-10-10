@@ -1,4 +1,6 @@
-# {{ package.name|replace("_", " ") }} – {{ package.description }}
+# {{ package.name|replace("_", " ") }}
+
+### {{ package.description }}
 
 {% if is_meta_package %}
 | Build Status | Code Coverage |
@@ -10,17 +12,3 @@
 | [![{% if package.has_gh_pages %}HTML stable documentation{% else %}PDF development documentation{% endif %}][docs-img]][docs-url] | [![Build Status][tests-img]][tests-url] | [![Code Coverage][codecov-img]][codecov-url] |
 {% endif %}
 
-{% if package.needed_other_repositories is defined %}
-### Dependencies
-
-To obtain current versions of all dependencies, clone the following repositories:
-
-|    | Repository | URL |
-|--- | ---------- | --- |
-{% for repo in package.needed_other_repositories %}
-| {{ loop.index }}. | **{{ repo }}** | https://github.com/homalg-project/{{ repo }} |
-{% endfor %}
-
----
-
-{% endif %}
