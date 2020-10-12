@@ -129,14 +129,14 @@
           description: "Construct an equivalent wrapper category out of a CAP category"
           doc_additional_latex_preamble: |
             \usepackage{mathtools}
+          needed_other_repositories:
+            - homalg_project
+            - CAP_project
+            - CategoryConstructor
           tests_additional_packages_to_load:
             - LinearAlgebraForCAP
             - GeneralizedMorphismsForCAP
           tests_only_basic: true
-        ci_additional_packages_to_clone:
-          - homalg_project
-          - CAP_project
-          - CategoryConstructor
         ci_ubuntu_additional_apt_packages:
           - texlive-fonts-extra
 
@@ -416,10 +416,11 @@
           has_HOMALG_IO: true
           doc_additional_latex_preamble: |
             \usepackage{mathtools}
+          needed_other_repositories:
+            - homalg_project
+            - CAP_project
           tests_only_basic: true
-        ci_additional_packages_to_clone:
-          - homalg_project
-          - CAP_project
+        ci_additional_repositories:
           - WrapperCategories
         ci_additional_packages_to_test:
           - WrapperCategories
