@@ -1,4 +1,30 @@
 ---
+- name: CategoriesWithAmbientObjects
+  hosts: CategoriesWithAmbientObjects
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
+    - import_tasks: tasks/package.yml
+      vars:
+        package:
+          name: CategoriesWithAmbientObjects
+          description: "Categories with objects having ambient objects"
+          has_HOMALG_IO: true
+          doc_additional_latex_preamble: |
+            \usepackage{mathtools}
+          needed_other_repositories:
+            - homalg_project
+            - CAP_project
+          tests_additional_packages_to_load:
+            - ModulePresentationsForCAP
+            - HomologicalAlgebraForCAP
+            - RingsForHomalg
+            - IO_ForHomalg
+          tests_only_basic: true
+        ci_ubuntu_additional_apt_packages:
+          - texlive-fonts-extra
+
 - name: LazyCategories
   hosts: LazyCategories
   connection: local
