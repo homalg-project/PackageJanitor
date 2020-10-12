@@ -1,4 +1,58 @@
 ---
+- name: IntrinsicModules
+  hosts: IntrinsicModules
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
+    - import_tasks: tasks/package.yml
+      vars:
+        package:
+          name: IntrinsicModules
+          description: "Finitely presented modules over computable rings allowing multiple presentations and the notion of elements"
+          has_HOMALG_IO: true
+          doc_additional_latex_preamble: |
+            \usepackage{mathtools}
+          needed_other_repositories:
+            - homalg_project
+            - CAP_project
+            - CategoryConstructor
+            - CategoriesWithAmbientObjects
+            - IntrinsicCategories
+          tests_additional_packages_to_load:
+            - RingsForHomalg
+            - IO_ForHomalg
+          tests_only_basic: true
+        ci_ubuntu_additional_apt_packages:
+          - texlive-fonts-extra
+
+- name: IntrinsicCategories
+  hosts: IntrinsicCategories
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
+    - import_tasks: tasks/package.yml
+      vars:
+        package:
+          name: IntrinsicCategories
+          description: "Intrinsic categories for CAP"
+          has_HOMALG_IO: true
+          doc_additional_latex_preamble: |
+            \usepackage{mathtools}
+          needed_other_repositories:
+            - homalg_project
+            - CAP_project
+            - CategoryConstructor
+          tests_additional_packages_to_load:
+            - ModulePresentationsForCAP
+            - HomologicalAlgebraForCAP
+            - RingsForHomalg
+            - IO_ForHomalg
+          tests_only_basic: true
+        ci_ubuntu_additional_apt_packages:
+          - texlive-fonts-extra
+
 - name: CategoriesWithAmbientObjects
   hosts: CategoriesWithAmbientObjects
   connection: local
