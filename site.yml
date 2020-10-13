@@ -707,6 +707,28 @@
           - texlive-science
         ci_automated_release: false
 
+- name: LoopIntegrals
+  hosts: LoopIntegrals
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
+    - import_tasks: tasks/package.yml
+      vars:
+        package:
+          name: LoopIntegrals
+          description: "Compute master integrals using commutative and noncommutative methods from computational algebraic geometry"
+          has_HOMALG_IO: true
+          doc_additional_latex_preamble: |
+            \usepackage{mathtools}
+          needed_other_repositories:
+            - homalg_project
+          tests_additional_packages_to_load:
+            - IO_ForHomalg
+          tests_only_basic: true
+        ci_ubuntu_additional_apt_packages:
+          - texlive-fonts-extra
+
 - name: homalg_project
   hosts: homalg_project
   connection: local
