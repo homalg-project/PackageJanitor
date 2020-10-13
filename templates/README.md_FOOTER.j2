@@ -1,5 +1,20 @@
+---
+
+{% if package.needed_other_repositories is defined %}
+### Dependencies
+
+To obtain current versions of all dependencies, `git clone` (or `git pull` to update) the following repositories:
+
+|    | Repository | URL |
+|--- | ---------- | --- |
+{% for repo in package.needed_other_repositories %}
+| {{ loop.index }}. | **{{ repo }}** | https://github.com/homalg-project/{{ repo }} |
+{% endfor %}
+
+{% endif %}
+
 {% if is_meta_package %}
-## Packages of [{{ meta_package.name }}](/../../):
+### Packages of [{{ meta_package.name }}](/../../):
 | Name | Description | Documentation |
 | ---- | ----------- | ------------- |
 {% for doc_package in doc_packages -%}
