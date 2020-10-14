@@ -224,16 +224,16 @@
             \DeclareUnicodeCharacter{222A}{\ensuremath{\cup}}
             \DeclareUnicodeCharacter{22C3}{\ensuremath{\bigcup}}
             \DeclareUnicodeCharacter{2229}{\ensuremath{\cap}}
+          needed_other_repositories:
+            - homalg_project
+            - CAP_project
+            - Toposes
+            - CategoryConstructor
+            - Locales
+            - FinSetsForCAP
+            - QPA2
+            - HigherHomologicalAlgebra
           tests_only_basic: true
-        ci_additional_repositories:
-          - homalg_project
-          - CAP_project
-          - Toposes
-          - CategoryConstructor
-          - Locales
-          - FinSetsForCAP
-          - HigherHomologicalAlgebra
-          - QPA2
         ci_ubuntu_additional_apt_packages:
           - texlive-fonts-extra
 
