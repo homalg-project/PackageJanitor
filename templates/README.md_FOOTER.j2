@@ -20,34 +20,25 @@ To obtain current versions of all dependencies, `git clone` (or `git pull` to up
 {% for doc_package in doc_packages -%}
 | [{{ doc_package.name }}]({{ doc_package.name }}) | {# -#}
   {{ doc_package.description }} | {# -#}
-  {%- if doc_package.has_gh_pages -%}
-    [![HTML stable documentation][docs-{{ doc_package.name }}-img]][docs-{{ doc_package.name }}-url]
-  {%- else -%}
-    [![PDF development documentation][docs-{{ doc_package.name }}-img]][docs-{{ doc_package.name }}-url]
-  {%- endif %} |
+  [![HTML stable documentation][html-{{ doc_package.name }}-img]][html-{{ doc_package.name }}-url] [![PDF stable documentation][pdf-{{ doc_package.name }}-img]][pdf-{{ doc_package.name }}-url] |
 {% endfor %}
 
 {% for doc_package in doc_packages -%}
-{% if doc_package.has_gh_pages -%}
-[docs-{{ doc_package.name }}-img]: https://img.shields.io/badge/HTML-stable-blue.svg
-[docs-{{ doc_package.name }}-url]: https://homalg-project.github.io/{{ doc_package.path }}/doc/chap0_mj.html
+[html-{{ doc_package.name }}-img]: https://img.shields.io/badge/HTML-stable-blue.svg
+[html-{{ doc_package.name }}-url]: https://homalg-project.github.io/{{ doc_package.path }}/doc/chap0_mj.html
 
-{% else -%}
-[docs-{{ doc_package.name }}-img]: https://img.shields.io/badge/PDF-dev-blue.svg
-[docs-{{ doc_package.name }}-url]: /../../raw/doc/{{ doc_package.name }}.pdf
+[pdf-{{ doc_package.name }}-img]: https://img.shields.io/badge/PDF-stable-blue.svg
+[pdf-{{ doc_package.name }}-url]: https://homalg-project.github.io/{{ doc_package.path }}/download_pdf.html
 
-{% endif -%}
+
 {% endfor %}
 {% else %}
-{% if package.has_gh_pages -%}
-[docs-img]: https://img.shields.io/badge/HTML-stable-blue.svg
-[docs-url]: https://homalg-project.github.io/{{ package.path }}/doc/chap0_mj.html
+[html-img]: https://img.shields.io/badge/HTML-stable-blue.svg
+[html-url]: https://homalg-project.github.io/{{ package.path }}/doc/chap0_mj.html
 
-{% else -%}
-[docs-img]: https://img.shields.io/badge/PDF-dev-blue.svg
-[docs-url]: /../../raw/doc/{{ package.name }}.pdf
+[pdf-img]: https://img.shields.io/badge/PDF-stable-blue.svg
+[pdf-url]: https://homalg-project.github.io/{{ package.path }}/download_pdf.html
 
-{% endif -%}
 {% endif %}
 {% if meta_package is defined -%}
 [tests-img]: https://github.com/homalg-project/{{ meta_package.name }}/workflows/Tests/badge.svg?branch=master
@@ -61,4 +52,10 @@ To obtain current versions of all dependencies, `git clone` (or `git pull` to up
 
 [codecov-img]: https://codecov.io/gh/homalg-project/{{ package.name }}/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/homalg-project/{{ package.name }}
-{% endif -%}
+{% endif %}
+
+[version-img]: https://img.shields.io/endpoint?url=https://homalg-project.github.io/{{ package.path }}/badge_version.json
+[version-url]: https://homalg-project.github.io/{{ package.path }}/view_release.html
+
+[date-img]: https://img.shields.io/endpoint?url=https://homalg-project.github.io/{{ package.path }}/badge_date.json
+[date-url]: https://homalg-project.github.io/{{ package.path }}/view_release.html

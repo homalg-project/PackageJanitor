@@ -7,8 +7,8 @@
 | ------------ | ------------- |
 | [![Build Status][tests-img]][tests-url] | [![Code Coverage][codecov-img]][codecov-url] |
 {% else %}
-| Documentation | Build Status{% if meta_package is defined %} of [{{ meta_package.name }}](/../../){% endif %} | Code Coverage{% if meta_package is defined %} of [{{ meta_package.name }}](/../../){% endif %} |
-| ------------- | ------------ | ------------- |
-| [![{% if package.has_gh_pages %}HTML stable documentation{% else %}PDF development documentation{% endif %}][docs-img]][docs-url] | [![Build Status][tests-img]][tests-url] | [![Code Coverage][codecov-img]][codecov-url] |
+| Documentation | Build Status{% if meta_package is defined %} of [{{ meta_package.name }}](/../../){% endif %} | Code Coverage{% if meta_package is defined %} of [{{ meta_package.name }}](/../../){% endif %} | Latest Release |
+| ------------- | ------------ | ------------- | -------------- |
+| [![HTML stable documentation][html-img]][html-url] [![PDF stable documentation][pdf-img]][pdf-url] | [![Build Status][tests-img]][tests-url] | [![Code Coverage][codecov-img]][codecov-url] | [![version][version-img]][version-url] [![date][date-img]][date-url] |
 {% endif %}
 
