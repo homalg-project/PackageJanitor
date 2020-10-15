@@ -35,9 +35,10 @@
   vars:
     doc_packages: "{{ subpackages_enriched }}"
 
-- import_tasks: tasks/GitHubPages.yml
+- import_tasks: tasks/gh-pages.yml
   vars:
     package: "{{ meta_package_enriched }}"
+    is_meta_package: true
 
 - name: Initialize ci_additional_repositories_enriched
   set_fact:
@@ -46,7 +47,7 @@
 - name: Prepend needed_other_repositories of subpackages to ci_additional_repositories_enriched
   set_fact:
     ci_additional_repositories_enriched: "{{ (item.needed_other_repositories | default([])) + ci_additional_repositories_enriched }}"
-  loop: "{{ subpackages }}"
+  loop: "{{ subpackages_enriched }}"
   no_log: true
 
 - name: Remove duplicates from ci_additional_repositories_enriched

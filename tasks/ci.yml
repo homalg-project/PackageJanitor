@@ -3,7 +3,6 @@
   file:
     path: "{{ pkg_dir }}/{{ package.name }}/.github/workflows/"
     state: directory
-    recurse: yes
 
 - name: Tests.yml
   template:

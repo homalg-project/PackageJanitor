@@ -1,0 +1,20 @@
+---
+- name: Use GFM for markdown
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package.path }}/gh-pages/_config.yml"
+    regexp: '^markdown:'
+    line: 'markdown: GFM'
+
+- name: update.g
+  copy:
+    src: update.g
+    dest: "{{ pkg_dir }}/{{ package.path }}/gh-pages/update.g"
+
+- include_tasks: tasks/gh-pages_subpackage.yml
+  vars:
+    package: "{{ item }}"
+  loop: "{{ subpackages_enriched }}"
+  when: is_meta_package
+
+- include_tasks: tasks/gh-pages_package.yml
+  when: not is_meta_package

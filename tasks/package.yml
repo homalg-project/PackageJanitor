@@ -17,9 +17,10 @@
     ci_additional_repositories_enriched: "{{ (package.needed_other_repositories | default([])) + (ci_additional_repositories | default([])) }}"
     is_meta_package: false
 
-- import_tasks: tasks/GitHubPages.yml
+- import_tasks: tasks/gh-pages.yml
   vars:
     package: "{{ package_enriched }}"
+    is_meta_package: false
 
 - import_tasks: tasks/package_common.yml
   vars:

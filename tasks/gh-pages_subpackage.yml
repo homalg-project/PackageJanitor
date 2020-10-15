@@ -1,0 +1,12 @@
+---
+- name: Create gh-pages dir for subpackage
+  file:
+    dest: "{{ pkg_dir }}/{{ meta_package.name }}/gh-pages/{{ package.name }}/_data/"
+    state: directory
+
+- name: Create symlink for subpackage
+  file:
+    src: "../../_data/{{ package.name }}.yml"
+    dest: "{{ pkg_dir }}/{{ meta_package.name }}/gh-pages/{{ package.name }}/_data/package.yml"
+    state: link
+    force: yes
