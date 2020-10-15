@@ -10,3 +10,35 @@
     dest: "{{ pkg_dir }}/{{ meta_package.name }}/gh-pages/{{ package.name }}/_data/package.yml"
     state: link
     force: yes
+
+- name: download_pdf.html
+  template:
+    src: redirect.html.j2
+    dest: "{{ pkg_dir }}/{{ meta_package.name }}/gh-pages/{{ package.name }}/download_pdf.html"
+  vars:
+    url: "{% raw %}{{{% endraw %} site.data.{{ package.name }}.pdf {% raw %}}}{% endraw %}"
+
+- name: view_release.html
+  template:
+    src: redirect.html.j2
+    dest: "{{ pkg_dir }}/{{ meta_package.name }}/gh-pages/{{ package.name }}/view_release.html"
+  vars:
+    url: "https://github.com/homalg-project/{{ meta_package.name }}/releases/tag/{{ package.name }}-{% raw %}{{{% endraw %} site.data.{{ package.name }}.version {% raw %}}}{% endraw %}"
+
+- name: badge_version.json
+  template:
+    src: badge.json.j2
+    dest: "{{ pkg_dir }}/{{ meta_package.name }}/gh-pages/{{ package.name }}/badge_version.json"
+  vars:
+    label: "version"
+    message: "{% raw %}{{{% endraw %} site.data.{{ package.name }}.version {% raw %}}}{% endraw %}"
+    color: "orange"
+
+- name: badge_date.json
+  template:
+    src: badge.json.j2
+    dest: "{{ pkg_dir }}/{{ meta_package.name }}/gh-pages/{{ package.name }}/badge_date.json"
+  vars:
+    label: "released on"
+    message: "{% raw %}{{{% endraw %} site.data.{{ package.name }}.date {% raw %}}}{% endraw %}"
+    color: "orange"
