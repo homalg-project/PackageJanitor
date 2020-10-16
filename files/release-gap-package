@@ -408,6 +408,13 @@ git archive --prefix="$BASENAME/" "$TAG" . | tar xf - -C "$TMP_DIR"
 # Build the package documentation, run autoconf, etc.
 cd "$TMP_DIR/$BASENAME"
 
+# adjust date
+# Note that we cannot use sed's `-i` option for in-place editing, as
+# that is a non-portable extension of POSIX, which works differently in
+# BSD and GNU make.
+sed "s;Date := .*;Date := \"$(date +%d/%m/%Y)\",;" PackageInfo.g > PackageInfo.g.bak
+mv PackageInfo.g.bak PackageInfo.g
+
 notice "Removing unnecessary files"
 rm -rf .github .circleci
 rm -f .git* .hg* .cvs*
