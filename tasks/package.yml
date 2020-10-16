@@ -1,19 +1,11 @@
 ---
-- name: Check if GitHub Pages are available for this project
-  uri:
-    url: https://homalg-project.github.io/{{ package.name }}/PackageInfo.g
-  register: gh_pages_response
-  failed_when: gh_pages_response.status is not defined
-  check_mode: no
-
 - name: Set package_enriched
   set_fact:
-    package_enriched: "{{ package | combine( { 'path': package.name, 'has_gh_pages': gh_pages_response.status == 200, 'docu_only': package.docu_only|default(false) } ) }}"
+    package_enriched: "{{ package | combine( { 'path': package.name, 'docu_only': package.docu_only|default(false) } ) }}"
 
 - import_tasks: tasks/ci.yml
   vars:
     package: "{{ package_enriched }}"
-    pdf_doc_packages: "{{ [] if gh_pages_response.status == 200 else [ package ] }}"
     ci_additional_repositories_enriched: "{{ (package.needed_other_repositories | default([])) + (ci_additional_repositories | default([])) }}"
     is_meta_package: false
 

@@ -44,21 +44,9 @@
       {% endif %}
       ),
       IssueTrackerURL := Concatenation( ~.SourceRepository.URL, "/issues" ),
-      {% if package.has_gh_pages %}
       PackageWWWHome  := "https://homalg-project.github.io/{{ package.path }}",
       PackageInfoURL  := "https://homalg-project.github.io/{{ package.path }}/PackageInfo.g",
       README_URL      := "https://homalg-project.github.io/{{ package.path }}/README.md",
-      {% else %}
-      {% if meta_package is defined %}
-      PackageWWWHome  := "https://github.com/homalg-project/{{ meta_package.name }}/tree/master/{{ package.name }}",
-      PackageInfoURL  := "https://raw.githubusercontent.com/homalg-project/{{ meta_package.name }}/master/{{ package.name }}/PackageInfo.g",
-      README_URL      := "https://raw.githubusercontent.com/homalg-project/{{ meta_package.name }}/master/{{ package.name }}/README.md",
-      {% else %}
-      PackageWWWHome  := "https://github.com/homalg-project/{{ package.name }}",
-      PackageInfoURL  := "https://raw.githubusercontent.com/homalg-project/{{ package.name }}/master/PackageInfo.g",
-      README_URL      := "https://raw.githubusercontent.com/homalg-project/{{ package.name }}/master/README.md",
-      {% endif %}
-      {% endif %}
       {% if meta_package is defined -%}
         ArchiveURL      := Concatenation( "https://github.com/homalg-project/{{ meta_package.name }}/releases/download/{{ package.name }}-", ~.Version, "/{{ package.name }}-", ~.Version ),
       {% else -%}
