@@ -6,7 +6,7 @@
 - name: PackageInfo.g PackageName
   lineinfile:
     path: "{{ pkg_dir }}/{{ package.path }}/PackageInfo.g"
-    regexp: "PackageInfo :="
+    regexp: "PackageName :="
     line: 'PackageName := "{{ package.name }}",'
 
 - name: PackageInfo.g Subtitle
