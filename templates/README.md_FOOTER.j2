@@ -1,6 +1,6 @@
+{% if package.needed_other_repositories is defined %}
 ---
 
-{% if package.needed_other_repositories is defined %}
 ### Dependencies
 
 To obtain current versions of all dependencies, `git clone` (or `git pull` to update) the following repositories:
@@ -12,7 +12,6 @@ To obtain current versions of all dependencies, `git clone` (or `git pull` to up
 {% endfor %}
 
 {% endif %}
-
 {% if is_meta_package %}
 ### Packages of [{{ meta_package.name }}](/../../):
 | Name | Description | Documentation |
@@ -39,6 +38,12 @@ To obtain current versions of all dependencies, `git clone` (or `git pull` to up
 [pdf-img]: https://img.shields.io/badge/PDF-stable-blue.svg
 [pdf-url]: https://homalg-project.github.io/{{ package.path }}/download_pdf.html
 
+[version-img]: https://img.shields.io/endpoint?url=https://homalg-project.github.io/{{ package.path }}/badge_version.json
+[version-url]: https://homalg-project.github.io/{{ package.path }}/view_release.html
+
+[date-img]: https://img.shields.io/endpoint?url=https://homalg-project.github.io/{{ package.path }}/badge_date.json
+[date-url]: https://homalg-project.github.io/{{ package.path }}/view_release.html
+
 {% endif %}
 {% if meta_package is defined -%}
 [tests-img]: https://github.com/homalg-project/{{ meta_package.name }}/workflows/Tests/badge.svg?branch=master
@@ -53,9 +58,3 @@ To obtain current versions of all dependencies, `git clone` (or `git pull` to up
 [codecov-img]: https://codecov.io/gh/homalg-project/{{ package.name }}/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/homalg-project/{{ package.name }}
 {% endif %}
-
-[version-img]: https://img.shields.io/endpoint?url=https://homalg-project.github.io/{{ package.path }}/badge_version.json
-[version-url]: https://homalg-project.github.io/{{ package.path }}/view_release.html
-
-[date-img]: https://img.shields.io/endpoint?url=https://homalg-project.github.io/{{ package.path }}/badge_date.json
-[date-url]: https://homalg-project.github.io/{{ package.path }}/view_release.html
