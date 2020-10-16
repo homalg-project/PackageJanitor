@@ -21,14 +21,12 @@
     regexp: "License :="
     line: 'License := "GPL-2.0-or-later",'
     insertafter: "Date :="
-  when: not package.docu_only
 
 - name: PackageInfo.g Date
   lineinfile:
     path: "{{ pkg_dir }}/{{ package.path }}/PackageInfo.g"
     regexp: "Date :="
     line: 'Date := Concatenation( "01/", ~.Version{[ 6, 7 ]}, "/", ~.Version{[ 1 .. 4 ]} ),'
-  when: not package.docu_only
 
 - name: PackageInfo.g URLs
   blockinfile:
@@ -58,14 +56,12 @@
     path: "{{ pkg_dir }}/{{ package.path }}/PackageInfo.g"
     regexp: "ArchiveFormats :="
     line: 'ArchiveFormats := ".tar.gz .zip",'
-  when: not package.docu_only
 
 - name: PackageInfo.g PackageDoc.BookName
   lineinfile:
     path: "{{ pkg_dir }}/{{ package.path }}/PackageInfo.g"
     regexp: "^  BookName  := "
     line: '  BookName  := "{{ package.name }}",'
-  when: not package.docu_only
 
 - name: PackageInfo.g PackageDoc.LongTitle
   lineinfile:
