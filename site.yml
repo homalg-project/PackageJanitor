@@ -705,7 +705,6 @@
           - homalg_project
         ci_ubuntu_additional_apt_packages:
           - texlive-science
-        ci_automated_release: false
 
 - name: LoopIntegrals
   hosts: LoopIntegrals
