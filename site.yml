@@ -728,6 +728,28 @@
         ci_ubuntu_additional_apt_packages:
           - texlive-fonts-extra
 
+- name: LessGenerators
+  hosts: LessGenerators
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
+    - import_tasks: tasks/package.yml
+      vars:
+        package:
+          name: LessGenerators
+          description: "Find smaller generating sets for modules"
+          has_HOMALG_IO: true
+          doc_additional_latex_preamble: |
+            \usepackage{mathtools}
+          needed_other_repositories:
+            - homalg_project
+          tests_additional_packages_to_load:
+            - IO_ForHomalg
+          tests_only_basic: true
+        ci_ubuntu_additional_apt_packages:
+          - texlive-fonts-extra
+
 - name: homalg_project
   hosts: homalg_project
   connection: local
