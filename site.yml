@@ -230,9 +230,6 @@
             - Toposes
             - CategoryConstructor
             - Locales
-            - FinSetsForCAP
-            - QPA2
-            - HigherHomologicalAlgebra
           tests_only_basic: true
         ci_ubuntu_additional_apt_packages:
           - texlive-fonts-extra
