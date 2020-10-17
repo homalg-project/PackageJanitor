@@ -337,18 +337,18 @@
           description: "Representations and cohomology of finite categories"
           doc_additional_latex_preamble: |
             \usepackage{mathtools}
+          needed_other_repositories:
+            - homalg_project
+            - CAP_project
+            - CategoryConstructor
+            - HigherHomologicalAlgebra
+            - QPA2
+            - Algebroids
+            - FunctorCategories
+            - Toposes
+            - FinSetsForCAP
+            - SubcategoriesForCAP
           tests_only_basic: true
-        ci_additional_repositories:
-          - homalg_project
-          - CAP_project
-          - CategoryConstructor
-          - HigherHomologicalAlgebra
-          - QPA2
-          - Algebroids
-          - Toposes
-          - FinSetsForCAP
-          - FunctorCategories
-          - SubcategoriesForCAP
         ci_ubuntu_additional_apt_packages:
           - texlive-fonts-extra
 
