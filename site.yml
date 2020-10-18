@@ -251,15 +251,17 @@
           has_HOMALG_IO: true
           doc_additional_latex_preamble: |
             \usepackage{mathtools}
+          needed_other_repositories:
+            - homalg_project
+            - CAP_project
+            - CategoryConstructor
+          tests_additional_packages_to_load:
+            - Locales
           tests_only_basic: true
         ci_additional_repositories:
-          - homalg_project
-          - CAP_project
-          - CategoryConstructor
           - Toposes
+          - Locales
           - FinSetsForCAP
-          - HigherHomologicalAlgebra
-          - QPA2
         ci_ubuntu_additional_apt_packages:
           - texlive-fonts-extra
 
