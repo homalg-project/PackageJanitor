@@ -306,15 +306,16 @@
         package:
           name: FunctorCategories
           description: "Categories of functors"
+          needed_other_repositories:
+            - homalg_project
+            - CAP_project
+            - CategoryConstructor
+            - HigherHomologicalAlgebra
+            - QPA2
+            - Algebroids
           doc_additional_latex_preamble: |
             \usepackage{mathtools}
         ci_additional_repositories:
-          - homalg_project
-          - CAP_project
-          - CategoryConstructor
-          - Algebroids
-          - HigherHomologicalAlgebra
-          - QPA2
           - Toposes
           - FinSetsForCAP
           - SubcategoriesForCAP
