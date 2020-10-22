@@ -277,14 +277,15 @@
           has_HOMALG_IO: true
           doc_additional_latex_preamble: |
             \usepackage{mathtools}
+          needed_other_repositories:
+            - homalg_project
+            - CAP_project
+            - HigherHomologicalAlgebra
+            - QPA2
           tests_only_basic: true
         ci_additional_repositories:
-          - homalg_project
-          - CAP_project
           - CategoryConstructor
           - FunctorCategories
-          - HigherHomologicalAlgebra
-          - QPA2
           - Toposes
           - FinSetsForCAP
           - SubcategoriesForCAP
