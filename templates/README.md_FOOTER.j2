@@ -5,10 +5,10 @@
 
 To obtain current versions of all dependencies, `git clone` (or `git pull` to update) the following repositories:
 
-|    | Repository | URL |
-|--- | ---------- | --- |
+|    | Repository | git URL |
+|--- | ---------- | ------- |
 {% for repo in package.needed_other_repositories %}
-| {{ loop.index }}. | **{{ repo }}** | https://github.com/homalg-project/{{ repo }} |
+| {{ loop.index }}. | [**{{ repo }}**](https://github.com/homalg-project/{{ repo }}#readme) | https://github.com/homalg-project/{{ repo }}.git |
 {% endfor %}
 
 {% endif %}
