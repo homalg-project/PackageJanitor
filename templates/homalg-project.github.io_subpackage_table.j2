@@ -12,7 +12,11 @@
   {%- else -%}
     Not available
   {%- endif %} | {# -#}
-  {{ package.status }} |
+  {%- if package.status == "deposited" -%}
+  [deposited][deposited-{{ package.name }}-url]
+  {%- else -%}
+  {{ package.status }}
+  {%- endif %} |
 {% endfor %}
 
 {% for package in packages_enriched %}
@@ -23,6 +27,10 @@
 {% elif package.has_pdf_docu %}
 [docs-{{ package.name }}-img]: https://img.shields.io/badge/PDF-dev-blue.svg
 [docs-{{ package.name }}-url]: https://raw.githubusercontent.com/homalg-project/{{ meta_package.name }}/doc/{{ package.name }}.pdf
+
+{% endif %}
+{% if package.status == "deposited" %}
+[deposited-{{ package.name }}-url]: https://www.gap-system.org/Packages/{{ package.name.lower() }}.html
 
 {% endif %}
 {% endfor %}

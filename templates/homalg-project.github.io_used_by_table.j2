@@ -14,7 +14,11 @@
   {%- endif %} | {# -#}
   [![Build Status][tests-{{ package.name }}-img]][tests-{{ package.name }}-url] | {# -#}
   [![Code Coverage][codecov-{{ package.name }}-img]][codecov-{{ package.name }}-url] | {# -#}
-  {{ package.status }} |
+  {%- if package.status == "deposited" -%}
+  [deposited][deposited-{{ package.name }}-url]
+  {%- else -%}
+  {{ package.status }}
+  {%- endif %} |
 {% endfor %}
 
 {% for package in packages_enriched %}
@@ -33,4 +37,8 @@
 [codecov-{{ package.name }}-img]: https://codecov.io/gh/homalg-project/{{ package.name }}/branch/master/graph/badge.svg
 [codecov-{{ package.name }}-url]: https://codecov.io/gh/homalg-project/{{ package.name }}
 
+{% if package.status == "deposited" %}
+[deposited-{{ package.name }}-url]: https://www.gap-system.org/Packages/{{ package.name.lower() }}.html
+
+{% endif %}
 {% endfor %}
