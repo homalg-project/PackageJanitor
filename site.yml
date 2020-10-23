@@ -153,10 +153,11 @@
           description: "Elementary toposes"
           doc_additional_latex_preamble: |
             \usepackage{mathtools}
+          needed_other_repositories:
+            - homalg_project
+            - CAP_project
           tests_only_basic: true
         ci_additional_repositories:
-          - homalg_project
-          - CAP_project
           - CategoryConstructor
           - SubcategoriesForCAP
           - Locales
