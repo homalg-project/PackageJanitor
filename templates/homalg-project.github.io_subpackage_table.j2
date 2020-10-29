@@ -5,13 +5,7 @@
 {% for package in packages_enriched %}
 | [{{ package.name }}](https://github.com/homalg-project/{{ meta_package.name }}/tree/master/{{ package.name }}) | {# -#}
   {{ package.description }} | {# -#}
-  {%- if package.has_html_docu -%}
-    [![HTML stable documentation][docs-{{ package.name }}-img]][docs-{{ package.name }}-url]
-  {%- elif package.has_pdf_docu -%}
-    [![PDF development documentation][docs-{{ package.name }}-img]][docs-{{ package.name }}-url]
-  {%- else -%}
-    Not available
-  {%- endif %} | {# -#}
+  [![HTML stable documentation][html-{{ package.name }}-img]][html-{{ package.name }}-url] [![PDF stable documentation][pdf-{{ package.name }}-img]][pdf-{{ package.name }}-url] | {# -#}
   {%- if package.status == "deposited" -%}
   [deposited][deposited-{{ package.name }}-url]
   {%- else -%}
@@ -20,17 +14,15 @@
 {% endfor %}
 
 {% for package in packages_enriched %}
-{% if package.has_html_docu %}
-[docs-{{ package.name }}-img]: https://img.shields.io/badge/HTML-stable-blue.svg
-[docs-{{ package.name }}-url]: https://homalg-project.github.io/{{ meta_package.name }}/{{ package.name }}/doc/chap0_mj.html
+[html-{{ package.name }}-img]: https://img.shields.io/badge/HTML-stable-blue.svg
+[html-{{ package.name }}-url]: https://homalg-project.github.io/{{ meta_package.name }}/{{ package.name }}/doc/chap0_mj.html
 
-{% elif package.has_pdf_docu %}
-[docs-{{ package.name }}-img]: https://img.shields.io/badge/PDF-dev-blue.svg
-[docs-{{ package.name }}-url]: https://raw.githubusercontent.com/homalg-project/{{ meta_package.name }}/doc/{{ package.name }}.pdf
+[pdf-{{ package.name }}-img]: https://img.shields.io/badge/PDF-stable-blue.svg
+[pdf-{{ package.name }}-url]: https://homalg-project.github.io/{{ meta_package.name }}/{{ package.name }}/download_pdf.html
 
-{% endif %}
 {% if package.status == "deposited" %}
 [deposited-{{ package.name }}-url]: https://www.gap-system.org/Packages/{{ package.name.lower() }}.html
 
 {% endif %}
+
 {% endfor %}
