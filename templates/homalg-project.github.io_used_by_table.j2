@@ -1,9 +1,9 @@
-## Packages based on [{{ meta_package.name }}](https://github.com/homalg-project/{{ meta_package.name }}):
+## Packages based on [{{ meta_package.name }}](https://homalg-project.github.io/prj/{{ meta_package.name }}):
 
 | Name | Description | Documentation | Build Status | Code Coverage | Status |
 | ---- | ----------- | ------------- | ------------ | ------------- | ------ |
 {% for package in packages_enriched %}
-| [{{ package.name }}](https://github.com/homalg-project/{{ package.name }}) | {# -#}
+| [{{ package.name }}](https://homalg-project.github.io/pkg/{{ package.name }}) | {# -#}
   {{ package.description }} | {# -#}
   {%- if package.has_html_docu -%}
     [![HTML stable documentation][docs-{{ package.name }}-img]][docs-{{ package.name }}-url]

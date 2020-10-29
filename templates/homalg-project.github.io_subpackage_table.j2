@@ -1,9 +1,9 @@
-## Packages of [{{ meta_package.name }}](https://github.com/homalg-project/{{ meta_package.name }}):
+## Packages of [{{ meta_package.name }}](https://homalg-project.github.io/prj/{{ meta_package.name }}):
 
 | Name | Description | Documentation | Status |
 | ---- | ----------- | ------------- | ------ |
 {% for package in packages_enriched %}
-| [{{ package.name }}](https://github.com/homalg-project/{{ meta_package.name }}/tree/master/{{ package.name }}) | {# -#}
+| [{{ package.name }}](https://homalg-project.github.io/pkg/{{ package.name }}) | {# -#}
   {{ package.description }} | {# -#}
   [![HTML stable documentation][html-{{ package.name }}-img]][html-{{ package.name }}-url] [![PDF stable documentation][pdf-{{ package.name }}-img]][pdf-{{ package.name }}-url] | {# -#}
   {%- if package.status == "deposited" -%}
