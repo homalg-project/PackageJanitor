@@ -46,3 +46,14 @@
     path: "{{ pkg_dir }}/website/_docs/{{ meta_package.name }}-based/index.md"
     marker: "<!-- {mark} {{ meta_package.name }} USED_BY -->"
     block: "{{ lookup('template', 'templates/homalg-project.github.io_used_by_table.j2') }}"
+
+- name: Create permalink
+  template:
+    src: homalg-project.github.io_permalink.j2
+    dest: "{{ pkg_dir }}/website/permalinks/pkg/{{ package.name }}.html"
+  vars:
+    path: "pkg/{{ package.name }}"
+    url: "https://github.com/homalg-project/{{ package.name }}#readme"
+  loop: "{{ packages_enriched }}"
+  loop_control:
+    loop_var: package

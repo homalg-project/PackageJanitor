@@ -1,0 +1,10 @@
+---
+- name: Create permalink
+  template:
+    src: homalg-project.github.io_permalink.j2
+    dest: "{{ pkg_dir }}/website/permalinks/nb/{{ name }}.html"
+  vars:
+    path: "nb/{{ name }}"
+  loop: "{{ names }}"
+  loop_control:
+    loop_var: name

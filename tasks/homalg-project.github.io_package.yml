@@ -28,3 +28,11 @@
   include_tasks: tasks/homalg-project.github.io_used_by_table.yml
   vars:
     packages: "{{ used_by }}"
+
+- name: Create permalink
+  template:
+    src: homalg-project.github.io_permalink.j2
+    dest: "{{ pkg_dir }}/website/permalinks/prj/{{ meta_package.name }}.html"
+  vars:
+    path: "prj/{{ meta_package.name }}"
+    url: "https://github.com/homalg-project/{{ meta_package.name }}#readme"
