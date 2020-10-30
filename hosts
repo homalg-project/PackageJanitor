@@ -17,6 +17,9 @@ CategoryConstructor
 FinSetsForCAP
 FinGSetsForCAP
 CAP_project
+ArangoDBInterface
+ParallelizedIterators
+MatroidGeneration
 LoopIntegrals
 PrimaryDecomposition
 LessGenerators

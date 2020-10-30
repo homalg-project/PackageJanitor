@@ -709,6 +709,74 @@
         ci_ubuntu_additional_apt_packages:
           - texlive-science
 
+- name: ArangoDBInterface
+  hosts: ArangoDBInterface
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
+    - import_tasks: tasks/package.yml
+      vars:
+        package:
+          name: ArangoDBInterface
+          description: "A GAP interface to ArangoDB"
+          has_HOMALG_IO: true
+          doc_additional_latex_preamble: |
+            \usepackage{mathtools}
+          needed_other_repositories:
+            - homalg_project
+          tests_additional_packages_to_load:
+            - IO_ForHomalg
+          tests_only_basic: true
+        ci_ubuntu_additional_apt_packages:
+          - texlive-fonts-extra
+
+- name: ParallelizedIterators
+  hosts: ParallelizedIterators
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
+    - import_tasks: tasks/package.yml
+      vars:
+        package:
+          name: ParallelizedIterators
+          description: "Parallely evaluate recursive iterators"
+          has_HOMALG_IO: true
+          doc_additional_latex_preamble: |
+            \usepackage{mathtools}
+          needed_other_repositories:
+            - homalg_project
+          tests_additional_packages_to_load:
+            - IO_ForHomalg
+          tests_only_basic: true
+        ci_ubuntu_additional_apt_packages:
+          - texlive-fonts-extra
+
+- name: MatroidGeneration
+  hosts: MatroidGeneration
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
+    - import_tasks: tasks/package.yml
+      vars:
+        package:
+          name: MatroidGeneration
+          description: "Generate low-rank matroids"
+          has_HOMALG_IO: true
+          doc_additional_latex_preamble: |
+            \usepackage{mathtools}
+          needed_other_repositories:
+            - homalg_project
+            - ArangoDBInterface
+            - ParallelizedIterators
+          tests_additional_packages_to_load:
+            - IO_ForHomalg
+          tests_only_basic: true
+        ci_ubuntu_additional_apt_packages:
+          - texlive-fonts-extra
+
 - name: LoopIntegrals
   hosts: LoopIntegrals
   connection: local
