@@ -919,6 +919,8 @@
               - name: ParallelizedIterators
               - name: PrimaryDecomposition
               - name: Sheaves
+        packages:
+          - name: PackageJanitor
         notebooks:
           - url: https://nbviewer.jupyter.org/github/homalg-project/capdays-2018/blob/gh-pages/materials/Abelian%20Categories.ipynb
             names:

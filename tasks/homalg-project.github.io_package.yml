@@ -1,0 +1,8 @@
+---
+- name: Create permalink
+  template:
+    src: homalg-project.github.io_permalink.j2
+    dest: "{{ pkg_dir }}/website/permalinks/pkg/{{ name }}.html"
+  vars:
+    path: "pkg/{{ name }}"
+    url: "https://github.com/homalg-project/{{ name }}"

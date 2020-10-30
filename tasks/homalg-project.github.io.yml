@@ -7,6 +7,12 @@
     used_by: "{{ item.used_by }}"
   loop: "{{ projects }}"
 
+- name: Import package
+  include_tasks: tasks/homalg-project.github.io_package.yml
+  vars:
+    name: "{{ item.name }}"
+  loop: "{{ packages }}"
+
 - name: Import notebook
   include_tasks: tasks/homalg-project.github.io_notebook.yml
   vars:
