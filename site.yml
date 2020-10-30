@@ -771,6 +771,7 @@
             - homalg_project
             - ArangoDBInterface
             - ParallelizedIterators
+            - alcove
           tests_additional_packages_to_load:
             - IO_ForHomalg
           tests_only_basic: true
