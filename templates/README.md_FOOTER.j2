@@ -23,25 +23,25 @@ To obtain current versions of all dependencies, `git clone` (or `git pull` to up
 {% endfor %}
 
 {% for doc_package in doc_packages -%}
-[html-{{ doc_package.name }}-img]: https://img.shields.io/badge/HTML-stable-blue.svg
+[html-{{ doc_package.name }}-img]: https://img.shields.io/badge/🔗%20HTML-stable-blue.svg
 [html-{{ doc_package.name }}-url]: https://homalg-project.github.io/{{ doc_package.path }}/doc/chap0_mj.html
 
-[pdf-{{ doc_package.name }}-img]: https://img.shields.io/badge/PDF-stable-blue.svg
+[pdf-{{ doc_package.name }}-img]: https://img.shields.io/badge/🔗%20PDF-stable-blue.svg
 [pdf-{{ doc_package.name }}-url]: https://homalg-project.github.io/{{ doc_package.path }}/download_pdf.html
 
 
 {% endfor %}
 {% else %}
-[html-img]: https://img.shields.io/badge/HTML-stable-blue.svg
+[html-img]: https://img.shields.io/badge/🔗%20HTML-stable-blue.svg
 [html-url]: https://homalg-project.github.io/{{ package.path }}/doc/chap0_mj.html
 
-[pdf-img]: https://img.shields.io/badge/PDF-stable-blue.svg
+[pdf-img]: https://img.shields.io/badge/🔗%20PDF-stable-blue.svg
 [pdf-url]: https://homalg-project.github.io/{{ package.path }}/download_pdf.html
 
-[version-img]: https://img.shields.io/endpoint?url=https://homalg-project.github.io/{{ package.path }}/badge_version.json
+[version-img]: https://img.shields.io/endpoint?url=https://homalg-project.github.io/{{ package.path }}/badge_version.json&label=🔗%20version&color=yellow
 [version-url]: https://homalg-project.github.io/{{ package.path }}/view_release.html
 
-[date-img]: https://img.shields.io/endpoint?url=https://homalg-project.github.io/{{ package.path }}/badge_date.json
+[date-img]: https://img.shields.io/endpoint?url=https://homalg-project.github.io/{{ package.path }}/badge_date.json&label=🔗%20released%20on&color=yellow
 [date-url]: https://homalg-project.github.io/{{ package.path }}/view_release.html
 
 {% endif %}
@@ -51,10 +51,21 @@ To obtain current versions of all dependencies, `git clone` (or `git pull` to up
 
 [codecov-img]: https://codecov.io/gh/homalg-project/{{ meta_package.name }}/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/homalg-project/{{ meta_package.name }}
+
+{% if is_meta_package %}
+[code-img]: https://img.shields.io/badge/-View%20code-blue?logo=github
+[code-url]: https://github.com/homalg-project/{{ meta_package.name }}#top
+{% else %}
+[code-img]: https://img.shields.io/badge/-View%20code-blue?logo=github
+[code-url]: https://github.com/homalg-project/{{ meta_package.name }}/tree/master/{{ package.name }}#top
+{% endif %}
 {% else %}
 [tests-img]: https://github.com/homalg-project/{{ package.name }}/workflows/Tests/badge.svg?branch=master
 [tests-url]: https://github.com/homalg-project/{{ package.name }}/actions?query=workflow%3ATests+branch%3Amaster
 
 [codecov-img]: https://codecov.io/gh/homalg-project/{{ package.name }}/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/homalg-project/{{ package.name }}
+
+[code-img]: https://img.shields.io/badge/-View%20code-blue?logo=github
+[code-url]: https://github.com/homalg-project/{{ package.name }}#top
 {% endif %}

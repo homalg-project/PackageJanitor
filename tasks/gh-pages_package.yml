@@ -27,6 +27,4 @@
     src: badge.json.j2
     dest: "{{ pkg_dir }}/{{ package.name }}/gh-pages/badge_date.json"
   vars:
-    label: "released on"
     message: "{% raw %}{{ site.data.package.date }}{% endraw %}"
-    color: "orange"
