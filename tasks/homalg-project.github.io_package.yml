@@ -5,4 +5,4 @@
     dest: "{{ pkg_dir }}/website/permalinks/pkg/{{ name }}.html"
   vars:
     path: "pkg/{{ name }}"
-    url: "https://github.com/homalg-project/{{ name }}"
+    url: "https://github.com/homalg-project/{{ name }}#readme"
