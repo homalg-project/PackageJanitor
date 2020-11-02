@@ -42,7 +42,7 @@
       {% endif %}
       ),
       IssueTrackerURL := Concatenation( ~.SourceRepository.URL, "/issues" ),
-      PackageWWWHome  := "https://homalg-project.github.io/{{ package.path }}",
+      PackageWWWHome  := "https://homalg-project.github.io/pkg/{{ package.name }}",
       PackageInfoURL  := "https://homalg-project.github.io/{{ package.path }}/PackageInfo.g",
       README_URL      := "https://homalg-project.github.io/{{ package.path }}/README.md",
       {% if meta_package is defined -%}
