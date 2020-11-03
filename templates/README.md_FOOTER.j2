@@ -17,7 +17,7 @@ To obtain current versions of all dependencies, `git clone` (or `git pull` to up
 | Name | Description | Documentation |
 | ---- | ----------- | ------------- |
 {% for doc_package in doc_packages -%}
-| [{{ doc_package.name }}]({{ doc_package.name }}) | {# -#}
+| [{{ doc_package.name }}]({{ doc_package.name }}#readme) | {# -#}
   {{ doc_package.description }} | {# -#}
   [![HTML stable documentation][html-{{ doc_package.name }}-img]][html-{{ doc_package.name }}-url] [![PDF stable documentation][pdf-{{ doc_package.name }}-img]][pdf-{{ doc_package.name }}-url] |
 {% endfor %}
