@@ -19,24 +19,14 @@
   loop_control:
     loop_var: package
 
-- name: Check if PDF docu is available
-  uri:
-    url: https://raw.githubusercontent.com/homalg-project/{{ package.name }}/doc/{{ package.name }}.pdf
-  register: PDF_responses
-  failed_when: PDF_responses.status is not defined
-  check_mode: no
-  loop: "{{ packages }}"
-  loop_control:
-    loop_var: package
-
 - name: Initialize packages_enriched
   set_fact:
     packages_enriched: "{{ [] }}"
 
 - name: Set packages_enriched
   set_fact:
-    packages_enriched: "{{ packages_enriched + [ zipped[0] | combine( { 'description': zipped[1].content | regex_search('Subtitle := \"[^\"]*') | replace('Subtitle := \"', ''), 'status': zipped[1].content | regex_search('\nStatus := \"[^\"]*') | replace('\nStatus := \"', ''), 'has_html_docu': zipped[2].status == 200, 'has_pdf_docu': zipped[3].status == 200 } ) ] }}"
-  loop: "{{ packages | zip(PackageInfo_responses.results, HTML_responses.results, PDF_responses.results) | list }}"
+    packages_enriched: "{{ packages_enriched + [ zipped[0] | combine( { 'description': zipped[1].content | regex_search('Subtitle := \"[^\"]*') | replace('Subtitle := \"', ''), 'status': zipped[1].content | regex_search('\nStatus := \"[^\"]*') | replace('\nStatus := \"', ''), 'has_docu': zipped[2].status == 200 } ) ] }}"
+  loop: "{{ packages | zip(PackageInfo_responses.results, HTML_responses.results) | list }}"
   loop_control:
     loop_var: zipped
   no_log: true
