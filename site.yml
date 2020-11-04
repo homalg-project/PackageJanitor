@@ -915,79 +915,73 @@
     - import_tasks: tasks/homalg-project.github.io.yml
       vars:
         projects:
-          - meta_package:
-              name: CAP_project
-              description: Categories, Algorithms, and Programming.
-            subpackages:
-              - name: CAP
-              - name: ActionsForCAP
-              - name: AttributeCategoryForCAP
-              - name: CompilerForCAP
-              - name: ComplexesAndFilteredObjectsForCAP
-              - name: DeductiveSystemForCAP
-              - name: FreydCategoriesForCAP
-              - name: GeneralizedMorphismsForCAP
-              - name: GradedModulePresentationsForCAP
-              - name: GroupRepresentationsForCAP
-              - name: HomologicalAlgebraForCAP
-              - name: InternalExteriorAlgebraForCAP
-              - name: LinearAlgebraForCAP
-              - name: ModulePresentationsForCAP
-              - name: ModulesOverLocalRingsForCAP
-              - name: MonoidalCategories
-              - name: ToricSheaves
+          - name: CAP_project
             used_by:
-              - name: Algebroids
-              - name: CategoryConstructor
-              - name: CategoriesWithAmbientObjects
-              - name: CatReps
-              - name: FinSetsForCAP
-              - name: FinGSetsForCAP
-              - name: FunctorCategories
-              - name: GradedCategories
-              - name: IntrinsicCategories
-              - name: IntrinsicModules
-              - name: InternalModules
-              - name: LazyCategories
-              - name: Locales
-              - name: QPA2
-              - name: SubcategoriesForCAP
-              - name: Toposes
-              - name: WrapperCategories
-              - name: ZariskiFrames
-          - meta_package:
-              name: homalg_project
-              description: The homalg project is a multi-author multi-package open source software project for constructive homological algebra.
-            subpackages:
-              - name: homalg
-              - name: 4ti2Interface
-              - name: ExamplesForHomalg
-              - name: Gauss
-              - name: GaussForHomalg
-              - name: GradedModules
-              - name: GradedRingForHomalg
-              - name: HomalgToCAS
-              - name: IO_ForHomalg
-              - name: LocalizeRingForHomalg
-              - name: MatricesForHomalg
-              - name: Modules
-              - name: RingsForHomalg
-              - name: SCO
-              - name: ToolsForHomalg
+              - path: CAP_project/CAP
+              - path:             Algebroids
+              - path: CAP_project/ActionsForCAP
+              - path: CAP_project/AttributeCategoryForCAP
+              - path:             CategoryConstructor
+              - path:             CategoriesWithAmbientObjects
+              - path:             CatReps
+              - path: CAP_project/CompilerForCAP
+              - path: CAP_project/ComplexesAndFilteredObjectsForCAP
+              - path: CAP_project/DeductiveSystemForCAP
+              - path:             FinSetsForCAP
+              - path:             FinGSetsForCAP
+              - path: CAP_project/FreydCategoriesForCAP
+              - path:             FunctorCategories
+              - path: CAP_project/GeneralizedMorphismsForCAP
+              - path:             GradedCategories
+              - path: CAP_project/GradedModulePresentationsForCAP
+              - path: CAP_project/GroupRepresentationsForCAP
+              - path: CAP_project/HomologicalAlgebraForCAP
+              - path: CAP_project/InternalExteriorAlgebraForCAP
+              - path:             InternalModules
+              - path:             IntrinsicCategories
+              - path:             IntrinsicModules
+              - path:             LazyCategories
+              - path: CAP_project/LinearAlgebraForCAP
+              - path:             Locales
+              - path: CAP_project/ModulePresentationsForCAP
+              - path: CAP_project/ModulesOverLocalRingsForCAP
+              - path: CAP_project/MonoidalCategories
+              - path:             QPA2
+              - path:             SubcategoriesForCAP
+              - path:             Toposes
+              - path: CAP_project/ToricSheaves
+              - path:             WrapperCategories
+              - path:             ZariskiFrames
+          - name: homalg_project
             used_by:
-              - name: OscarForHomalg
-              - name: alcove
-              - name: AlgebraicThomas
-              - name: ArangoDBInterface
-              - name: Blocks
-              - name: D-Modules
-              - name: LessGenerators
-              - name: LoopIntegrals
-              - name: MatroidGeneration
-              - name: NConvex
-              - name: ParallelizedIterators
-              - name: PrimaryDecomposition
-              - name: Sheaves
+              - path: homalg_project/homalg
+              - path: homalg_project/4ti2Interface
+              - path:                alcove
+              - path:                AlgebraicThomas
+              - path:                ArangoDBInterface
+              - path:                Blocks
+              - path:                D-Modules
+              - path: homalg_project/ExamplesForHomalg
+              - path: homalg_project/Gauss
+              - path: homalg_project/GaussForHomalg
+              - path: homalg_project/GradedModules
+              - path: homalg_project/GradedRingForHomalg
+              - path: homalg_project/HomalgToCAS
+              - path: homalg_project/IO_ForHomalg
+              - path:                LessGenerators
+              - path: homalg_project/LocalizeRingForHomalg
+              - path:                LoopIntegrals
+              - path: homalg_project/MatricesForHomalg
+              - path:                MatroidGeneration
+              - path: homalg_project/Modules
+              - path:                NConvex
+              - path:                OscarForHomalg
+              - path:                ParallelizedIterators
+              - path:                PrimaryDecomposition
+              - path: homalg_project/RingsForHomalg
+              - path: homalg_project/SCO
+              - path:                Sheaves
+              - path: homalg_project/ToolsForHomalg
         packages:
           - name: PackageJanitor
         notebooks:

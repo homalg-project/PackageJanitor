@@ -1,4 +1,4 @@
-## Packages based on [{{ meta_package.name }}](https://homalg-project.github.io/prj/{{ meta_package.name }}):
+## Packages part of or based on [{{ name }}](https://homalg-project.github.io/prj/{{ name }}):
 
 | Name | Description | Documentation | Build Status | Code Coverage | Status |
 | ---- | ----------- | ------------- | ------------ | ------------- | ------ |
@@ -22,17 +22,17 @@
 {% for package in packages_enriched %}
 {% if package.has_docu %}
 [html-{{ package.name }}-img]: https://img.shields.io/badge/HTML-stable-blue.svg
-[html-{{ package.name }}-url]: https://homalg-project.github.io/{{ package.name }}/doc/chap0_mj.html
+[html-{{ package.name }}-url]: https://homalg-project.github.io/{{ package.path }}/doc/chap0_mj.html
 
 [pdf-{{ package.name }}-img]: https://img.shields.io/badge/PDF-stable-blue.svg
-[pdf-{{ package.name }}-url]: https://homalg-project.github.io/{{ package.name }}/download_pdf.html
+[pdf-{{ package.name }}-url]: https://homalg-project.github.io/{{ package.path }}/download_pdf.html
 
 {% endif %}
-[tests-{{ package.name }}-img]: https://github.com/homalg-project/{{ package.name }}/workflows/Tests/badge.svg?branch=master
-[tests-{{ package.name }}-url]: https://github.com/homalg-project/{{ package.name }}/actions?query=workflow%3ATests+branch%3Amaster
+[tests-{{ package.name }}-img]: https://github.com/homalg-project/{{ package.path.split("/")[0] }}/workflows/Tests/badge.svg?branch=master
+[tests-{{ package.name }}-url]: https://github.com/homalg-project/{{ package.path.split("/")[0] }}/actions?query=workflow%3ATests+branch%3Amaster
 
-[codecov-{{ package.name }}-img]: https://codecov.io/gh/homalg-project/{{ package.name }}/branch/master/graph/badge.svg
-[codecov-{{ package.name }}-url]: https://codecov.io/gh/homalg-project/{{ package.name }}
+[codecov-{{ package.name }}-img]: https://codecov.io/gh/homalg-project/{{ package.path.split("/")[0] }}/branch/master/graph/badge.svg
+[codecov-{{ package.name }}-url]: https://codecov.io/gh/homalg-project/{{ package.path.split("/")[0] }}
 
 {% if package.status == "deposited" %}
 [deposited-{{ package.name }}-url]: https://www.gap-system.org/Packages/{{ package.name.lower() }}.html

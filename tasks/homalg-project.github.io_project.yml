@@ -1,38 +1,13 @@
 ---
-- name: Create header
-  blockinfile:
-    path: "{{ pkg_dir }}/website/_docs/{{ meta_package.name }}/index.md"
-    block: |+
-      
-      | Build Status | Code Coverage |
-      | ------------ | ------------- |
-      | [![Build Status][tests-{{ meta_package.name }}-img]][tests-{{ meta_package.name }}-url] | {# -#}
-        [![Code Coverage][codecov-{{ meta_package.name }}-img]][codecov-{{ meta_package.name }}-url] |
-      
-      [tests-{{ meta_package.name }}-img]: https://github.com/homalg-project/{{ meta_package.name }}/workflows/Tests/badge.svg?branch=master
-      [tests-{{ meta_package.name }}-url]: https://github.com/homalg-project/{{ meta_package.name }}/actions?query=workflow%3ATests+branch%3Amaster
-      
-      [codecov-{{ meta_package.name }}-img]: https://codecov.io/gh/homalg-project/{{ meta_package.name }}/branch/master/graph/badge.svg
-      [codecov-{{ meta_package.name }}-url]: https://codecov.io/gh/homalg-project/{{ meta_package.name }}
-      
-      {{ meta_package.description }}
-      
-    marker: "<!-- {mark} {{ meta_package.name }} HEADER -->"
-
-- name: Include table for subpackages
-  include_tasks: tasks/homalg-project.github.io_subpackage_table.yml
-  vars:
-    packages: "{{ subpackages }}"
-
 - name: Include table for depending packages
-  include_tasks: tasks/homalg-project.github.io_used_by_table.yml
+  include_tasks: tasks/homalg-project.github.io_package_table.yml
   vars:
     packages: "{{ used_by }}"
 
 - name: Create permalink
   template:
     src: homalg-project.github.io_permalink.j2
-    dest: "{{ pkg_dir }}/website/permalinks/prj/{{ meta_package.name }}.html"
+    dest: "{{ pkg_dir }}/website/permalinks/prj/{{ name }}.html"
   vars:
-    path: "prj/{{ meta_package.name }}"
-    url: "https://github.com/homalg-project/{{ meta_package.name }}#readme"
+    path: "prj/{{ name }}"
+    url: "https://github.com/homalg-project/{{ name }}#readme"

@@ -2,8 +2,7 @@
 - name: Import project
   include_tasks: tasks/homalg-project.github.io_project.yml
   vars:
-    meta_package: "{{ item.meta_package }}"
-    subpackages: "{{ item.subpackages }}"
+    name: "{{ item.name }}"
     used_by: "{{ item.used_by }}"
   loop: "{{ projects }}"
 
