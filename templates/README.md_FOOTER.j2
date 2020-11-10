@@ -8,7 +8,7 @@ To obtain current versions of all dependencies, `git clone` (or `git pull` to up
 |    | Repository | git URL |
 |--- | ---------- | ------- |
 {% for repo in package.needed_other_repositories %}
-| {{ loop.index }}. | [**{{ repo }}**](https://github.com/homalg-project/{{ repo }}#readme) | https://github.com/homalg-project/{{ repo }}.git |
+| {{ loop.index }}. | [**{{ repo | basename }}**](https://github.com/{% if "/" not in repo %}homalg-project/{% endif %}{{ repo }}#readme) | https://github.com/{% if "/" not in repo %}homalg-project/{% endif %}{{ repo }}.git |
 {% endfor %}
 
 {% endif %}
