@@ -921,12 +921,16 @@
               - path:             Algebroids
               - path: CAP_project/ActionsForCAP
               - path: CAP_project/AttributeCategoryForCAP
+              - path: HigherHomologicalAlgebra/BBGG
+              - path: HigherHomologicalAlgebra/Bicomplexes
               - path:             CategoryConstructor
               - path:             CategoriesWithAmbientObjects
               - path:             CatReps
               - path: CAP_project/CompilerForCAP
               - path: CAP_project/ComplexesAndFilteredObjectsForCAP
+              - path: HigherHomologicalAlgebra/ComplexesCategories
               - path: CAP_project/DeductiveSystemForCAP
+              - path: HigherHomologicalAlgebra/DerivedCategories
               - path:             FinSetsForCAP
               - path:             FinGSetsForCAP
               - path: CAP_project/FreydCategoriesForCAP
@@ -936,6 +940,7 @@
               - path: CAP_project/GradedModulePresentationsForCAP
               - path: CAP_project/GroupRepresentationsForCAP
               - path: CAP_project/HomologicalAlgebraForCAP
+              - path: HigherHomologicalAlgebra/HomotopyCategories
               - path: CAP_project/InternalExteriorAlgebraForCAP
               - path:             InternalModules
               - path:             IntrinsicCategories
@@ -947,9 +952,12 @@
               - path: CAP_project/ModulesOverLocalRingsForCAP
               - path: CAP_project/MonoidalCategories
               - path:             QPA2
+              - path: HigherHomologicalAlgebra/QuotientCategories
+              - path: HigherHomologicalAlgebra/StableCategories
               - path:             SubcategoriesForCAP
               - path:             Toposes
               - path: CAP_project/ToricSheaves
+              - path: HigherHomologicalAlgebra/TriangulatedCategories
               - path:             WrapperCategories
               - path:             ZariskiFrames
           - name: homalg_project
