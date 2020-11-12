@@ -29,8 +29,8 @@ jobs:
           sudo apt update
           sudo apt install -y texlive-latex-extra{% for apt_package in (ci_ubuntu_additional_apt_packages | default([ ])) %} {{ apt_package }}{% endfor %}
           git clone --depth 1 https://github.com/gap-packages/AutoDoc.git
-        {%- for additional_package in ci_additional_repositories_enriched %}
-          git clone --depth 1 https://github.com/homalg-project/{{ additional_package }}.git
+        {%- for additional_repo in ci_additional_repositories_enriched %}
+          git clone --depth 1 https://github.com/{% if "/" not in additional_repo %}homalg-project/{% endif %}{{ additional_repo }}.git
         {%- endfor %}
           # set SOURCE_DATE_EPOCH for reproducible PDFs
           export SOURCE_DATE_EPOCH=0
