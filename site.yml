@@ -904,6 +904,10 @@
           - texlive-science
           - time
           - python-pathlib
+          - install-info # needed for macaulay2 downgrade, missing dependency
+          - --allow-downgrades # hack
+          - macaulay2-common=1.16
+          - macaulay2=1.16
 
 - name: homalg-project.github.io
   hosts: homalg-project.github.io
