@@ -875,7 +875,11 @@
             docu_only: true
           - name: GradedRingForHomalg
             description: Endow Commutative Rings with an Abelian Grading
-            docu_only: true
+            GAPDoc_docu: true
+            has_HOMALG_IO: true
+            tests_only_basic: true
+            tests_additional_packages_to_load:
+              - IO_ForHomalg
           - name: HomalgToCAS
             description: A window to the outer world
             docu_only: true
