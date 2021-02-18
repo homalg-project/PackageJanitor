@@ -28,7 +28,11 @@
 /gh-pages/
 
 /coverage.json
+{% if package.GAPDoc_docu %}
+/doc/title.xml
+{% else %}
 /doc/*.xml
+{% endif %}
 /doc_tmp/
 /stats
 /tst/{{ package.name.lower() }}*.tst

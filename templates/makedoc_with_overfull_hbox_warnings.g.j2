@@ -11,10 +11,12 @@ fi;
 
 AutoDoc( rec(
     dir := "doc_tmp/",
+    {%- if not package.GAPDoc_docu %}
     autodoc := rec(
         files := [ "doc/Doc.autodoc" ],
         scan_dirs := [ "doc", "gap", "examples", "examples/doc"{% for scan_dir in (package.doc_additional_scan_dirs | default([ ])) %}, "{{ scan_dir }}"{% endfor %} ],
     ),
+    {%- endif %}
     gapdoc := rec(
         LaTeXOptions := rec(
             LateExtraPreamble := """
@@ -39,6 +41,9 @@ AutoDoc( rec(
     ),
     scaffold := rec(
         entities := [ "homalg", "CAP"{% if package.needed_other_repositories is defined and "QPA2" in package.needed_other_repositories %}, "QPA"{% endif %} ],
+        {%- if package.GAPDoc_docu %}
+        MainPage := false,
+        {%- endif %}
     ),
 ) );
 

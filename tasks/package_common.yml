@@ -190,11 +190,11 @@
     src: Doc.autodoc
     dest: "{{ pkg_dir }}/{{ package.path }}/doc/Doc.autodoc"
     force: no
-  when: not package.docu_only
+  when: not package.docu_only and not package.GAPDoc_docu
 
 - name: clean
-  copy:
-    src: clean
+  template:
+    src: clean.j2
     dest: "{{ pkg_dir }}/{{ package.path }}/doc/clean"
     mode: a+x
   when: not package.docu_only

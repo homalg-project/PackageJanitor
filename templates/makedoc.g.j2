@@ -10,10 +10,12 @@ if fail = LoadPackage( "AutoDoc", "2019.05.20" ) then
 fi;
 
 AutoDoc( rec(
+    {%- if not package.GAPDoc_docu %}
     autodoc := rec(
         files := [ "doc/Doc.autodoc" ],
         scan_dirs := [ "doc", "gap", "examples", "examples/doc"{% for scan_dir in (package.doc_additional_scan_dirs | default([ ])) %}, "{{ scan_dir }}"{% endfor %} ],
     ),
+    {%- endif %}
     extract_examples := rec(
         units := "Single",
     ),
@@ -28,6 +30,9 @@ AutoDoc( rec(
     ),
     scaffold := rec(
         entities := [ "homalg", "CAP"{% if package.needed_other_repositories is defined and "QPA2" in package.needed_other_repositories %}, "QPA"{% endif %} ],
+        {%- if package.GAPDoc_docu %}
+        MainPage := false,
+        {%- endif %}
     ),
 ) );
 
