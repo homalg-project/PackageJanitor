@@ -1,4 +1,29 @@
 ---
+- name: ExteriorPowersCategories
+  hosts: ExteriorPowersCategories
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
+    - import_tasks: tasks/package.yml
+      vars:
+        package:
+          name: ExteriorPowersCategories
+          description: "The graded category of exterior powers of objects of a given Ab-category"
+          has_HOMALG_IO: true
+          needed_other_repositories:
+            - homalg_project
+            - CAP_project
+            - CategoryConstructor
+        ci_additional_repositories:
+          - IntrinsicCategories
+          - IntrinsicModules
+          - IntrinsicGradedModules
+        ci_additional_packages_to_test:
+          - IntrinsicGradedModules
+        ci_ubuntu_additional_apt_packages:
+          - texlive-fonts-extra
+
 - name: IntrinsicGradedModules
   hosts: IntrinsicGradedModules
   connection: local
