@@ -12,6 +12,11 @@
   vars:
     ci_packages_to_test: "{{ [ package.name ] + (ci_additional_packages_to_test | default([])) }}"
 
+- name: ci_gaprc
+  copy:
+    src: ci_gaprc
+    dest: "{{ pkg_dir }}/{{ package.name }}/ci_gaprc"
+
 - name: .codecov.yml
   template:
     src: .codecov.yml.j2
