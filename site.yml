@@ -783,6 +783,7 @@
           tests_only_basic: true
         ci_ubuntu_additional_apt_packages:
           - texlive-fonts-extra
+        ci_do_not_run_tests: true
 
 - name: ParallelizedIterators
   hosts: ParallelizedIterators
@@ -805,6 +806,7 @@
           tests_only_basic: true
         ci_ubuntu_additional_apt_packages:
           - texlive-fonts-extra
+        ci_do_not_run_tests: true
 
 - name: MatroidGeneration
   hosts: MatroidGeneration
@@ -830,6 +832,7 @@
           tests_only_basic: true
         ci_ubuntu_additional_apt_packages:
           - texlive-fonts-extra
+        ci_do_not_run_tests: true
 
 - name: LoopIntegrals
   hosts: LoopIntegrals
