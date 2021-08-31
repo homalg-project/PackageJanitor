@@ -622,8 +622,12 @@
             tests_only_basic: true
           - name: StableCategories
             description: Stable categories of additive categories
+            has_HOMALG_IO: true
             tests_additional_packages_to_load:
               - ModulePresentations
+              - FreydCategoriesForCAP
+              - DerivedCategories
+              - FunctorCategories
             tests_only_basic: true
           - name: ToolsForHigherHomologicalAlgebra
             description: Tools for the Higher Homological Algebra project
@@ -648,6 +652,7 @@
           - FinSetsForCAP
           - QPA2
           - Algebroids
+          - FunctorCategories
           - SubcategoriesForCAP
           - CategoryConstructor
         ci_ubuntu_additional_apt_packages:
