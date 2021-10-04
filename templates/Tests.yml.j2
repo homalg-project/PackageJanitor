@@ -29,9 +29,10 @@ jobs:
       - run: |
           export HOME="/home/gap"
           cd /home/gap/.gap/pkg/
-          sudo apt update
-          sudo apt dist-upgrade -y
-          sudo apt install -y texlive-latex-extra{% for apt_package in (ci_ubuntu_additional_apt_packages | default([ ])) %} {{ apt_package }}{% endfor %}
+          # work around https://github.com/gap-system/gap-docker-base/issues/30
+          sudo apt -o Acquire::https::Verify-Peer="false" update
+          sudo apt -o Acquire::https::Verify-Peer="false" dist-upgrade -y
+          sudo apt -o Acquire::https::Verify-Peer="false" install -y texlive-latex-extra{% for apt_package in (ci_ubuntu_additional_apt_packages | default([ ])) %} {{ apt_package }}{% endfor %}
           cp ./{{ package.name }}/ci_gaprc /home/gap/.gap/gaprc
           git clone --depth 1 https://github.com/gap-packages/AutoDoc.git
         {%- for additional_repo in ci_additional_repositories_enriched %}
