@@ -22,6 +22,11 @@
     src: .codecov.yml.j2
     dest: "{{ pkg_dir }}/{{ package.name }}/.codecov.yml"
 
+- name: process_coverage_ignored_lines.py
+  copy:
+    src: process_coverage_ignored_lines.py
+    dest: "{{ pkg_dir }}/{{ package.name }}/process_coverage_ignored_lines.py"
+
 - name: release-gap-package
   copy:
     src: release-gap-package
