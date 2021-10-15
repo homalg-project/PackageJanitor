@@ -26,11 +26,13 @@
   copy:
     src: process_coverage_ignored_lines.py
     dest: "{{ pkg_dir }}/{{ package.name }}/process_coverage_ignored_lines.py"
+    mode: a+x
 
 - name: upload_codecov.sh
   copy:
     src: upload_codecov.sh
     dest: "{{ pkg_dir }}/{{ package.name }}/upload_codecov.sh"
+    mode: a+x
 
 - name: release-gap-package
   copy:
