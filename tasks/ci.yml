@@ -27,6 +27,11 @@
     src: process_coverage_ignored_lines.py
     dest: "{{ pkg_dir }}/{{ package.name }}/process_coverage_ignored_lines.py"
 
+- name: upload_codecov.sh
+  copy:
+    src: upload_codecov.sh
+    dest: "{{ pkg_dir }}/{{ package.name }}/upload_codecov.sh"
+
 - name: release-gap-package
   copy:
     src: release-gap-package
