@@ -15,7 +15,9 @@
             - homalg_project
             - CAP_project
             - CategoryConstructor
+          tests_only_basic: true
         ci_additional_repositories:
+          - CategoriesWithAmbientObjects
           - IntrinsicCategories
           - IntrinsicModules
           - IntrinsicGradedModules
@@ -44,6 +46,8 @@
             - CategoryConstructor
             - CategoriesWithAmbientObjects
             - IntrinsicCategories
+            - IntrinsicModules
+            - ExteriorPowersCategories
           tests_additional_packages_to_load:
             - RingsForHomalg
             - IO_ForHomalg
@@ -471,6 +475,9 @@
           has_HOMALG_IO: true
           doc_additional_latex_preamble: |
             \usepackage{mathtools}
+            \usepackage{tikz}
+            \usetikzlibrary{arrows}
+            \pgfarrowsdeclarecombine{twohead}{twohead}{latex}{latex}{latex}{latex}
           needed_other_repositories:
             - homalg_project
             - CAP_project
