@@ -730,7 +730,6 @@
               - RingsForHomalg
               - GaussForHomalg
               - GeneralizedMorphismsForCAP
-              - Algebroids
             tests_only_basic: true
           - name: GeneralizedMorphismsForCAP
             description: Implementations of generalized morphisms for the CAP project
