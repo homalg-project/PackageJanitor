@@ -695,10 +695,10 @@
             tests_only_basic: true
           - name: ActionsForCAP
             description: Actions and Coactions for CAP
-            docu_only: true
+            tests_only_basic: true
           - name: AttributeCategoryForCAP
             description: Automatic enhancement with attributes of a CAP category
-            docu_only: true
+            tests_only_basic: true
           - name: CompilerForCAP
             description: Speed up computations in CAP categories
             has_HOMALG_IO: true
