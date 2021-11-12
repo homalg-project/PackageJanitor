@@ -1011,6 +1011,7 @@
               - path: HigherHomologicalAlgebra/ComplexesCategories
               - path:              CAP_project/DeductiveSystemForCAP
               - path: HigherHomologicalAlgebra/DerivedCategories
+              - path:                          ExteriorPowersCategories
               - path:                          FinSetsForCAP
               - path:                          FinGSetsForCAP
               - path:              CAP_project/FreydCategoriesForCAP
@@ -1024,6 +1025,7 @@
               - path:              CAP_project/InternalExteriorAlgebraForCAP
               - path:                          InternalModules
               - path:                          IntrinsicCategories
+              - path:                          IntrinsicGradedModules
               - path:                          IntrinsicModules
               - path:                          LazyCategories
               - path:              CAP_project/LinearAlgebraForCAP
