@@ -172,30 +172,6 @@
         ci_ubuntu_additional_apt_packages:
           - texlive-fonts-extra
 
-- name: WrapperCategories
-  hosts: WrapperCategories
-  connection: local
-  vars:
-    pkg_dir: "~/.gap/pkg/"
-  tasks:
-    - import_tasks: tasks/package.yml
-      vars:
-        package:
-          name: WrapperCategories
-          description: "Construct an equivalent wrapper category out of a CAP category"
-          doc_additional_latex_preamble: |
-            \usepackage{mathtools}
-          needed_other_repositories:
-            - homalg_project
-            - CAP_project
-            - CategoryConstructor
-          tests_additional_packages_to_load:
-            - LinearAlgebraForCAP
-            - GeneralizedMorphismsForCAP
-          tests_only_basic: true
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
-
 - name: Toposes
   hosts: Toposes
   connection: local
@@ -482,10 +458,6 @@
             - homalg_project
             - CAP_project
           tests_only_basic: true
-        ci_additional_repositories:
-          - WrapperCategories
-        ci_additional_packages_to_test:
-          - WrapperCategories
         ci_ubuntu_additional_apt_packages:
           - texlive-fonts-extra
 
@@ -1040,7 +1012,6 @@
               - path:                          Toposes
               - path:              CAP_project/ToricSheaves
               - path: HigherHomologicalAlgebra/TriangulatedCategories
-              - path:                          WrapperCategories
               - path:                          ZariskiFrames
           - name: homalg_project
             used_by:
