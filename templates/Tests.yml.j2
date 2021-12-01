@@ -7,14 +7,14 @@ on:
       - "*-ci"
   pull_request:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 4 * * *" # after gap-docker(-master) is rebuilt
   workflow_dispatch:
 
 jobs:
   test:
     strategy:
       matrix:
-        image: [gapsystem/gap-docker, gapsystem/gap-docker-master]
+        image: ["ghcr.io/homalg-project/gap-docker:latest", "ghcr.io/homalg-project/gap-docker-master:latest"]
       fail-fast: false
     runs-on: ubuntu-latest
     container:
@@ -29,10 +29,10 @@ jobs:
       - run: |
           export HOME="/home/gap"
           cd /home/gap/.gap/pkg/
-          # work around https://github.com/gap-system/gap-docker-base/issues/30
-          sudo apt -o Acquire::https::Verify-Peer="false" update
-          sudo apt -o Acquire::https::Verify-Peer="false" dist-upgrade -y
-          sudo apt -o Acquire::https::Verify-Peer="false" install -y texlive-latex-extra{% for apt_package in (ci_ubuntu_additional_apt_packages | default([ ])) %} {{ apt_package }}{% endfor %}
+        {%- if ci_ubuntu_additional_apt_packages is defined %}
+          sudo apt update
+          sudo apt install -y{% for apt_package in ci_ubuntu_additional_apt_packages %} {{ apt_package }}{% endfor %}
+        {%- endif %}
           cp ./{{ package.name }}/ci_gaprc /home/gap/.gap/gaprc
           git clone --depth 1 https://github.com/gap-packages/AutoDoc.git
         {%- for additional_repo in ci_additional_repositories_enriched %}
@@ -55,14 +55,14 @@ jobs:
         {%- if ci_do_not_run_tests is not defined or not ci_do_not_run_tests %}
           cp ./{{ package.name }}/.codecov.yml ./
           (cd {{ package.name }} && LANG=C.UTF-8 python3 process_coverage_ignored_lines.py)
-          [ "{% raw %}${{ matrix.image }}{% endraw %}" = "gapsystem/gap-docker-master" ] && ./{{ package.name }}/upload_codecov.sh
+          [ "{% raw %}${{ matrix.image }}{% endraw %}" = "ghcr.io/homalg-project/gap-docker-master:latest" ] && ./{{ package.name }}/upload_codecov.sh
         {%- endif %}
           git config --global user.name "Bot"
           git config --global user.email "empty"
           cd {{ package.name }}
           CUR_SHA=$(git rev-parse --verify HEAD)
         {%- if ci_automated_release is not defined or ci_automated_release %}
-          if [ "{% raw %}${{ matrix.image }}{% endraw %}" = "gapsystem/gap-docker" ] && [ "$CUR_SHA" = "$(git rev-parse origin/master)" ] && [ $(dirname "$GITHUB_REPOSITORY") = "homalg-project" ]; then \
+          if [ "{% raw %}${{ matrix.image }}{% endraw %}" = "ghcr.io/homalg-project/gap-docker:latest" ] && [ "$CUR_SHA" = "$(git rev-parse origin/master)" ] && [ $(dirname "$GITHUB_REPOSITORY") = "homalg-project" ]; then \
             git worktree add gh-pages/ gh-pages || (echo "There was an error. Make sure there is a branch named 'gh-pages'. See https://github.com/homalg-project/PackageJanitor#error-there-was-an-error-make-sure-there-is-a-branch-named-gh-pages"; exit 1); \
             git checkout master; \
             LANG=C.UTF-8 ./make_dist.sh --token "{% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}"; \

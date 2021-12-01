@@ -23,8 +23,6 @@
           - IntrinsicGradedModules
         ci_additional_packages_to_test:
           - IntrinsicGradedModules
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
 
 - name: IntrinsicGradedModules
   hosts: IntrinsicGradedModules
@@ -52,8 +50,6 @@
             - RingsForHomalg
             - IO_ForHomalg
           tests_only_basic: true
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
 
 - name: IntrinsicModules
   hosts: IntrinsicModules
@@ -79,8 +75,6 @@
             - RingsForHomalg
             - IO_ForHomalg
           tests_only_basic: true
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
 
 - name: IntrinsicCategories
   hosts: IntrinsicCategories
@@ -106,8 +100,6 @@
             - RingsForHomalg
             - IO_ForHomalg
           tests_only_basic: true
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
 
 - name: CategoriesWithAmbientObjects
   hosts: CategoriesWithAmbientObjects
@@ -132,8 +124,6 @@
             - RingsForHomalg
             - IO_ForHomalg
           tests_only_basic: true
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
 
 - name: LazyCategories
   hosts: LazyCategories
@@ -169,8 +159,6 @@
           - QPA2
         ci_additional_packages_to_test:
           - Locales
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
 
 - name: Toposes
   hosts: Toposes
@@ -202,8 +190,6 @@
           - FinSetsForCAP
           - Locales
           - ZariskiFrames
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
 
 - name: Locales
   hosts: Locales
@@ -237,8 +223,6 @@
           - QPA2
         ci_additional_packages_to_test:
           - ZariskiFrames
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
 
 - name: ZariskiFrames
   hosts: ZariskiFrames
@@ -265,8 +249,6 @@
             - CategoryConstructor
             - Locales
           tests_only_basic: true
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
 
 - name: SubcategoriesForCAP
   hosts: SubcategoriesForCAP
@@ -293,8 +275,6 @@
           - Toposes
           - Locales
           - FinSetsForCAP
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
 
 - name: Algebroids
   hosts: Algebroids
@@ -326,8 +306,6 @@
         ci_additional_packages_to_test:
           - FunctorCategories
           - CatReps
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
 
 - name: FunctorCategories
   hosts: FunctorCategories
@@ -356,8 +334,6 @@
           - CatReps
         ci_additional_packages_to_test:
           - CatReps
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
 
 - name: CatReps
   hosts: CatReps
@@ -384,8 +360,6 @@
             - FinSetsForCAP
             - SubcategoriesForCAP
           tests_only_basic: true
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
 
 - name: InternalModules
   hosts: InternalModules
@@ -411,8 +385,6 @@
             - CAP_project
             - InfiniteLists
             - GradedCategories
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
 
 - name: GradedCategories
   hosts: GradedCategories
@@ -434,8 +406,6 @@
           - InternalModules
         ci_additional_packages_to_test:
           - InternalModules
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
 
 - name: CategoryConstructor
   hosts: CategoryConstructor
@@ -458,8 +428,6 @@
             - homalg_project
             - CAP_project
           tests_only_basic: true
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
 
 - name: FinSetsForCAP
   hosts: FinSetsForCAP
@@ -536,9 +504,6 @@
             - CAP_project
             - Toposes
             - FinSetsForCAP
-        ci_ubuntu_additional_apt_packages:
-          - texlive-science
-          - texlive-fonts-extra
 
 - name: HigherHomologicalAlgebra
   hosts: HigherHomologicalAlgebra
@@ -634,8 +599,6 @@
           - FunctorCategories
           - SubcategoriesForCAP
           - CategoryConstructor
-        ci_ubuntu_additional_apt_packages:
-          - texlive-science
 
 - name: CAP_project
   hosts: CAP_project
@@ -747,8 +710,6 @@
             docu_only: true
         ci_additional_repositories:
           - homalg_project
-        ci_ubuntu_additional_apt_packages:
-          - texlive-science
 
 - name: ArangoDBInterface
   hosts: ArangoDBInterface
@@ -769,8 +730,6 @@
           tests_additional_packages_to_load:
             - IO_ForHomalg
           tests_only_basic: true
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
         ci_do_not_run_tests: true
 
 - name: ParallelizedIterators
@@ -792,8 +751,6 @@
           tests_additional_packages_to_load:
             - IO_ForHomalg
           tests_only_basic: true
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
         ci_do_not_run_tests: true
 
 - name: MatroidGeneration
@@ -818,8 +775,6 @@
           tests_additional_packages_to_load:
             - IO_ForHomalg
           tests_only_basic: true
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
         ci_do_not_run_tests: true
 
 - name: LoopIntegrals
@@ -841,8 +796,6 @@
           tests_additional_packages_to_load:
             - IO_ForHomalg
           tests_only_basic: true
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
 
 - name: PrimaryDecomposition
   hosts: PrimaryDecomposition
@@ -863,8 +816,6 @@
           tests_additional_packages_to_load:
             - IO_ForHomalg
           tests_only_basic: true
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
 
 - name: LessGenerators
   hosts: LessGenerators
@@ -885,8 +836,6 @@
           tests_additional_packages_to_load:
             - IO_ForHomalg
           tests_only_basic: true
-        ci_ubuntu_additional_apt_packages:
-          - texlive-fonts-extra
 
 - name: homalg_project
   hosts: homalg_project
@@ -950,9 +899,7 @@
             description: Special methods and knowledge propagation tools
             docu_only: true
         ci_ubuntu_additional_apt_packages:
-          - texlive-science
           - time
-          - python-pathlib
           - install-info # needed for macaulay2 downgrade, missing dependency
           - --allow-downgrades # hack
           - macaulay2-common=1.16
