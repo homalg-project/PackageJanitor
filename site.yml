@@ -686,7 +686,7 @@
             docu_only: true
           - name: LinearAlgebraForCAP
             description: Category of Matrices over a Field for CAP
-            docu_only: true
+            tests_only_basic: true
           - name: ModulePresentationsForCAP
             description: Category R-pres for CAP
             has_HOMALG_IO: true
