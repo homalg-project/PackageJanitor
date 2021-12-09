@@ -199,16 +199,29 @@
     mode: a+x
   when: not package.docu_only
 
+- name: Check if package has precompiled categories
+  stat:
+    path: "{{ pkg_dir }}/{{ package.path }}/gap/precompiled_categories/"
+  register: precompiled_categories_dir
+
 - name: makefile
   template:
     src: makefile.j2
     dest: "{{ pkg_dir }}/{{ package.path }}/makefile"
+  vars:
+    has_precompiled_categories: "{{ precompiled_categories_dir.stat.exists }}"
   when: not package.docu_only
 
 - name: testall.g
   template:
     src: testall.g.j2
     dest: "{{ pkg_dir }}/{{ package.path }}/tst/testall.g"
+  when: not package.docu_only
+
+- name: testall.g
+  template:
+    src: testall_no_precompiled_code.g.j2
+    dest: "{{ pkg_dir }}/{{ package.path }}/tst/testall_no_precompiled_code.g"
   when: not package.docu_only
 
 - name: .gitignore
