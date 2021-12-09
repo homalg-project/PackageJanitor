@@ -704,7 +704,6 @@
               - MatricesForHomalg
               - GaussForHomalg
             tests_only_basic: true
-            docu_only: true
           - name: ToricSheaves
             description: Toric sheaves as Serre quotients
             docu_only: true
