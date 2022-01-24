@@ -427,6 +427,9 @@
           needed_other_repositories:
             - homalg_project
             - CAP_project
+          tests_additional_packages_to_load:
+            - Locales
+            - SubcategoriesForCAP
           tests_only_basic: true
         ci_additional_repositories:
           - Toposes
