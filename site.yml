@@ -428,6 +428,10 @@
             - homalg_project
             - CAP_project
           tests_only_basic: true
+        ci_additional_repositories:
+          - Toposes
+          - Locales
+          - SubcategoriesForCAP
 
 - name: FinSetsForCAP
   hosts: FinSetsForCAP
