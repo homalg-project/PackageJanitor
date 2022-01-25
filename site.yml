@@ -147,6 +147,8 @@
             - GeneralizedMorphismsForCAP
             - FreydCategoriesForCAP
             - Algebroids
+            - Locales
+            - SubcategoriesForCAP
           tests_only_basic: true
         ci_additional_repositories:
           - Toposes
