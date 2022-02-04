@@ -28,7 +28,7 @@ git worktree add gh-pages gh-pages
 cd "$SCRIPTPATH"
 ./apply -l $PACKAGE -e pkg_dir="/tmp/$DATE/"
 
-read -p "Please review all changes in \"/tmp/$DATE/$PACKAGE/\" and \"/tmp/$DATE/$PACKAGE/gh-pages\" and enter y to proceed. " -n 1
+read -p "Please review all changes in \"file:///tmp/$DATE/$PACKAGE/\" and \"file:///tmp/$DATE/$PACKAGE/gh-pages\" and enter y to proceed. " -n 1
 if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
     exit 1
