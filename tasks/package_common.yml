@@ -70,6 +70,12 @@
     line: '  LongTitle := "{{ package.description }}",'
   when: not package.docu_only
 
+- name: PackageInfo.g Dependencies.GAP
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package.path }}/PackageInfo.g"
+    regexp: "^  GAP := "
+    line: '  GAP := ">= 4.11.1",'
+
 - name: init.g header
   replace:
     path: "{{ pkg_dir }}/{{ package.path }}/init.g"
