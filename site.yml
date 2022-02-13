@@ -329,6 +329,7 @@
             - Algebroids
           doc_additional_latex_preamble: |
             \usepackage{mathtools}
+          tests_only_basic: true
         ci_additional_repositories:
           - Toposes
           - FinSetsForCAP
