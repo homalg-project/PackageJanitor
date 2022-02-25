@@ -224,10 +224,17 @@
     dest: "{{ pkg_dir }}/{{ package.path }}/tst/testall.g"
   when: not package.docu_only
 
-- name: testall.g
+- name: testall_no_precompiled_code.g.j2
   template:
     src: testall_no_precompiled_code.g.j2
     dest: "{{ pkg_dir }}/{{ package.path }}/tst/testall_no_precompiled_code.g"
+  when: not package.docu_only
+
+- name: PackageInfo.g TestFile
+  lineinfile:
+    path: "{{ pkg_dir }}/{{ package.path }}/PackageInfo.g"
+    regexp: "TestFile := "
+    line: 'TestFile := "tst/testall.g",'
   when: not package.docu_only
 
 - name: .gitignore
