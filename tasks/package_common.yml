@@ -171,6 +171,12 @@
     dest: "{{ pkg_dir }}/{{ package.path }}/LICENSE"
   when: not package.docu_only
 
+- name: Remove COPYING
+  file:
+    path: "{{ pkg_dir }}/{{ package.path }}/COPYING"
+    state: absent
+  when: not package.docu_only
+
 - name: makedoc.g
   template:
     src: makedoc.g.j2
