@@ -234,7 +234,13 @@
   template:
     src: testall_no_precompiled_code.g.j2
     dest: "{{ pkg_dir }}/{{ package.path }}/tst/testall_no_precompiled_code.g"
-  when: not package.docu_only
+  when: (not package.docu_only) and precompiled_categories_dir.stat.exists
+
+- name: Remove testall_no_precompiled_code.g.j2
+  file:
+    path: "{{ pkg_dir }}/{{ package.path }}/tst/testall_no_precompiled_code.g"
+    state: absent
+  when: not ((not package.docu_only) and precompiled_categories_dir.stat.exists)
 
 - name: PackageInfo.g TestFile
   lineinfile:
