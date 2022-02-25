@@ -249,6 +249,12 @@
     line: 'TestFile := "tst/testall.g",'
   when: not package.docu_only
 
+- name: Remove maketest.g
+  file:
+    path: "{{ pkg_dir }}/{{ package.path }}/maketest.g"
+    state: absent
+  when: not package.docu_only
+
 - name: .gitignore
   template:
     src: .gitignore.j2
