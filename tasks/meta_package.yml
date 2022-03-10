@@ -49,6 +49,7 @@
 - import_tasks: tasks/ci.yml
   vars:
     package: "{{ meta_package_enriched }}"
+    doc_packages: "{{ subpackages_enriched }}"
     is_meta_package: true
 
 - name: Import subpackage

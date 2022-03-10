@@ -29,8 +29,8 @@
     mode: a+x
 
 - name: upload_codecov.sh
-  copy:
-    src: upload_codecov.sh
+  template:
+    src: upload_codecov.sh.j2
     dest: "{{ pkg_dir }}/{{ package.name }}/upload_codecov.sh"
     mode: a+x
 

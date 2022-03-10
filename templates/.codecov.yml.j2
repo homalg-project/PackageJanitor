@@ -4,3 +4,11 @@ fixes:
   - "/home/gap/.gap/pkg/{{ package.name }}/::"
 ignore:
   - "home/"
+{% if is_meta_package %}
+flags:
+{% for doc_package in doc_packages %}
+  {{ doc_package.name }}:
+    paths:
+      - "{{ doc_package.name }}/"
+{% endfor %}
+{% endif %}
