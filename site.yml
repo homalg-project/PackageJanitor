@@ -712,6 +712,8 @@
           - name: ModulesOverLocalRingsForCAP
             description: Category of modules over a local ring modeled by Serre quotients for CAP
             has_HOMALG_IO: true
+            tests_additional_packages_to_load:
+              - IO_ForHomalg
             tests_only_basic: true
           - name: MonoidalCategories
             description: Monoidal and monoidal (co)closed categories
