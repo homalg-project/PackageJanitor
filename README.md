@@ -8,6 +8,10 @@
 4. Execute `ansible-playbook -i hosts site.yml --diff --check` (shorthand: `./check`) to see what would be changed.
 5. Execute `ansible-playbook -i hosts site.yml --diff` (shorthand: `./apply`) to actually apply the changes.
 
+## Speed up the execution
+
+One can speed up the execution considerably by using the Ansible plugin [Mitogen for Ansible](https://mitogen.networkgenomics.com/ansible_detailed.html).
+
 ## FAQ
 
 1. #### Error: `There was an error. Make sure there is a branch named 'doc'.`
