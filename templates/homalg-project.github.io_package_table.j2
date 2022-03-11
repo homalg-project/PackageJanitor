@@ -28,11 +28,16 @@
 [pdf-{{ package.name }}-url]: https://homalg-project.github.io/{{ package.path }}/download_pdf.html
 
 {% endif %}
-[tests-{{ package.name }}-img]: https://github.com/homalg-project/{{ package.path.split("/")[0] }}/workflows/Tests/badge.svg?branch=master
-[tests-{{ package.name }}-url]: https://github.com/homalg-project/{{ package.path.split("/")[0] }}/actions?query=workflow%3ATests+branch%3Amaster
+[tests-{{ package.name }}-img]: https://github.com/homalg-project/{{ package.repo_name }}/workflows/Tests/badge.svg?branch=master
+[tests-{{ package.name }}-url]: https://github.com/homalg-project/{{ package.repo_name }}/actions?query=workflow%3ATests+branch%3Amaster
 
-[codecov-{{ package.name }}-img]: https://codecov.io/gh/homalg-project/{{ package.path.split("/")[0] }}/branch/master/graph/badge.svg
-[codecov-{{ package.name }}-url]: https://codecov.io/gh/homalg-project/{{ package.path.split("/")[0] }}
+{% if package.name == package.repo_name %}
+[codecov-{{ package.name }}-img]: https://codecov.io/gh/homalg-project/{{ package.name }}/branch/master/graph/badge.svg
+[codecov-{{ package.name }}-url]: https://codecov.io/gh/homalg-project/{{ package.name }}
+{% else %}
+[codecov-{{ package.name }}-img]: https://codecov.io/gh/homalg-project/{{ package.repo_name }}/branch/master/graph/badge.svg?flag={{ package.name }}
+[codecov-{{ package.name }}-url]: https://codecov.io/gh/homalg-project/{{ package.repo_name }}/tree/master/{{ package.name }}
+{% endif %}
 
 {% if package.status == "deposited" %}
 [deposited-{{ package.name }}-url]: https://www.gap-system.org/Packages/{{ package.name.lower() }}.html

@@ -25,7 +25,7 @@
 
 - name: Set packages_enriched
   set_fact:
-    packages_enriched: "{{ packages_enriched + [ zipped[0] | combine( { 'name': zipped[0].path | basename, 'description': zipped[1].content | regex_search('Subtitle := \"[^\"]*') | replace('Subtitle := \"', ''), 'status': zipped[1].content | regex_search('\nStatus := \"[^\"]*') | replace('\nStatus := \"', ''), 'has_docu': zipped[2].status == 200 } ) ] }}"
+    packages_enriched: "{{ packages_enriched + [ zipped[0] | combine( { 'name': zipped[0].path | basename, 'repo_name': zipped[0].path.split('/')[0], 'description': zipped[1].content | regex_search('Subtitle := \"[^\"]*') | replace('Subtitle := \"', ''), 'status': zipped[1].content | regex_search('\nStatus := \"[^\"]*') | replace('\nStatus := \"', ''), 'has_docu': zipped[2].status == 200 } ) ] }}"
   loop: "{{ packages | zip(PackageInfo_responses.results, docu_responses.results) | list }}"
   loop_control:
     loop_var: zipped
