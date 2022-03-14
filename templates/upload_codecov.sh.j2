@@ -23,10 +23,9 @@ shasum -a 256 -c codecov.SHA256SUM
 
 # execute
 chmod +x codecov
+./codecov -Z -f "coverage*.json"
 {% if is_meta_package %}
 {% for doc_package in doc_packages -%}
 ./codecov -Z -f "coverage*.json" -F {{ doc_package.name }}
 {% endfor %}
-{% else %}
-./codecov -Z -f "coverage*.json"
 {% endif %}
