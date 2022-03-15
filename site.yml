@@ -634,8 +634,6 @@
               - ModulePresentationsForCAP
               - LinearAlgebraForCAP
               - RingsForHomalg
-              - HomologicalAlgebraForCAP
-              - DeductiveSystemForCAP
             tests_only_basic: true
           - name: ActionsForCAP
             description: Actions and Coactions for CAP
@@ -694,6 +692,12 @@
             tests_only_basic: true
           - name: HomologicalAlgebraForCAP
             description: Homological algebra algorithms for CAP
+            has_HOMALG_IO: true
+            tests_additional_packages_to_load:
+              - IO_ForHomalg
+              - RingsForHomalg
+              - GaussForHomalg
+              - ModulePresentationsForCAP
             tests_only_basic: true
           - name: InternalExteriorAlgebraForCAP
             description: Constructions for Modules over the Internal Exterior Algebra for CAP
