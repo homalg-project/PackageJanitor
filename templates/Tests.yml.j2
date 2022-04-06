@@ -55,7 +55,7 @@ jobs:
         {%- if ci_do_not_run_tests is not defined or not ci_do_not_run_tests %}
           cp ./{{ package.name }}/.codecov.yml ./
           (cd {{ package.name }} && LANG=C.UTF-8 python3 process_coverage_ignored_lines.py)
-          [ "{% raw %}${{ matrix.image }}{% endraw %}" = "ghcr.io/homalg-project/gap-docker-master:latest" ] && ./{{ package.name }}/upload_codecov.sh
+          [ "$GITHUB_EVENT_NAME" != "schedule" ] && [ "{% raw %}${{ matrix.image }}{% endraw %}" = "ghcr.io/homalg-project/gap-docker-master:latest" ] && ./{{ package.name }}/upload_codecov.sh
         {%- endif %}
           git config --global user.name "Bot"
           git config --global user.email "empty"
