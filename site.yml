@@ -921,12 +921,6 @@
           - name: ToolsForHomalg
             description: Special methods and knowledge propagation tools
             docu_only: true
-        ci_ubuntu_additional_apt_packages:
-          - time
-          - install-info # needed for macaulay2 downgrade, missing dependency
-          - --allow-downgrades # hack
-          - macaulay2-common=1.16
-          - macaulay2=1.16
 
 - name: homalg-project.github.io
   hosts: homalg-project.github.io
