@@ -66,6 +66,14 @@ jobs:
             git worktree add gh-pages/ gh-pages || (echo "There was an error. Make sure there is a branch named 'gh-pages'. See https://github.com/homalg-project/PackageJanitor#error-there-was-an-error-make-sure-there-is-a-branch-named-gh-pages"; exit 1); \
             git checkout master; \
             LANG=C.UTF-8 ./make_dist.sh --token "{% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}"; \
+      {%- if is_meta_package %}
+            # publish subsplits
+        {%- for subpackage in subpackages %}
+		  {%- if subpackage.has_subsplit is defined and subpackage.has_subsplit %}
+            git subtree split --prefix={{ subpackage.name }} -b {{ subpackage.name }}-split && git push https://homalg-project:{% raw %}${{ secrets.SUBSPLIT_PUSH_SECRET }}{% endraw %}@github.com/homalg-project/{{ subpackage.name }} {{ subpackage.name }}-split:master; \
+          {%- endif %}
+        {%- endfor %}
+      {%- endif %}
           else \
             echo "Not making a release."; \
           fi

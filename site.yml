@@ -678,6 +678,7 @@
               - GaussForHomalg
               - GeneralizedMorphismsForCAP
             tests_only_basic: true
+            has_subsplit: true
           - name: GeneralizedMorphismsForCAP
             description: Implementations of generalized morphisms for the CAP project
             tests_additional_packages_to_load:
