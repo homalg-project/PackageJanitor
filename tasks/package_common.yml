@@ -162,7 +162,8 @@
     src: 100_LoadPackage.tst.j2
     dest: "{{ pkg_dir }}/{{ package.path }}/tst/100_LoadPackage.tst"
   vars:
-    tests_packages_to_load: "{{ [ package.name ] + (package.tests_additional_packages_to_load | default([])) }}"
+    # load additional packages before package, so suggested dependencies can be loaded manually
+    tests_packages_to_load: "{{ (package.tests_additional_packages_to_load | default([])) + [ package.name ] }}"
   when: not package.docu_only
 
 - name: LICENSE

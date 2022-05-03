@@ -707,6 +707,8 @@
             tests_only_basic: true
           - name: LinearAlgebraForCAP
             description: Category of Matrices over a Field for CAP
+            tests_additional_packages_to_load:
+              - FreydCategoriesForCAP
             tests_only_basic: true
           - name: ModulePresentationsForCAP
             description: Category R-pres for CAP
@@ -721,6 +723,7 @@
             has_HOMALG_IO: true
             tests_additional_packages_to_load:
               - IO_ForHomalg
+              - RingsForHomalg
             tests_only_basic: true
           - name: MonoidalCategories
             description: Monoidal and monoidal (co)closed categories
@@ -730,6 +733,8 @@
             tests_only_basic: true
           - name: ToricSheaves
             description: Toric sheaves as Serre quotients
+            tests_additional_packages_to_load:
+              - ToricVarieties
             tests_only_basic: true
         ci_additional_repositories:
           - homalg_project
