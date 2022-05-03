@@ -448,6 +448,31 @@
             - Toposes
             - FinSetsForCAP
 
+- name: ZXCalculusForCAP
+  hosts: ZXCalculusForCAP
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
+    - import_tasks: tasks/package.yml
+      vars:
+        package:
+          name: ZXCalculusForCAP
+          description: "The category of ZX-diagrams"
+          doc_additional_latex_preamble: |
+            % this is the only way to suppress an overfull hbox in the signature of CategoryOfZXDiagrams_as_CategoryOfCospans_CategoryOfDecoratedQuivers
+            \geometry{left=26mm,right=26mm}
+          tests_additional_packages_to_load:
+            - Toposes
+            - FreydCategoriesForCAP
+          needed_other_repositories:
+            - homalg_project
+            - CAP_project
+            - FinSetsForCAP
+            - HigherHomologicalAlgebra
+            - QPA2
+            - CategoricalTowers
+
 - name: HigherHomologicalAlgebra
   hosts: HigherHomologicalAlgebra
   connection: local
@@ -1022,6 +1047,7 @@
               - path:              CAP_project/ToricSheaves
               - path: HigherHomologicalAlgebra/TriangulatedCategories
               - path:        CategoricalTowers/ZariskiFrames
+              - path:                          ZXCalculusForCAP
           - name: homalg_project
             used_by:
               - path: homalg_project/homalg
