@@ -511,6 +511,8 @@
             \DeclareMathSymbol{\lsb@l}{\mathalpha}{letters}{`l}
             \lowercase{\gdef~{\ifnum\the\mathgroup=\m@ne \ell \else \lsb@l \fi}}%
             \endgroup
+          tests_additional_packages_to_load:
+            - FinSetsForCAP
           needed_other_repositories:
             - homalg_project
             - CAP_project
