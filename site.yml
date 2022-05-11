@@ -709,8 +709,6 @@
             tests_only_basic: true
           - name: LinearAlgebraForCAP
             description: Category of Matrices over a Field for CAP
-            tests_additional_packages_to_load:
-              - FreydCategoriesForCAP
             tests_only_basic: true
           - name: ModulePresentationsForCAP
             description: Category R-pres for CAP
