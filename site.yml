@@ -266,6 +266,12 @@
           has_HOMALG_IO: true
           doc_additional_latex_preamble: |
             \usepackage{mathtools}
+            \DeclareUnicodeCharacter{2205}{\ensuremath{\emptyset}}
+            \DeclareUnicodeCharacter{2C76}{\ensuremath{\vdash}\!\!}
+            \DeclareUnicodeCharacter{2192}{\ensuremath{\!\!\rightarrow\!}}
+            \DeclareUnicodeCharacter{21AA}{\ensuremath{\!\!\hookrightarrow\!}}
+            \DeclareUnicodeCharacter{21A0}{\ensuremath{\!\!\twoheadrightarrow\!}}
+            \DeclareUnicodeCharacter{2B47}{\ensuremath{\!\!\xrightarrow{\sim}\!}}
           needed_other_repositories:
             - homalg_project
             - CAP_project
@@ -292,6 +298,12 @@
           has_HOMALG_IO: true
           doc_additional_latex_preamble: |
             \usepackage{mathtools}
+            \DeclareUnicodeCharacter{2205}{\ensuremath{\emptyset}}
+            \DeclareUnicodeCharacter{2C76}{\ensuremath{\vdash}\!\!}
+            \DeclareUnicodeCharacter{2192}{\ensuremath{\!\!\rightarrow\!}}
+            \DeclareUnicodeCharacter{21AA}{\ensuremath{\!\!\hookrightarrow\!}}
+            \DeclareUnicodeCharacter{21A0}{\ensuremath{\!\!\twoheadrightarrow\!}}
+            \DeclareUnicodeCharacter{2B47}{\ensuremath{\!\!\xrightarrow{\sim}\!}}
           needed_other_repositories:
             - homalg_project
             - CAP_project
@@ -329,6 +341,12 @@
             - Algebroids
           doc_additional_latex_preamble: |
             \usepackage{mathtools}
+            \DeclareUnicodeCharacter{2205}{\ensuremath{\emptyset}}
+            \DeclareUnicodeCharacter{2C76}{\ensuremath{\vdash}\!\!}
+            \DeclareUnicodeCharacter{2192}{\ensuremath{\!\!\rightarrow\!}}
+            \DeclareUnicodeCharacter{21AA}{\ensuremath{\!\!\hookrightarrow\!}}
+            \DeclareUnicodeCharacter{21A0}{\ensuremath{\!\!\twoheadrightarrow\!}}
+            \DeclareUnicodeCharacter{2B47}{\ensuremath{\!\!\xrightarrow{\sim}\!}}
           tests_only_basic: true
         ci_additional_repositories:
           - Toposes
@@ -452,6 +470,14 @@
         package:
           name: FinSetsForCAP
           description: "The elementary topos of (skeletal) finite sets"
+          doc_additional_latex_preamble: |
+            \usepackage{mathtools}
+            \DeclareUnicodeCharacter{2205}{\ensuremath{\emptyset}}
+            \DeclareUnicodeCharacter{2C76}{\ensuremath{\vdash}\!\!}
+            \DeclareUnicodeCharacter{2192}{\ensuremath{\!\!\rightarrow\!}}
+            \DeclareUnicodeCharacter{21AA}{\ensuremath{\!\!\hookrightarrow\!}}
+            \DeclareUnicodeCharacter{21A0}{\ensuremath{\!\!\twoheadrightarrow\!}}
+            \DeclareUnicodeCharacter{2B47}{\ensuremath{\!\!\xrightarrow{\sim}\!}}
           needed_other_repositories:
             - homalg_project
             - CAP_project
