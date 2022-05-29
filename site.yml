@@ -162,6 +162,24 @@
         ci_additional_packages_to_test:
           - Locales
 
+- name: CartesianCategories
+  hosts: CartesianCategories
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
+    - import_tasks: tasks/package.yml
+      vars:
+        package:
+          name: CartesianCategories
+          description: "Cartesian and cocartesian categories and various subdoctrines"
+          doc_additional_latex_preamble: |
+            \usepackage{mathtools}
+          needed_other_repositories:
+            - homalg_project
+            - CAP_project
+          tests_only_basic: true
+
 - name: Toposes
   hosts: Toposes
   connection: local
