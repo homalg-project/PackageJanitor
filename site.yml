@@ -147,6 +147,7 @@
             - LinearAlgebraForCAP
             - GeneralizedMorphismsForCAP
             - Algebroids
+            - GRAPE
             - Locales
             - SubcategoriesForCAP
           tests_only_basic: true
