@@ -287,3 +287,15 @@
   loop_control:
     loop_var: cur_path
   when: not package.docu_only
+
+- name: .gitignore for notebooks
+  copy:
+    src: .gitignore_notebooks
+    dest: "{{ pkg_dir }}/{{ package.path }}/examples/notebooks/.gitignore"
+  when: notebooks_dir.stat.exists
+
+- name: README.md for notebooks
+  template:
+    src: README.md_notebooks.j2
+    dest: "{{ pkg_dir }}/{{ package.path }}/examples/notebooks/README.md"
+  when: notebooks_dir.stat.exists
