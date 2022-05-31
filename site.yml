@@ -671,6 +671,9 @@
           - name: AttributeCategoryForCAP
             description: Automatic enhancement with attributes of a CAP category
             tests_only_basic: true
+          - name: CartesianCategories
+            description: "Cartesian and cocartesian categories and various subdoctrines"
+            tests_only_basic: true
           - name: CompilerForCAP
             description: Speed up computations in CAP categories
             has_HOMALG_IO: true
