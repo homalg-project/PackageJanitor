@@ -146,7 +146,6 @@
           tests_additional_packages_to_load:
             - LinearAlgebraForCAP
             - GeneralizedMorphismsForCAP
-            - FreydCategoriesForCAP
             - Algebroids
             - Locales
             - SubcategoriesForCAP
