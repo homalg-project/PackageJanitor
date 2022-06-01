@@ -178,9 +178,9 @@
           needed_other_repositories:
             - homalg_project
             - CAP_project
-            - CategoryConstructor
           tests_only_basic: true
         ci_additional_repositories:
+          - CategoryConstructor
           - SubcategoriesForCAP
           - Locales
           - ZariskiFrames
