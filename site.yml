@@ -357,6 +357,7 @@
           - CatReps
         ci_additional_packages_to_test:
           - CatReps
+          - HigherHomologicalAlgebra
 
 - name: CatReps
   hosts: CatReps
