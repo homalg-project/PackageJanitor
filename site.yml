@@ -408,6 +408,8 @@
             - CAP_project
             - InfiniteLists
             - GradedCategories
+          tests_additional_packages_to_load:
+            - IO_ForHomalg
 
 - name: GradedCategories
   hosts: GradedCategories
