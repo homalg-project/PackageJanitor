@@ -1,7 +1,7 @@
 ---
 - name: Set package_enriched
   set_fact:
-    package_enriched: "{{ package | combine( { 'path': package.name, 'docu_only': package.docu_only|default(false), 'GAPDoc_docu': package.GAPDoc_docu|default(false) } ) }}"
+    package_enriched: "{{ package | combine( { 'path': package.name, 'repo': package.name, 'docu_only': package.docu_only|default(false), 'GAPDoc_docu': package.GAPDoc_docu|default(false) } ) }}"
 
 - import_tasks: tasks/ci.yml
   vars:

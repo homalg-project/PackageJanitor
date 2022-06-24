@@ -35,20 +35,16 @@
     block: |
       SourceRepository := rec(
           Type := "git",
-      {% if meta_package is defined %}
-          URL := "https://github.com/homalg-project/{{ meta_package.name }}",
-      {% else %}
-          URL := "https://github.com/homalg-project/{{ package.name }}",
-      {% endif %}
+          URL := "https://github.com/homalg-project/{{ package.repo }}",
       ),
       IssueTrackerURL := Concatenation( ~.SourceRepository.URL, "/issues" ),
       PackageWWWHome  := "https://homalg-project.github.io/pkg/{{ package.name }}",
       PackageInfoURL  := "https://homalg-project.github.io/{{ package.path }}/PackageInfo.g",
       README_URL      := "https://homalg-project.github.io/{{ package.path }}/README.md",
       {% if meta_package is defined -%}
-        ArchiveURL      := Concatenation( "https://github.com/homalg-project/{{ meta_package.name }}/releases/download/{{ package.name }}-", ~.Version, "/{{ package.name }}-", ~.Version ),
+        ArchiveURL      := Concatenation( "https://github.com/homalg-project/{{ package.repo }}/releases/download/{{ package.name }}-", ~.Version, "/{{ package.name }}-", ~.Version ),
       {% else -%}
-        ArchiveURL      := Concatenation( "https://github.com/homalg-project/{{ package.name }}/releases/download/v", ~.Version, "/{{ package.name }}-", ~.Version ),
+        ArchiveURL      := Concatenation( "https://github.com/homalg-project/{{ package.repo }}/releases/download/v", ~.Version, "/{{ package.name }}-", ~.Version ),
       {% endif %}
 
 - name: PackageInfo.g ArchiveFormats

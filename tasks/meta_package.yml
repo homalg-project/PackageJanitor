@@ -9,7 +9,7 @@
 
 - name: Set subpackages_enriched
   set_fact:
-    subpackages_enriched: "{{ subpackages_enriched + [ item | combine( { 'path': meta_package.name + '/' + item.name, 'docu_only': item.docu_only|default(false), 'GAPDoc_docu': item.GAPDoc_docu|default(false) } ) ] }}"
+    subpackages_enriched: "{{ subpackages_enriched + [ item | combine( { 'path': meta_package.name + '/' + item.name, 'repo': meta_package.name, 'docu_only': item.docu_only|default(false), 'GAPDoc_docu': item.GAPDoc_docu|default(false) } ) ] }}"
   loop: "{{ subpackages }}"
   no_log: true
 
