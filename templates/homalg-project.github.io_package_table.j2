@@ -28,8 +28,8 @@
 [pdf-{{ package.name }}-url]: https://homalg-project.github.io/{{ package.path }}/download_pdf.html
 
 {% endif %}
-[tests-{{ package.name }}-img]: https://github.com/homalg-project/{{ package.repo_name }}/workflows/Tests/badge.svg?branch=master
-[tests-{{ package.name }}-url]: https://github.com/homalg-project/{{ package.repo_name }}/actions?query=workflow%3ATests+branch%3Amaster
+[tests-{{ package.name }}-img]: https://github.com/homalg-project/{{ package.repo_name }}/actions/workflows/Tests.yml/badge.svg?branch=master
+[tests-{{ package.name }}-url]: https://github.com/homalg-project/{{ package.repo_name }}/actions/workflows/Tests.yml?query=branch%3Amaster
 
 {% if package.name == package.repo_name %}
 [codecov-{{ package.name }}-img]: https://codecov.io/gh/homalg-project/{{ package.name }}/branch/master/graph/badge.svg

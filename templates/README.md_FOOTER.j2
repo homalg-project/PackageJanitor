@@ -46,8 +46,8 @@ To obtain current versions of all dependencies, `git clone` (or `git pull` to up
 
 {% endif %}
 {% if meta_package is defined -%}
-[tests-img]: https://github.com/homalg-project/{{ meta_package.name }}/workflows/Tests/badge.svg?branch=master
-[tests-url]: https://github.com/homalg-project/{{ meta_package.name }}/actions?query=workflow%3ATests+branch%3Amaster
+[tests-img]: https://github.com/homalg-project/{{ meta_package.name }}/actions/workflows/Tests.yml/badge.svg?branch=master
+[tests-url]: https://github.com/homalg-project/{{ meta_package.name }}/actions/workflows/Tests.yml?query=branch%3Amaster
 
 {% if is_meta_package %}
 [codecov-img]: https://codecov.io/gh/homalg-project/{{ meta_package.name }}/branch/master/graph/badge.svg
@@ -63,8 +63,8 @@ To obtain current versions of all dependencies, `git clone` (or `git pull` to up
 [code-url]: https://github.com/homalg-project/{{ meta_package.name }}/tree/master/{{ package.name }}#top
 {% endif %}
 {% else %}
-[tests-img]: https://github.com/homalg-project/{{ package.name }}/workflows/Tests/badge.svg?branch=master
-[tests-url]: https://github.com/homalg-project/{{ package.name }}/actions?query=workflow%3ATests+branch%3Amaster
+[tests-img]: https://github.com/homalg-project/{{ package.name }}/actions/workflows/Tests.yml/badge.svg?branch=master
+[tests-url]: https://github.com/homalg-project/{{ package.name }}/actions/workflows/Tests.yml?query=branch%3Amaster
 
 [codecov-img]: https://codecov.io/gh/homalg-project/{{ package.name }}/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/homalg-project/{{ package.name }}
