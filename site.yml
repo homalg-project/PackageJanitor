@@ -791,6 +791,8 @@
             tests_only_basic: true
           - name: MonoidalCategories
             description: Monoidal and monoidal (co)closed categories
+            doc_additional_latex_preamble: |
+              \usepackage{mathtools}
             tests_additional_packages_to_load:
               - MatricesForHomalg
               - GaussForHomalg
