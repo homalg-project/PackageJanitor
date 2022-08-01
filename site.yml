@@ -1,4 +1,27 @@
 ---
+- name: FiniteCocompletion
+  hosts: FiniteCocompletion
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
+    - import_tasks: tasks/package.yml
+      vars:
+        package:
+          name: FiniteCocompletion
+          description: "Finite (co)product/(co)limit (co)completions"
+          doc_additional_latex_preamble: |
+            \usepackage{mathtools}
+            \DeclareUnicodeCharacter{2205}{\ensuremath{\emptyset}}
+            \DeclareUnicodeCharacter{2C76}{\ensuremath{\vdash}\!\!}
+            \DeclareUnicodeCharacter{2192}{\ensuremath{\!\!\rightarrow\!}}
+            \DeclareUnicodeCharacter{21AA}{\ensuremath{\!\!\hookrightarrow\!}}
+            \DeclareUnicodeCharacter{21A0}{\ensuremath{\!\!\twoheadrightarrow\!}}
+            \DeclareUnicodeCharacter{2B47}{\ensuremath{\!\!\xrightarrow{\sim}\!}}
+          needed_other_repositories:
+            - homalg_project
+            - CAP_project
+
 - name: ExteriorPowersCategories
   hosts: ExteriorPowersCategories
   connection: local
