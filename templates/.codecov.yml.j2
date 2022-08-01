@@ -1,10 +1,6 @@
 codecov:
   disable_default_path_fixes: true
   require_ci_to_pass: false
-fixes:
-  - "/home/gap/.gap/pkg/{{ package.name }}/::"
-ignore:
-  - "home/"
 {% if is_meta_package %}
 flags:
 {% for doc_package in doc_packages %}
