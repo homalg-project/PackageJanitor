@@ -1010,6 +1010,7 @@
               - path:              CAP_project/AttributeCategoryForCAP
               - path: HigherHomologicalAlgebra/BBGG
               - path: HigherHomologicalAlgebra/Bicomplexes
+              - path:              CAP_project/CartesianCategories
               - path:                          CategoryConstructor
               - path:                          CategoriesWithAmbientObjects
               - path:                          CatReps
