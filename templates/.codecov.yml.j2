@@ -2,6 +2,8 @@ codecov:
   disable_default_path_fixes: true
   require_ci_to_pass: false
 {% if is_meta_package %}
+comment:
+  after_n_builds: {{ doc_packages | length }}
 flags:
 {% for doc_package in doc_packages %}
   {{ doc_package.name }}:
