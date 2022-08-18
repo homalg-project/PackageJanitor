@@ -945,22 +945,39 @@
         subpackages:
           - name: homalg
             description: A homological algebra meta-package for computable Abelian categories
-            docu_only: true
+            GAPDoc_docu: true
+            tests_only_basic: true
+            tests_additional_packages_to_load:
+              - MatricesForHomalg
+              - Modules
           - name: 4ti2Interface
             description: A link to 4ti2
-            docu_only: true
+            tests_only_basic: true
           - name: ExamplesForHomalg
             description: Examples for the GAP Package homalg
-            docu_only: true
+            GAPDoc_docu: true
+            has_HOMALG_IO: true
+            tests_only_basic: true
+            tests_additional_packages_to_load:
+              - IO_ForHomalg
           - name: Gauss
             description: Extended Gauss functionality for GAP
-            docu_only: true
+            GAPDoc_docu: true
+            tests_only_basic: true
           - name: GaussForHomalg
             description: Gauss functionality for the homalg project
-            docu_only: true
+            GAPDoc_docu: true
+            tests_only_basic: true
+            tests_additional_packages_to_load:
+              - homalg
+              - Modules
           - name: GradedModules
             description: A homalg based package for the Abelian category of finitely presented graded modules over computable graded rings
-            docu_only: true
+            GAPDoc_docu: true
+            has_HOMALG_IO: true
+            tests_only_basic: true
+            tests_additional_packages_to_load:
+              - IO_ForHomalg
           - name: GradedRingForHomalg
             description: Endow Commutative Rings with an Abelian Grading
             GAPDoc_docu: true
@@ -970,28 +987,46 @@
               - IO_ForHomalg
           - name: HomalgToCAS
             description: A window to the outer world
-            docu_only: true
+            GAPDoc_docu: true
+            tests_only_basic: true
           - name: IO_ForHomalg
             description: IO capabilities for the homalg project
-            docu_only: true
+            GAPDoc_docu: true
+            tests_only_basic: true
           - name: LocalizeRingForHomalg
             description: A Package for Localization of Polynomial Rings
-            docu_only: true
+            GAPDoc_docu: true
+            has_HOMALG_IO: true
+            tests_only_basic: true
+            tests_additional_packages_to_load:
+              - RingsForHomalg
+              - IO_ForHomalg
           - name: MatricesForHomalg
             description: Matrices for the homalg project
-            docu_only: true
+            GAPDoc_docu: true
+            tests_only_basic: true
           - name: Modules
             description: A homalg based package for the Abelian category of finitely presented modules over computable rings
-            docu_only: true
+            GAPDoc_docu: true
+            tests_only_basic: true
+            tests_additional_packages_to_load:
+              - MatricesForHomalg
           - name: RingsForHomalg
             description: Dictionaries of external rings
-            docu_only: true
+            GAPDoc_docu: true
+            has_HOMALG_IO: true
+            tests_only_basic: true
+            tests_additional_packages_to_load:
+              - IO_ForHomalg
           - name: SCO
             description: SCO - Simplicial Cohomology of Orbifolds
-            docu_only: true
+            GAPDoc_docu: true
+            tests_only_basic: true
+            tests_additional_packages_to_load:
+              - GaussForHomalg
           - name: ToolsForHomalg
             description: Special methods and knowledge propagation tools
-            docu_only: true
+            tests_only_basic: true
 
 - name: homalg-project.github.io
   hosts: homalg-project.github.io
