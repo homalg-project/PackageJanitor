@@ -1127,7 +1127,7 @@
           - url: https://nbviewer.jupyter.org/github/homalg-project/CapAndHomalgNotebooks/blob/master/DivFreeNotIndFree.ipynb
             names:
               - DivFreeNotIndFree
-          - url: https://nbviewer.jupyter.org/github/homalg-project/LazyCategories/blob/master/examples/julia/notebooks/SnakeInAbelian.ipynb
+          - url: https://nbviewer.jupyter.org/github/homalg-project/LazyCategories/blob/master/examples/notebooks/SnakeInAbelian.ipynb
             names:
               - SnakeInAbelian
           - url: https://nbviewer.jupyter.org/github/homalg-project/CapAndHomalgNotebooks/blob/master/SymmetricAlgebraInternalToS4rep.ipynb
