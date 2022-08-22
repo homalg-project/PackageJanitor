@@ -867,9 +867,15 @@
             - ParallelizedIterators
             - alcove
           tests_additional_packages_to_load:
+            - ZariskiFrames
             - IO_ForHomalg
           tests_only_basic: true
-        ci_do_not_run_tests: true
+        ci_additional_repositories:
+          - CAP_project
+          - Toposes
+          - CategoryConstructor
+          - Locales
+          - ZariskiFrames
 
 - name: LoopIntegrals
   hosts: LoopIntegrals
