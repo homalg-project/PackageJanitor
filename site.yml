@@ -281,7 +281,16 @@
             - Toposes
             - CategoryConstructor
             - Locales
+          tests_additional_packages_to_load:
+            - IO_ForHomalg
           tests_only_basic: true
+        ci_additional_repositories:
+            - ArangoDBInterface
+            - ParallelizedIterators
+            - alcove
+            - MatroidGeneration
+        ci_additional_packages_to_test:
+            - MatroidGeneration
 
 - name: SubcategoriesForCAP
   hosts: SubcategoriesForCAP
