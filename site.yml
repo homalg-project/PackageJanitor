@@ -317,6 +317,9 @@
             - CAP_project
             - CategoryConstructor
           tests_additional_packages_to_load:
+            - IO_ForHomalg
+            - FreydCategoriesForCAP
+            - FinSetsForCAP
             - Locales
           tests_only_basic: true
         ci_additional_repositories:
