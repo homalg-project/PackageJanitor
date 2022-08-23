@@ -244,6 +244,9 @@
             - Toposes
             - CategoryConstructor
           tests_additional_packages_to_load:
+            - IO_ForHomalg
+            - Toposes
+            - FreydCategoriesForCAP
             - SubcategoriesForCAP
             - LazyCategories
           tests_only_basic: true
