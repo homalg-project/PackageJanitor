@@ -218,6 +218,11 @@
     path: "{{ pkg_dir }}/{{ package.path }}/examples/notebooks/"
   register: notebooks_dir
 
+- name: Check if package has Makefile.in
+  stat:
+    path: "{{ pkg_dir }}/{{ package.path }}/Makefile.in"
+  register: Makefile_in
+
 - name: makefile
   template:
     src: makefile.j2
@@ -225,7 +230,7 @@
   vars:
     has_precompiled_categories: "{{ precompiled_categories_dir.stat.exists }}"
     has_notebooks: "{{ notebooks_dir.stat.exists }}"
-  when: not package.docu_only
+  when: (not package.docu_only) and (not Makefile_in.stat.exists)
 
 - name: testall.g
   template:
