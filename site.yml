@@ -950,6 +950,26 @@
             - IO_ForHomalg
           tests_only_basic: true
 
+- name: NConvex
+  hosts: NConvex
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
+    - import_tasks: tasks/package.yml
+      vars:
+        package:
+          name: NConvex
+          description: "A Gap package to perform polyhedral computations"
+          has_HOMALG_IO: false
+          doc_additional_latex_preamble: |
+            \usepackage{mathtools}
+          needed_other_repositories:
+            - homalg_project
+            - CddInterface
+            - NormalizInterface
+          tests_only_basic: true
+
 - name: homalg_project
   hosts: homalg_project
   connection: local
