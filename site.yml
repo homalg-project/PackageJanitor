@@ -363,7 +363,9 @@
           - FinSetsForCAP
           - SubcategoriesForCAP
           - CatReps
+          - FreydCategoriesForCAP
         ci_additional_packages_to_test:
+          - FreydCategoriesForCAP
           - FunctorCategories
           - CatReps
 
