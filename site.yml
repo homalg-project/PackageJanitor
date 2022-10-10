@@ -1161,26 +1161,29 @@
           - url: https://nbviewer.jupyter.org/github/homalg-project/capdays-2018/blob/gh-pages/materials/Abelian%20Categories.ipynb
             names:
               - AbelianCategories
-          - url: https://nbviewer.jupyter.org/github/homalg-project/CapAndHomalgNotebooks/blob/master/CategoryOfRepresentations.ipynb
+          - url: https://github.com/homalg-project/CatReps/blob/master/examples/notebooks/CategoryOfRepresentations.ipynb
             names:
               - CategoryOfRepresentations
               - C3C3
-          - url: https://nbviewer.jupyter.org/github/homalg-project/CapAndHomalgNotebooks/blob/master/DivFreeNotIndFree.ipynb
+          - url: https://github.com/homalg-project/MatroidGeneration/blob/master/examples/julia/notebooks/DivFreeNotIndFree.ipynb
             names:
               - DivFreeNotIndFree
-          - url: https://nbviewer.jupyter.org/github/homalg-project/LazyCategories/blob/master/examples/notebooks/SnakeInAbelian.ipynb
+          - url: https://github.com/homalg-project/LazyCategories/blob/master/examples/notebooks/SnakeInAbelian.ipynb
             names:
               - SnakeInAbelian
-          - url: https://nbviewer.jupyter.org/github/homalg-project/CapAndHomalgNotebooks/blob/master/SymmetricAlgebraInternalToS4rep.ipynb
+          - url: https://github.com/homalg-project/InternalModules/blob/master/examples/notebooks/SymmetricAlgebraInternalToS4rep.ipynb
             names:
               - SymmetricAlgebraInternalToS4rep
               - S4rep
-          - url: https://nbviewer.jupyter.org/github/homalg-project/CapAndHomalgNotebooks/blob/master/TiltingEquivalence.ipynb
+          - url: https://github.com/homalg-project/HigherHomologicalAlgebra/blob/master/Notebooks/TiltingEquivalence.ipynb
             names:
               - TiltingEquivalence
-          - url: https://nbviewer.jupyter.org/github/homalg-project/CapAndHomalgNotebooks/blob/master/uMPS(2\%2C2\%2C4)_0dim.ipynb
+          - url: https://github.com/homalg-project/ZariskiFrames/blob/master/examples/julia/notebooks/uMPS(2%2C2%2C4)_0dim.ipynb
             names:
               - uMPS224
-          - url: https://nbviewer.jupyter.org/github/homalg-project/ZariskiFrames/blob/master/examples/julia/notebooks/uMPS%282%2C2%2C5%29_0dim.ipynb
+          - url: https://github.com/homalg-project/ZariskiFrames/blob/master/examples/julia/notebooks/uMPS(2%2C2%2C5)_0dim.ipynb
             names:
               - uMPS225
+          - url: https://github.com/homalg-project/LoopIntegrals/blob/master/examples/julia/notebooks/1LoopBox_using_Ore_algebra.ipynb
+            names:
+              - 1LoopBox
