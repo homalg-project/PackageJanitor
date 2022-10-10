@@ -1182,3 +1182,6 @@
           - url: https://github.com/homalg-project/ZariskiFrames/blob/master/examples/julia/notebooks/uMPS(2%2C2%2C5)_0dim.ipynb
             names:
               - uMPS225
+          - url: https://github.com/homalg-project/LoopIntegrals/blob/master/examples/julia/notebooks/1LoopBox_using_Ore_algebra.ipynb
+            names:
+              - 1LoopBox
