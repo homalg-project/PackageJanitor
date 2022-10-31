@@ -732,6 +732,7 @@
               \geometry{left=26mm,right=26mm}
             tests_additional_packages_to_load:
               - IO_ForHomalg
+              - FreydCategoriesForCAP
               - LinearAlgebraForCAP
               - RingsForHomalg
           - name: ComplexesAndFilteredObjectsForCAP
