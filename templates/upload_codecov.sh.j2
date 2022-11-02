@@ -25,8 +25,8 @@ shasum -a 256 -c codecov.SHA256SUM
 chmod +x codecov
 {% if is_meta_package %}
 {% for doc_package in doc_packages -%}
-./codecov -Z -F {{ doc_package.name }} || ./codecov -Z -F {{ doc_package.name }} || ./codecov -Z -F {{ doc_package.name }}
+./codecov -Z -F {{ doc_package.name }} || (sleep 30; ./codecov -Z -F {{ doc_package.name }} || (sleep 30; ./codecov -Z -F {{ doc_package.name }}))
 {% endfor %}
 {% else %}
-./codecov -Z || ./codecov -Z || ./codecov -Z
+./codecov -Z || (sleep 30; ./codecov -Z || (sleep 30; ./codecov -Z))
 {% endif %}
