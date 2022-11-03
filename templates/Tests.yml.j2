@@ -23,6 +23,9 @@ jobs:
       # keep workflow active even if repository has no activity for 60 days (do not execute for pull requests)
       - run: '[ "$GITHUB_EVENT_NAME" = "pull_request" ] || curl --fail -X PUT -H "Accept: application/vnd.github.v3+json" -H "Authorization: token {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}" https://api.github.com/repos/$GITHUB_REPOSITORY/actions/workflows/Tests.yml/enable'
       - uses: actions/checkout@v3
+        with:
+          # the persisted token interferes with the subsplit token used below
+          persist-credentials: false
       - run: cp -a $GITHUB_WORKSPACE /home/gap/.gap/pkg/
       - run: |
           export HOME="/home/gap"
@@ -66,7 +69,8 @@ jobs:
             git checkout master; \
             LANG=C.UTF-8 ./make_dist.sh --token "{% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}"; \
       {%- if is_meta_package %}
-            # publish subsplits
+            # publish subsplits (fetch all history first)
+            git fetch --unshallow; \
         {%- for subpackage in subpackages %}
 		  {%- if subpackage.has_subsplit is defined and subpackage.has_subsplit %}
             git subtree split --prefix={{ subpackage.name }} -b {{ subpackage.name }}-split && git push https://homalg-project:{% raw %}${{ secrets.SUBSPLIT_PUSH_SECRET }}{% endraw %}@github.com/homalg-project/{{ subpackage.name }} {{ subpackage.name }}-split:master; \
