@@ -637,6 +637,7 @@
             tests_only_basic: true
             tests_additional_packages_to_load:
               - IO_ForHomalg
+              - Algebroids
               - FreydCategoriesForCAP
           - name: HomotopyCategories
             description: Homotopy categories of additive categories
@@ -645,6 +646,7 @@
               \usepackage{tikz}
               \usetikzlibrary{shapes,arrows,matrix}
             tests_additional_packages_to_load:
+              - Algebroids
               - ModulePresentations
               - FreydCategoriesForCAP
             tests_only_basic: true
@@ -657,7 +659,12 @@
             description: Stable categories of additive categories
             has_HOMALG_IO: true
             tests_additional_packages_to_load:
+              - GradedModules
               - ModulePresentations
+              - IO_ForHomalg
+              - FinSetsForCAP
+              - QPA
+              - Algebroids
               - FreydCategoriesForCAP
               - DerivedCategories
               - FunctorCategories
