@@ -6,12 +6,14 @@
 | [{{ package.name }}](https://homalg-project.github.io/pkg/{{ package.name }}) | {# -#}
   {{ package.description }} | {# -#}
   {%- if package.has_docu -%}
-    [![HTML stable documentation][html-{{ package.name }}-img]][html-{{ package.name }}-url] [![PDF stable documentation][pdf-{{ package.name }}-img]][pdf-{{ package.name }}-url]
+    [![HTML stable documentation][html-{{ package.name }}-img]][html-{{ package.name }}-url] [![PDF stable documentation][pdf-{{ package.name }}-img]][pdf-{{ package.name }}-url] | {# -#}
+    [![Build Status][tests-{{ package.name }}-img]][tests-{{ package.name }}-url] | {# -#}
+    [![Code Coverage][codecov-{{ package.name }}-img]][codecov-{{ package.name }}-url] | {# -#}
   {%- else -%}
-    Not available
-  {%- endif %} | {# -#}
-  [![Build Status][tests-{{ package.name }}-img]][tests-{{ package.name }}-url] | {# -#}
-  [![Code Coverage][codecov-{{ package.name }}-img]][codecov-{{ package.name }}-url] | {# -#}
+    Not available | {# -#}
+    Not available | {# -#}
+    Not available | {# -#}
+  {%- endif %}
   {%- if package.status == "deposited" -%}
   [deposited][deposited-{{ package.name }}-url]
   {%- else -%}
@@ -27,7 +29,6 @@
 [pdf-{{ package.name }}-img]: https://img.shields.io/badge/PDF-stable-blue.svg
 [pdf-{{ package.name }}-url]: https://homalg-project.github.io/{{ package.path }}/download_pdf.html
 
-{% endif %}
 [tests-{{ package.name }}-img]: https://github.com/homalg-project/{{ package.repo_name }}/actions/workflows/Tests.yml/badge.svg?branch=master
 [tests-{{ package.name }}-url]: https://github.com/homalg-project/{{ package.repo_name }}/actions/workflows/Tests.yml?query=branch%3Amaster
 
@@ -39,6 +40,7 @@
 [codecov-{{ package.name }}-url]: https://codecov.io/gh/homalg-project/{{ package.repo_name }}/tree/master/{{ package.name }}
 {% endif %}
 
+{% endif %}
 {% if package.status == "deposited" %}
 [deposited-{{ package.name }}-url]: https://www.gap-system.org/Packages/{{ package.name.lower() }}.html
 
