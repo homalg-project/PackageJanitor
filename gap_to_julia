@@ -1,0 +1,86 @@
+#!/bin/bash
+
+GAP_PKG_DIR=~/.gap/pkg/
+JULIA_PKG_DIR=~/.julia/dev/
+
+if [ "$#" -ne 1 ]; then
+	echo "Usage: gap_to_julia PKG_NAME"
+	exit 1
+fi
+
+PKG_NAME="$1"
+
+if [ -d "$GAP_PKG_DIR$PKG_NAME" ]; then
+	PKG_FULL_NAME="$PKG_NAME"
+elif [ -d "$GAP_PKG_DIR/CAP_project/$PKG_NAME" ]; then
+	PKG_FULL_NAME="CAP_project/$PKG_NAME"
+else
+	echo "Could not find GAP package $PKG_NAME"
+	exit 1
+fi
+
+if [ ! -d "$JULIA_PKG_DIR$PKG_NAME" ]; then
+	echo "Could not find Julia package $PKG_NAME"
+	exit 1
+fi
+
+mkdir -p "$JULIA_PKG_DIR$PKG_NAME/src/gap/"
+
+if [ -d "$GAP_PKG_DIR$PKG_FULL_NAME/gap/precompiled_categories/" ]; then
+	mkdir -p "$JULIA_PKG_DIR$PKG_NAME/src/gap/precompiled_categories/"
+fi
+
+cp -u "$(dirname $(readlink $0))/init.jl" "$JULIA_PKG_DIR$PKG_NAME/src/init.jl"
+cmp -s "$(dirname $(readlink $0))/init.jl" "$JULIA_PKG_DIR$PKG_NAME/src/init.jl" || echo "init.jl in Julia package was modified, not overwriting"
+
+cd "$GAP_PKG_DIR$PKG_FULL_NAME"
+
+cat "init.g" | sed "s/ReadPackage( \"$PKG_NAME\", /include( /g" | sed 's/" );$/.autogen.jl" );/' > "$JULIA_PKG_DIR$PKG_NAME/src/init.g.autogen.jl"
+cat "read.g" | sed "s/ReadPackage( \"$PKG_NAME\", /include( /g" | sed 's/" );$/.autogen.jl" );/' > "$JULIA_PKG_DIR$PKG_NAME/src/read.g.autogen.jl"
+
+cd gap
+
+find . \( -type d -name .git -prune \) -o -type f -exec sh -c "cat '{}' \
+| sed 's/ = / == /g' \
+| sed 's/ <> / != /g' \
+| sed 's/ :=/ =/g' \
+| sed 's/ : /; /g' \
+| sed 's/ :$/,/g' \
+| sed 's/!\\././g' \
+| sed 's/ then$//g' \
+| sed 's/fi;$/end;/g' \
+| sed 's/ do$//g' \
+| sed 's/od;$/end;/g' \
+| sed 's/ and / \\&\\& /g' \
+| sed 's/ and$/ \\&\\&/g' \
+| sed 's/ or / || /g' \
+| sed 's/ or$/ ||/g' \
+| sed 's/not /!/g' \
+| sed 's/elif/elseif/g' \
+| sed 's/\\.( \\([^)]*\\) )/[\1]/g' \
+| sed 's/\\.(\\([^)]*\\))/[\1]/g' \
+| sed 's/infinity/Inf/g' \
+| sed 's/\\$/ /g' \
+| sed 's/\\[ \\([^.[]*\\) \\.\\. \\([^]]*\\)\\ ]/(\1):(\2)/g' \
+| sed 's/Unbind( \\(.*\\) );$/\1 = nothing;/g' \
+| sed 's/ Int(/ int(/g' \
+| sed 's/ String(/ string(/g' \
+| sed 's/{ arg } ->/( arg... ) ->/g' \
+| sed 's/{\\([^}]*\\)} ->/(\1) ->/g' \
+| sed 's/{/[/g' \
+| sed 's/}/]/g' \
+| sed 's/# !/#/g' \
+| sed 's/ in / ⥉ /g' \
+| sed 's/for \\([^⥉]*\\) ⥉ \\([^⥉]*\\)$/for \1 in \2/g' \
+| sed 's/\\\\mapsto/\\\\\\\\mapsto/g' \
+| sed 's/\\\\mathtt/\\\\\\\\mathtt/g' \
+| sed 's/function( arg )/function( arg... )/g' \
+| sed 's/function ( arg )/function ( arg... )/g' \
+| sed 's/Method( \\\\\\[\\\\\\],/Method( getindex,/g' \
+| sed 's/Method( \\\\=,/Method( ==,/g' \
+| sed 's/Method( \\\\+,/Method( +,/g' \
+| sed 's/Method( \\\\-,/Method( -,/g' \
+| sed 's/Method( \\\\\\*,/Method( \\*,/g' \
+| sed 's/Method( \\\\\\/,/Method( \\/,/g' \
+| sed 's/Method( \\\\in,/Method( in,/g' \
+> $JULIA_PKG_DIR$PKG_NAME/src/gap/'{}'.autogen.jl" \;
