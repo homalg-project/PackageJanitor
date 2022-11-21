@@ -30,8 +30,8 @@ if [ -d "$GAP_PKG_DIR$PKG_FULL_NAME/gap/precompiled_categories/" ]; then
 	mkdir -p "$JULIA_PKG_DIR$PKG_NAME/src/gap/precompiled_categories/"
 fi
 
-cp -u "$(dirname $(readlink $0))/init.jl" "$JULIA_PKG_DIR$PKG_NAME/src/init.jl"
-cmp -s "$(dirname $(readlink $0))/init.jl" "$JULIA_PKG_DIR$PKG_NAME/src/init.jl" || echo "init.jl in Julia package was modified, not overwriting"
+cp -u "$(dirname $(realpath $0))/init.jl" "$JULIA_PKG_DIR$PKG_NAME/src/init.jl"
+cmp -s "$(dirname $(realpath $0))/init.jl" "$JULIA_PKG_DIR$PKG_NAME/src/init.jl" || echo "init.jl in Julia package was modified, not overwriting"
 
 cd "$GAP_PKG_DIR$PKG_FULL_NAME"
 
@@ -40,7 +40,7 @@ cat "read.g" | sed "s/ReadPackage( \"$PKG_NAME\", /include( /g" | sed 's/" );$/.
 
 cd gap
 
-find . \( -type d -name .git -prune \) -o -type f -exec sh -c "cat '{}' \
+find . \( -type d -name .git -prune \) -o \( -type f -name '*.g[di]' \) -exec sh -c "cat '{}' \
 | sed 's/ = / == /g' \
 | sed 's/ <> / != /g' \
 | sed 's/ :=/ =/g' \
