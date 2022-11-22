@@ -250,6 +250,7 @@
             - SubcategoriesForCAP
             - LazyCategories
           tests_only_basic: true
+          tests_without_precompiled_code: true
         ci_additional_repositories:
           - SubcategoriesForCAP
           - ZariskiFrames
@@ -325,6 +326,7 @@
             - FinSetsForCAP
             - Locales
           tests_only_basic: true
+          tests_without_precompiled_code: true
         ci_additional_repositories:
           - Toposes
           - Locales
@@ -356,6 +358,7 @@
             - HigherHomologicalAlgebra
             - QPA2
           tests_only_basic: true
+          tests_without_precompiled_code: true
         ci_additional_repositories:
           - CategoryConstructor
           - FunctorCategories
@@ -531,6 +534,7 @@
             - homalg_project
             - CAP_project
             - Toposes
+          tests_without_precompiled_code: true
 
 - name: FinGSetsForCAP
   hosts: FinGSetsForCAP

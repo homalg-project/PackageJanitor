@@ -31,7 +31,7 @@ test-with-coverage: doc
 	gap --quitonbreak --cover stats tst/testall.g
 	gap --quitonbreak --norepl -c 'LoadPackage("profiling"); OutputJsonCoverage("stats", "coverage.json");'
 
-{% if has_precompiled_categories %}
+{% if package.tests_without_precompiled_code %}
 test-with-coverage-without-precompiled-code: doc
 	gap --quitonbreak --cover stats_no_precompiled_code tst/testall_no_precompiled_code.g
 	gap --quitonbreak --norepl -c 'LoadPackage("profiling"); OutputJsonCoverage("stats_no_precompiled_code", "coverage_no_precompiled_code.json");'
@@ -74,4 +74,4 @@ test-spacing:
 	rm spacing_diff
 	rm spacing_diff_no_blanks
 
-ci-test: test-basic-spacing{% if not (package.tests_only_basic | default(false)) %} test-spacing test-doc{% endif %} test-with-coverage{% if has_precompiled_categories %} test-with-coverage-without-precompiled-code{% endif %}{% if has_notebooks %} test-notebooks{% endif %}
+ci-test: test-basic-spacing{% if not (package.tests_only_basic | default(false)) %} test-spacing test-doc{% endif %} test-with-coverage{% if package.tests_without_precompiled_code %} test-with-coverage-without-precompiled-code{% endif %}{% if has_notebooks %} test-notebooks{% endif %}

@@ -208,11 +208,6 @@
     mode: a+x
   when: not package.docu_only
 
-- name: Check if package has precompiled categories
-  stat:
-    path: "{{ pkg_dir }}/{{ package.path }}/gap/precompiled_categories/"
-  register: precompiled_categories_dir
-
 - name: Check if package has notebooks
   stat:
     path: "{{ pkg_dir }}/{{ package.path }}/examples/notebooks/"
@@ -228,7 +223,6 @@
     src: makefile.j2
     dest: "{{ pkg_dir }}/{{ package.path }}/makefile"
   vars:
-    has_precompiled_categories: "{{ precompiled_categories_dir.stat.exists }}"
     has_notebooks: "{{ notebooks_dir.stat.exists }}"
   when: (not package.docu_only) and (not Makefile_in.stat.exists)
 
@@ -242,13 +236,13 @@
   template:
     src: testall_no_precompiled_code.g.j2
     dest: "{{ pkg_dir }}/{{ package.path }}/tst/testall_no_precompiled_code.g"
-  when: (not package.docu_only) and precompiled_categories_dir.stat.exists
+  when: package.tests_without_precompiled_code
 
 - name: Remove testall_no_precompiled_code.g.j2
   file:
     path: "{{ pkg_dir }}/{{ package.path }}/tst/testall_no_precompiled_code.g"
     state: absent
-  when: not ((not package.docu_only) and precompiled_categories_dir.stat.exists)
+  when: not package.tests_without_precompiled_code
 
 - name: PackageInfo.g TestFile
   lineinfile:
