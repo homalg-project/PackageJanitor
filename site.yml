@@ -1,26 +1,30 @@
 ---
-- name: FiniteCocompletion
-  hosts: FiniteCocompletion
+- name: CategoricalTowers
+  hosts: CategoricalTowers
   connection: local
   vars:
     pkg_dir: "~/.gap/pkg/"
   tasks:
-    - import_tasks: tasks/package.yml
+    - import_tasks: tasks/meta_package.yml
       vars:
-        package:
-          name: FiniteCocompletion
-          description: "Finite (co)product/(co)limit (co)completions"
-          doc_additional_latex_preamble: |
-            \usepackage{mathtools}
-            \DeclareUnicodeCharacter{2205}{\ensuremath{\emptyset}}
-            \DeclareUnicodeCharacter{2C76}{\ensuremath{\vdash}\!\!}
-            \DeclareUnicodeCharacter{2192}{\ensuremath{\!\!\rightarrow\!}}
-            \DeclareUnicodeCharacter{21AA}{\ensuremath{\!\!\hookrightarrow\!}}
-            \DeclareUnicodeCharacter{21A0}{\ensuremath{\!\!\twoheadrightarrow\!}}
-            \DeclareUnicodeCharacter{2B47}{\ensuremath{\!\!\xrightarrow{\sim}\!}}
-          needed_other_repositories:
-            - homalg_project
-            - CAP_project
+        meta_package:
+          name: CategoricalTowers
+          description: Towers of category constructors
+        subpackages:
+          - name: FiniteCocompletion
+            description: Finite (co)product/(co)limit (co)completions
+            doc_additional_latex_preamble: |
+              \usepackage{mathtools}
+              \DeclareUnicodeCharacter{2205}{\ensuremath{\emptyset}}
+              \DeclareUnicodeCharacter{2C76}{\ensuremath{\vdash}\!\!}
+              \DeclareUnicodeCharacter{2192}{\ensuremath{\!\!\rightarrow\!}}
+              \DeclareUnicodeCharacter{21AA}{\ensuremath{\!\!\hookrightarrow\!}}
+              \DeclareUnicodeCharacter{21A0}{\ensuremath{\!\!\twoheadrightarrow\!}}
+              \DeclareUnicodeCharacter{2B47}{\ensuremath{\!\!\xrightarrow{\sim}\!}}
+            needed_other_repositories:
+              - homalg_project
+              - CAP_project
+            tests_only_basic: true
 
 - name: ExteriorPowersCategories
   hosts: ExteriorPowersCategories
@@ -1115,6 +1119,7 @@
               - path:                          ExteriorPowersCategories
               - path:                          FinSetsForCAP
               - path:                          FinGSetsForCAP
+              - path:        CategoricalTowers/FiniteCocompletion
               - path:              CAP_project/FreydCategoriesForCAP
               - path:                          FunctorCategories
               - path:              CAP_project/GeneralizedMorphismsForCAP
