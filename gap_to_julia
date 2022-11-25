@@ -83,4 +83,21 @@ find . \( -type d -name .git -prune \) -o \( -type f -name '*.g[di]' \) -exec sh
 | sed 's/Method( \\\\\\*,/Method( \\*,/g' \
 | sed 's/Method( \\\\\\/,/Method( \\/,/g' \
 | sed 's/Method( \\\\in,/Method( in,/g' \
+| sed 's/NTuple/nTuple/g' \
+| sed 's/^DeclareInfoClass(/@DeclareInfoClass(/g' \
+| sed 's/^DeclareAttribute(/@DeclareAttribute(/g' \
+| sed 's/^DeclareSynonymAttr(/@DeclareSynonymAttr(/g' \
+| sed 's/^DeclareProperty(/@DeclareProperty(/g' \
+| sed 's/^DeclareFilter(/@DeclareFilter(/g' \
+| sed 's/^DeclareCategory(/@DeclareFilter(/g' \
+| sed 's/^InstallValue(/@InstallValueConst(/g' \
+| sed 's/InstallValue(/@InstallValue(/g' \
+| sed 's/BindGlobal(/@BindGlobal(/g' \
+| sed 's/DeclareGlobalFunction(/@DeclareGlobalFunction(/g' \
+| sed 's/InstallGlobalFunction(/@InstallGlobalFunction(/g' \
+| sed 's/^DeclareOperation(/@DeclareOperation(/g' \
+| sed 's/^DeclareOperationWithCache(/@DeclareOperation(/g' \
+| sed 's/^KeyDependentOperation(/@KeyDependentOperation(/g' \
+| sed 's/^InstallMethod(/InstallMethod( @__MODULE__, /g' \
+| sed 's/^InstallMethodForCompilerForCAP(/InstallMethod( @__MODULE__, /g' \
 > $JULIA_PKG_DIR$PKG_NAME/src/gap/'{}'.autogen.jl" \;

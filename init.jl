@@ -2,10 +2,9 @@ include("init.g.autogen.jl")
 include("read.g.autogen.jl")
 
 function __init__()
-	symbol = Symbol("init_" * string(@__MODULE__))
-	if isdefined(@__MODULE__, symbol)
-		eval(symbol)()
-	end
+	
+	@init_CAP_package
+	
 end
 
 # export all symbols
