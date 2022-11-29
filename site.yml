@@ -386,7 +386,6 @@
           needed_other_repositories:
             - homalg_project
             - CAP_project
-            - CategoryConstructor
             - HigherHomologicalAlgebra
             - QPA2
             - Algebroids
