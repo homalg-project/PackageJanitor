@@ -13,7 +13,7 @@ on:
 # cancel runs for pull requests on force push
 # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-using-a-fallback-value
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}-${{ github.run_attempt }}
+  group: {% raw %}${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}-${{ github.run_attempt }}{% endraw %}
   cancel-in-progress: true
 
 jobs:
