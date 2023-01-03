@@ -24,6 +24,9 @@
             needed_other_repositories:
               - homalg_project
               - CAP_project
+            tests_additional_packages_to_load:
+              - Algebroids
+              - LazyCategories
             tests_only_basic: true
           - name: PreSheaves
             description: Categories of (co)presheaves
@@ -42,8 +45,13 @@
               - FinSetsForCAP
             tests_only_basic: true
         ci_additional_repositories:
+          - HigherHomologicalAlgebra
+          - QPA2
+          - Algebroids
           - Toposes
           - FinSetsForCAP
+          - CategoryConstructor
+          - LazyCategories
 
 - name: ExteriorPowersCategories
   hosts: ExteriorPowersCategories
