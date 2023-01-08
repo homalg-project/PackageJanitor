@@ -1193,6 +1193,9 @@
           - url: https://github.com/homalg-project/FunctorCategories/blob/master/examples/notebooks/SnakeInFreeAbelian.ipynb
             names:
               - SnakeInFreeAbelian
+          - url: https://github.com/homalg-project/FunctorCategories/blob/master/examples/notebooks/PastingLawForPullbacks.ipynb
+            names:
+              - PastingLawForPullbacks
           - url: https://github.com/homalg-project/InternalModules/blob/master/examples/notebooks/SymmetricAlgebraInternalToS4rep.ipynb
             names:
               - SymmetricAlgebraInternalToS4rep
