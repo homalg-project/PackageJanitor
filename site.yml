@@ -398,6 +398,10 @@
             \DeclareUnicodeCharacter{21AA}{\ensuremath{\!\!\hookrightarrow\!}}
             \DeclareUnicodeCharacter{21A0}{\ensuremath{\!\!\twoheadrightarrow\!}}
             \DeclareUnicodeCharacter{2B47}{\ensuremath{\!\!\xrightarrow{\sim}\!}}
+            \DeclareUnicodeCharacter{21A6}{\ensuremath{\mapsto}}
+          tests_additional_packages_to_load:
+            - FreydCategoriesForCAP
+            - Toposes
           tests_only_basic: true
         ci_additional_repositories:
           - Toposes
@@ -430,6 +434,9 @@
             - Toposes
             - FinSetsForCAP
             - SubcategoriesForCAP
+          tests_additional_packages_to_load:
+            - FreydCategoriesForCAP
+            - Toposes
           tests_only_basic: true
 
 - name: InternalModules
