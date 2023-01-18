@@ -28,6 +28,7 @@
               - Algebroids
               - LazyCategories
             tests_only_basic: true
+            tests_without_precompiled_code: true
           - name: PreSheaves
             description: Categories of (co)presheaves
             doc_additional_latex_preamble: |
