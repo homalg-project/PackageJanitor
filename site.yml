@@ -45,13 +45,28 @@
             tests_additional_packages_to_load:
               - FinSetsForCAP
             tests_only_basic: true
+          - name: CategoryConstructor
+            description: "Construct categories out of given ones"
+            doc_additional_latex_preamble: |
+              \usepackage{mathtools}
+              \usepackage{tikz}
+              \usetikzlibrary{arrows}
+              \pgfarrowsdeclarecombine{twohead}{twohead}{latex}{latex}{latex}{latex}
+            needed_other_repositories:
+              - homalg_project
+              - CAP_project
+            tests_additional_packages_to_load:
+              - Locales
+              - SubcategoriesForCAP
+            tests_only_basic: true
         ci_additional_repositories:
           - HigherHomologicalAlgebra
           - QPA2
           - Algebroids
           - Toposes
           - FinSetsForCAP
-          - CategoryConstructor
+          - Locales
+          - SubcategoriesForCAP
           - LazyCategories
 
 - name: ExteriorPowersCategories
@@ -528,7 +543,6 @@
         package:
           name: CategoryConstructor
           description: "Construct categories out of given ones"
-          has_HOMALG_IO: true
           doc_additional_latex_preamble: |
             \usepackage{mathtools}
             \usepackage{tikz}
@@ -1136,7 +1150,7 @@
               - path: HigherHomologicalAlgebra/BBGG
               - path: HigherHomologicalAlgebra/Bicomplexes
               - path:              CAP_project/CartesianCategories
-              - path:                          CategoryConstructor
+              - path:        CategoricalTowers/CategoryConstructor
               - path:                          CategoriesWithAmbientObjects
               - path:                          CatReps
               - path:              CAP_project/CompilerForCAP
