@@ -189,6 +189,18 @@
             - homalg_project
             - CAP_project
             tests_only_basic: true
+          - name: IntrinsicGradedModules
+            description: "Finitely presented graded modules over computable graded rings allowing multiple presentations and the notion of elements"
+            has_HOMALG_IO: true
+            doc_additional_latex_preamble: |
+              \usepackage{mathtools}
+            needed_other_repositories:
+              - homalg_project
+              - CAP_project
+            tests_additional_packages_to_load:
+              - RingsForHomalg
+              - IO_ForHomalg
+            tests_only_basic: true
         ci_additional_repositories:
           - HigherHomologicalAlgebra
           - QPA2
@@ -198,11 +210,9 @@
           - ParallelizedIterators
           - alcove
           - MatroidGeneration
-          - IntrinsicGradedModules
         ci_additional_packages_to_test:
           - FinSetsForCAP
           - MatroidGeneration
-          - IntrinsicGradedModules
 
 - name: ExteriorPowersCategories
   hosts: ExteriorPowersCategories
@@ -1308,7 +1318,7 @@
               - path:              CAP_project/InternalExteriorAlgebraForCAP
               - path:                          InternalModules
               - path:        CategoricalTowers/IntrinsicCategories
-              - path:                          IntrinsicGradedModules
+              - path:        CategoricalTowers/IntrinsicGradedModules
               - path:        CategoricalTowers/IntrinsicModules
               - path:        CategoricalTowers/LazyCategories
               - path:              CAP_project/LinearAlgebraForCAP
