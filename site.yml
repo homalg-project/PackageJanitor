@@ -142,6 +142,20 @@
             tests_additional_packages_to_load:
               - IO_ForHomalg
             tests_only_basic: true
+          - name: IntrinsicCategories
+            description: "Intrinsic categories for CAP"
+            has_HOMALG_IO: true
+            doc_additional_latex_preamble: |
+              \usepackage{mathtools}
+            needed_other_repositories:
+              - homalg_project
+              - CAP_project
+            tests_additional_packages_to_load:
+              - ModulePresentationsForCAP
+              - HomologicalAlgebraForCAP
+              - RingsForHomalg
+              - IO_ForHomalg
+            tests_only_basic: true
         ci_additional_repositories:
           - HigherHomologicalAlgebra
           - QPA2
@@ -1258,7 +1272,7 @@
               - path: HigherHomologicalAlgebra/HomotopyCategories
               - path:              CAP_project/InternalExteriorAlgebraForCAP
               - path:                          InternalModules
-              - path:                          IntrinsicCategories
+              - path:        CategoricalTowers/IntrinsicCategories
               - path:                          IntrinsicGradedModules
               - path:                          IntrinsicModules
               - path:        CategoricalTowers/LazyCategories
