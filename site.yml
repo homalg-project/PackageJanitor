@@ -182,6 +182,13 @@
               - RingsForHomalg
               - IO_ForHomalg
             tests_only_basic: true
+          - name: ExteriorPowersCategories
+            description: "The graded category of exterior powers of objects of a given Ab-category"
+            has_HOMALG_IO: true
+            needed_other_repositories:
+            - homalg_project
+            - CAP_project
+            tests_only_basic: true
         ci_additional_repositories:
           - HigherHomologicalAlgebra
           - QPA2
@@ -191,9 +198,11 @@
           - ParallelizedIterators
           - alcove
           - MatroidGeneration
+          - IntrinsicGradedModules
         ci_additional_packages_to_test:
           - FinSetsForCAP
           - MatroidGeneration
+          - IntrinsicGradedModules
 
 - name: ExteriorPowersCategories
   hosts: ExteriorPowersCategories
@@ -1284,7 +1293,7 @@
               - path: HigherHomologicalAlgebra/ComplexesCategories
               - path:              CAP_project/DeductiveSystemForCAP
               - path: HigherHomologicalAlgebra/DerivedCategories
-              - path:                          ExteriorPowersCategories
+              - path:        CategoricalTowers/ExteriorPowersCategories
               - path:                          FinSetsForCAP
               - path:                          FinGSetsForCAP
               - path:        CategoricalTowers/FiniteCocompletion
