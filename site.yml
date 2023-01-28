@@ -241,16 +241,28 @@
               - FreydCategoriesForCAP
               - Toposes
             tests_only_basic: true
+          - name: CatReps
+            description: "Representations and cohomology of finite categories"
+            doc_additional_latex_preamble: |
+              \usepackage{mathtools}
+            needed_other_repositories:
+              - homalg_project
+              - CAP_project
+              - HigherHomologicalAlgebra
+              - QPA2
+              - FinSetsForCAP
+            tests_additional_packages_to_load:
+              - FreydCategoriesForCAP
+              - Toposes
+            tests_only_basic: true
         ci_additional_repositories:
           - ArangoDBInterface
           - ParallelizedIterators
           - alcove
           - MatroidGeneration
-          - CatReps
         ci_additional_packages_to_test:
           - FinSetsForCAP
           - MatroidGeneration
-          - CatReps
 
 - name: ExteriorPowersCategories
   hosts: ExteriorPowersCategories
@@ -1335,7 +1347,7 @@
               - path:              CAP_project/CartesianCategories
               - path:        CategoricalTowers/CategoryConstructor
               - path:        CategoricalTowers/CategoriesWithAmbientObjects
-              - path:                          CatReps
+              - path:        CategoricalTowers/CatReps
               - path:              CAP_project/CompilerForCAP
               - path:              CAP_project/ComplexesAndFilteredObjectsForCAP
               - path: HigherHomologicalAlgebra/ComplexesCategories
