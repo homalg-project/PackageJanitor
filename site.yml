@@ -127,15 +127,33 @@
               - Locales
               - SubcategoriesForCAP
             tests_only_basic: true
+          - name: ZariskiFrames
+            description: "(Co)frames/Locales of Zariski closed/open subsets of affine, projective, or toric varieties"
+            has_HOMALG_IO: true
+            doc_additional_latex_preamble: |
+              \usepackage{mathtools}
+              \DeclareUnicodeCharacter{2205}{\O}
+              \DeclareUnicodeCharacter{222A}{\ensuremath{\cup}}
+              \DeclareUnicodeCharacter{22C3}{\ensuremath{\bigcup}}
+              \DeclareUnicodeCharacter{2229}{\ensuremath{\cap}}
+            needed_other_repositories:
+              - homalg_project
+              - CAP_project
+            tests_additional_packages_to_load:
+              - IO_ForHomalg
+            tests_only_basic: true
         ci_additional_repositories:
           - HigherHomologicalAlgebra
           - QPA2
           - Algebroids
           - FinSetsForCAP
-          - ZariskiFrames
+          - ArangoDBInterface
+          - ParallelizedIterators
+          - alcove
+          - MatroidGeneration
         ci_additional_packages_to_test:
           - FinSetsForCAP
-          - ZariskiFrames
+          - MatroidGeneration
 
 - name: ExteriorPowersCategories
   hosts: ExteriorPowersCategories
@@ -1257,7 +1275,7 @@
               - path:        CategoricalTowers/Toposes
               - path:              CAP_project/ToricSheaves
               - path: HigherHomologicalAlgebra/TriangulatedCategories
-              - path:                          ZariskiFrames
+              - path:        CategoricalTowers/ZariskiFrames
           - name: homalg_project
             used_by:
               - path: homalg_project/homalg
