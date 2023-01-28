@@ -156,6 +156,20 @@
               - RingsForHomalg
               - IO_ForHomalg
             tests_only_basic: true
+          - name: CategoriesWithAmbientObjects
+            description: "Categories with objects having ambient objects"
+            has_HOMALG_IO: true
+            doc_additional_latex_preamble: |
+              \usepackage{mathtools}
+            needed_other_repositories:
+              - homalg_project
+              - CAP_project
+            tests_additional_packages_to_load:
+              - ModulePresentationsForCAP
+              - HomologicalAlgebraForCAP
+              - RingsForHomalg
+              - IO_ForHomalg
+            tests_only_basic: true
         ci_additional_repositories:
           - HigherHomologicalAlgebra
           - QPA2
@@ -1251,7 +1265,7 @@
               - path: HigherHomologicalAlgebra/Bicomplexes
               - path:              CAP_project/CartesianCategories
               - path:        CategoricalTowers/CategoryConstructor
-              - path:                          CategoriesWithAmbientObjects
+              - path:        CategoricalTowers/CategoriesWithAmbientObjects
               - path:                          CatReps
               - path:              CAP_project/CompilerForCAP
               - path:              CAP_project/ComplexesAndFilteredObjectsForCAP
