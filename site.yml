@@ -112,13 +112,27 @@
               - Locales
             tests_only_basic: true
             tests_without_precompiled_code: true
+          - name: LazyCategories
+            description: "Construct an equivalent lazy category out of a CAP category"
+            doc_additional_latex_preamble: |
+              \usepackage{mathtools}
+            needed_other_repositories:
+              - homalg_project
+              - CAP_project
+            tests_additional_packages_to_load:
+              - LinearAlgebraForCAP
+              - GeneralizedMorphismsForCAP
+              - Algebroids
+              - GRAPE
+              - Locales
+              - SubcategoriesForCAP
+            tests_only_basic: true
         ci_additional_repositories:
           - HigherHomologicalAlgebra
           - QPA2
           - Algebroids
           - FinSetsForCAP
           - ZariskiFrames
-          - LazyCategories
         ci_additional_packages_to_test:
           - FinSetsForCAP
           - ZariskiFrames
@@ -1229,7 +1243,7 @@
               - path:                          IntrinsicCategories
               - path:                          IntrinsicGradedModules
               - path:                          IntrinsicModules
-              - path:                          LazyCategories
+              - path:        CategoricalTowers/LazyCategories
               - path:              CAP_project/LinearAlgebraForCAP
               - path:        CategoricalTowers/Locales
               - path:              CAP_project/ModulePresentationsForCAP
