@@ -220,17 +220,36 @@
               - FinSetsForCAP
             tests_only_basic: true
             tests_without_precompiled_code: true
+          - name: FunctorCategories
+            description: "Categories of functors"
+            needed_other_repositories:
+              - homalg_project
+              - CAP_project
+              - HigherHomologicalAlgebra
+              - QPA2
+              - FinSetsForCAP
+            doc_additional_latex_preamble: |
+              \usepackage{mathtools}
+              \DeclareUnicodeCharacter{2205}{\ensuremath{\emptyset}}
+              \DeclareUnicodeCharacter{2C76}{\ensuremath{\vdash}\!\!}
+              \DeclareUnicodeCharacter{2192}{\ensuremath{\!\!\rightarrow\!}}
+              \DeclareUnicodeCharacter{21AA}{\ensuremath{\!\!\hookrightarrow\!}}
+              \DeclareUnicodeCharacter{21A0}{\ensuremath{\!\!\twoheadrightarrow\!}}
+              \DeclareUnicodeCharacter{2B47}{\ensuremath{\!\!\xrightarrow{\sim}\!}}
+              \DeclareUnicodeCharacter{21A6}{\ensuremath{\mapsto}}
+            tests_additional_packages_to_load:
+              - FreydCategoriesForCAP
+              - Toposes
+            tests_only_basic: true
         ci_additional_repositories:
           - ArangoDBInterface
           - ParallelizedIterators
           - alcove
           - MatroidGeneration
-          - FunctorCategories
           - CatReps
         ci_additional_packages_to_test:
           - FinSetsForCAP
           - MatroidGeneration
-          - FunctorCategories
           - CatReps
 
 - name: ExteriorPowersCategories
@@ -1327,7 +1346,7 @@
               - path:                          FinGSetsForCAP
               - path:        CategoricalTowers/FiniteCocompletion
               - path:              CAP_project/FreydCategoriesForCAP
-              - path:                          FunctorCategories
+              - path:        CategoricalTowers/FunctorCategories
               - path:              CAP_project/GeneralizedMorphismsForCAP
               - path:                          GradedCategories
               - path:              CAP_project/GradedModulePresentationsForCAP
