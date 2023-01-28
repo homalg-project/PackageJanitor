@@ -125,6 +125,22 @@
               - homalg_project
               - CAP_project
               - InfiniteLists
+          - name: InternalModules
+            description: "Modules over internal algebras"
+            has_HOMALG_IO: true
+            doc_additional_latex_preamble: |
+              \usepackage{bbm}
+              \DeclareUnicodeCharacter{1D7D9}{\ensuremath{\mathbbm{1}}}
+              \DeclareUnicodeCharacter{03C3}{\ensuremath{\sigma}}
+              \DeclareUnicodeCharacter{03C1}{\ensuremath{\rho}}
+              \DeclareUnicodeCharacter{03BD}{\ensuremath{\nu}}
+              \DeclareUnicodeCharacter{03C7}{\ensuremath{\chi}}
+            needed_other_repositories:
+              - homalg_project
+              - CAP_project
+              - InfiniteLists
+            tests_additional_packages_to_load:
+              - IO_ForHomalg
           - name: IntrinsicCategories
             description: "Intrinsic categories for CAP"
             has_HOMALG_IO: true
@@ -267,11 +283,9 @@
           - ParallelizedIterators
           - alcove
           - MatroidGeneration
-          - InternalModules
         ci_additional_packages_to_test:
           - FinSetsForCAP
           - MatroidGeneration
-          - InternalModules
 
 - name: ExteriorPowersCategories
   hosts: ExteriorPowersCategories
@@ -1375,7 +1389,7 @@
               - path:              CAP_project/HomologicalAlgebraForCAP
               - path: HigherHomologicalAlgebra/HomotopyCategories
               - path:              CAP_project/InternalExteriorAlgebraForCAP
-              - path:                          InternalModules
+              - path:        CategoricalTowers/InternalModules
               - path:        CategoricalTowers/IntrinsicCategories
               - path:        CategoricalTowers/IntrinsicGradedModules
               - path:        CategoricalTowers/IntrinsicModules
