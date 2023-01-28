@@ -75,17 +75,33 @@
             tests_additional_packages_to_load:
               - CategoryConstructor
             tests_only_basic: true
+          - name: Locales
+            description: "Locales, frames, coframes, meet semi-lattices of locally closed subsets, and Boolean algebras of constructible sets"
+            has_HOMALG_IO: true
+            doc_additional_latex_preamble: |
+              \usepackage{mathtools}
+            needed_other_repositories:
+              - homalg_project
+              - CAP_project
+            tests_additional_packages_to_load:
+              - IO_ForHomalg
+              - Toposes
+              - FreydCategoriesForCAP
+              - SubcategoriesForCAP
+              - LazyCategories
+            tests_only_basic: true
+            tests_without_precompiled_code: true
         ci_additional_repositories:
           - HigherHomologicalAlgebra
           - QPA2
           - Algebroids
           - FinSetsForCAP
-          - Locales
           - ZariskiFrames
           - SubcategoriesForCAP
           - LazyCategories
         ci_additional_packages_to_test:
           - FinSetsForCAP
+          - ZariskiFrames
 
 - name: ExteriorPowersCategories
   hosts: ExteriorPowersCategories
@@ -1195,7 +1211,7 @@
               - path:                          IntrinsicModules
               - path:                          LazyCategories
               - path:              CAP_project/LinearAlgebraForCAP
-              - path:                          Locales
+              - path:        CategoricalTowers/Locales
               - path:              CAP_project/ModulePresentationsForCAP
               - path:              CAP_project/ModulesOverLocalRingsForCAP
               - path:              CAP_project/MonoidalCategories
