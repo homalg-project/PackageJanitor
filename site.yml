@@ -118,6 +118,13 @@
               - FreydCategoriesForCAP
               - Toposes
             tests_only_basic: true
+          - name: GradedCategories
+            description: "Graded closures of categories"
+            has_HOMALG_IO: true
+            needed_other_repositories:
+              - homalg_project
+              - CAP_project
+              - InfiniteLists
           - name: IntrinsicCategories
             description: "Intrinsic categories for CAP"
             has_HOMALG_IO: true
@@ -260,9 +267,11 @@
           - ParallelizedIterators
           - alcove
           - MatroidGeneration
+          - InternalModules
         ci_additional_packages_to_test:
           - FinSetsForCAP
           - MatroidGeneration
+          - InternalModules
 
 - name: ExteriorPowersCategories
   hosts: ExteriorPowersCategories
@@ -1360,7 +1369,7 @@
               - path:              CAP_project/FreydCategoriesForCAP
               - path:        CategoricalTowers/FunctorCategories
               - path:              CAP_project/GeneralizedMorphismsForCAP
-              - path:                          GradedCategories
+              - path:        CategoricalTowers/GradedCategories
               - path:              CAP_project/GradedModulePresentationsForCAP
               - path:              CAP_project/GroupRepresentationsForCAP
               - path:              CAP_project/HomologicalAlgebraForCAP
