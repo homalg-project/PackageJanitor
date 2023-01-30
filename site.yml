@@ -30,6 +30,7 @@
               - FinSetsForCAP
             tests_only_basic: true
             tests_without_precompiled_code: true
+            has_subsplit: true
           - name: CategoriesWithAmbientObjects
             description: "Categories with objects having ambient objects"
             has_HOMALG_IO: true
@@ -44,6 +45,7 @@
               - RingsForHomalg
               - IO_ForHomalg
             tests_only_basic: true
+            has_subsplit: true
           - name: CategoryConstructor
             description: "Construct categories out of given ones"
             doc_additional_latex_preamble: |
@@ -58,6 +60,7 @@
               - Locales
               - SubcategoriesForCAP
             tests_only_basic: true
+            has_subsplit: true
           - name: CatReps
             description: "Representations and cohomology of finite categories"
             doc_additional_latex_preamble: |
@@ -72,6 +75,7 @@
               - FreydCategoriesForCAP
               - Toposes
             tests_only_basic: true
+            has_subsplit: true
           - name: ExteriorPowersCategories
             description: "The graded category of exterior powers of objects of a given Ab-category"
             has_HOMALG_IO: true
@@ -79,6 +83,7 @@
             - homalg_project
             - CAP_project
             tests_only_basic: true
+            has_subsplit: true
           - name: FiniteCocompletion
             description: Finite (co)product/(co)limit (co)completions
             doc_additional_latex_preamble: |
@@ -97,6 +102,7 @@
               - LazyCategories
             tests_only_basic: true
             tests_without_precompiled_code: true
+            has_subsplit: true
           - name: FunctorCategories
             description: "Categories of functors"
             needed_other_repositories:
@@ -118,6 +124,7 @@
               - FreydCategoriesForCAP
               - Toposes
             tests_only_basic: true
+            has_subsplit: true
           - name: GradedCategories
             description: "Graded closures of categories"
             has_HOMALG_IO: true
@@ -125,6 +132,7 @@
               - homalg_project
               - CAP_project
               - InfiniteLists
+            has_subsplit: true
           - name: InternalModules
             description: "Modules over internal algebras"
             has_HOMALG_IO: true
@@ -141,6 +149,7 @@
               - InfiniteLists
             tests_additional_packages_to_load:
               - IO_ForHomalg
+            has_subsplit: true
           - name: IntrinsicCategories
             description: "Intrinsic categories for CAP"
             has_HOMALG_IO: true
@@ -155,6 +164,7 @@
               - RingsForHomalg
               - IO_ForHomalg
             tests_only_basic: true
+            has_subsplit: true
           - name: IntrinsicGradedModules
             description: "Finitely presented graded modules over computable graded rings allowing multiple presentations and the notion of elements"
             has_HOMALG_IO: true
@@ -167,6 +177,7 @@
               - RingsForHomalg
               - IO_ForHomalg
             tests_only_basic: true
+            has_subsplit: true
           - name: IntrinsicModules
             description: "Finitely presented modules over computable rings allowing multiple presentations and the notion of elements"
             has_HOMALG_IO: true
@@ -179,6 +190,7 @@
               - RingsForHomalg
               - IO_ForHomalg
             tests_only_basic: true
+            has_subsplit: true
           - name: LazyCategories
             description: "Construct an equivalent lazy category out of a CAP category"
             doc_additional_latex_preamble: |
@@ -194,6 +206,7 @@
               - Locales
               - SubcategoriesForCAP
             tests_only_basic: true
+            has_subsplit: true
           - name: Locales
             description: "Locales, frames, coframes, meet semi-lattices of locally closed subsets, and Boolean algebras of constructible sets"
             has_HOMALG_IO: true
@@ -210,6 +223,7 @@
               - LazyCategories
             tests_only_basic: true
             tests_without_precompiled_code: true
+            has_subsplit: true
           - name: PreSheaves
             description: Categories of (co)presheaves
             doc_additional_latex_preamble: |
@@ -226,6 +240,7 @@
             tests_additional_packages_to_load:
               - FinSetsForCAP
             tests_only_basic: true
+            has_subsplit: true
           - name: SubcategoriesForCAP
             description: "Subcategory and other related constructors for CAP categories"
             has_HOMALG_IO: true
@@ -247,6 +262,7 @@
               - Locales
             tests_only_basic: true
             tests_without_precompiled_code: true
+            has_subsplit: true
           - name: Toposes
             description: "Elementary toposes"
             doc_additional_latex_preamble: |
@@ -263,6 +279,7 @@
             tests_additional_packages_to_load:
               - CategoryConstructor
             tests_only_basic: true
+            has_subsplit: true
           - name: ZariskiFrames
             description: "(Co)frames/Locales of Zariski closed/open subsets of affine, projective, or toric varieties"
             has_HOMALG_IO: true
@@ -278,6 +295,7 @@
             tests_additional_packages_to_load:
               - IO_ForHomalg
             tests_only_basic: true
+            has_subsplit: true
         ci_additional_repositories:
           - ArangoDBInterface
           - ParallelizedIterators
