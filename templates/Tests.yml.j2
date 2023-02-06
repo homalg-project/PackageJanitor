@@ -41,7 +41,7 @@ jobs:
           sudo apt update
           sudo apt install -y{% for apt_package in ci_ubuntu_additional_apt_packages %} {{ apt_package }}{% endfor %}
         {%- endif %}
-          cp ./{{ package.name }}/ci_gaprc /home/gap/.gap/gaprc
+          cp ./{{ package.name }}/dev/ci_gaprc /home/gap/.gap/gaprc
           git clone --depth 1 -vv https://github.com/gap-packages/AutoDoc.git
         {%- for additional_repo in ci_additional_repositories_enriched %}
           git clone --depth 1 -vv https://github.com/{% if "/" not in additional_repo %}homalg-project/{% endif %}{{ additional_repo }}.git
@@ -62,8 +62,8 @@ jobs:
         {%- endfor %}
           cd {{ package.name }}
         {%- if ci_do_not_run_tests is not defined or not ci_do_not_run_tests %}
-          LANG=C.UTF-8 python3 process_coverage.py
-          [ "$GITHUB_EVENT_NAME" != "schedule" ] && [ "{% raw %}${{ matrix.image }}{% endraw %}" = "ghcr.io/homalg-project/gap-docker-master:latest" ] && ./upload_codecov.sh
+          LANG=C.UTF-8 python3 dev/process_coverage.py
+          [ "$GITHUB_EVENT_NAME" != "schedule" ] && [ "{% raw %}${{ matrix.image }}{% endraw %}" = "ghcr.io/homalg-project/gap-docker-master:latest" ] && ./dev/upload_codecov.sh
         {%- endif %}
           git config --global user.name "Bot"
           git config --global user.email "empty"
@@ -73,7 +73,7 @@ jobs:
             git fetch origin gh-pages; \
             git worktree add gh-pages/ gh-pages || (echo "There was an error. Make sure there is a branch named 'gh-pages'. See https://github.com/homalg-project/PackageJanitor#error-there-was-an-error-make-sure-there-is-a-branch-named-gh-pages"; exit 1); \
             git checkout master; \
-            LANG=C.UTF-8 ./make_dist.sh --token "{% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}"; \
+            LANG=C.UTF-8 ./dev/make_dist.sh --token "{% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}"; \
       {%- if is_meta_package %}
             # publish subsplits
         {%- for subpackage in subpackages %}

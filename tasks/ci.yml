@@ -12,21 +12,41 @@
   vars:
     ci_packages_to_test: "{{ ci_additional_packages_to_test | default([]) }}"
 
+- name: "Ensure {{ pkg_dir }}/{{ package.name }}/dev/ exists"
+  file:
+    path: "{{ pkg_dir }}/{{ package.name }}/dev/"
+    state: directory
+
 - name: ci_gaprc
   copy:
     src: ci_gaprc
-    dest: "{{ pkg_dir }}/{{ package.name }}/ci_gaprc"
+    dest: "{{ pkg_dir }}/{{ package.name }}/dev/ci_gaprc"
 
-- name: .codecov.yml
+- name: Remove old ci_gaprc
+  file:
+    path: "{{ pkg_dir }}/{{ package.name }}/ci_gaprc"
+    state: absent
+
+- name: codecov.yml
   template:
-    src: .codecov.yml.j2
-    dest: "{{ pkg_dir }}/{{ package.name }}/.codecov.yml"
+    src: codecov.yml.j2
+    dest: "{{ pkg_dir }}/{{ package.name }}/dev/codecov.yml"
+
+- name: Remove old .codecov.yml
+  file:
+    path: "{{ pkg_dir }}/{{ package.name }}/.codecov.yml"
+    state: absent
 
 - name: process_coverage.py
   copy:
     src: process_coverage.py
-    dest: "{{ pkg_dir }}/{{ package.name }}/process_coverage.py"
+    dest: "{{ pkg_dir }}/{{ package.name }}/dev/process_coverage.py"
     mode: a+x
+
+- name: Remove old process_coverage.py
+  file:
+    path: "{{ pkg_dir }}/{{ package.name }}/process_coverage.py"
+    state: absent
 
 - name: Remove process_coverage_ignored_lines.py
   file:
@@ -36,17 +56,32 @@
 - name: upload_codecov.sh
   template:
     src: upload_codecov.sh.j2
-    dest: "{{ pkg_dir }}/{{ package.name }}/upload_codecov.sh"
+    dest: "{{ pkg_dir }}/{{ package.name }}/dev/upload_codecov.sh"
     mode: a+x
+
+- name: Remove old upload_codecov.sh
+  file:
+    path: "{{ pkg_dir }}/{{ package.name }}/upload_codecov.sh"
+    state: absent
 
 - name: release-gap-package
   copy:
     src: release-gap-package
-    dest: "{{ pkg_dir }}/{{ package.name }}/release-gap-package"
+    dest: "{{ pkg_dir }}/{{ package.name }}/dev/release-gap-package"
     mode: a+x
+
+- name: Remove old release-gap-package
+  file:
+    path: "{{ pkg_dir }}/{{ package.name }}/release-gap-package"
+    state: absent
 
 - name: make_dist.sh
   template:
     src: make_dist.sh.j2
-    dest: "{{ pkg_dir }}/{{ package.name }}/make_dist.sh"
+    dest: "{{ pkg_dir }}/{{ package.name }}/dev/make_dist.sh"
     mode: a+x
+
+- name: Remove old make_dist.sh
+  file:
+    path: "{{ pkg_dir }}/{{ package.name }}/make_dist.sh"
+    state: absent
