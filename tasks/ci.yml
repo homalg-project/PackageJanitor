@@ -85,3 +85,8 @@
   file:
     path: "{{ pkg_dir }}/{{ package.name }}/make_dist.sh"
     state: absent
+
+- name: .release
+  copy:
+    src: .release
+    dest: "{{ pkg_dir }}/{{ package.name }}/dev/.release"
