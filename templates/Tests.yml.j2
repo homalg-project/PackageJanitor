@@ -47,7 +47,7 @@ jobs:
           git clone --depth 1 -vv https://github.com/{% if "/" not in additional_repo %}homalg-project/{% endif %}{{ additional_repo }}.git
         {%- endfor %}
           # build documentation of packages which we might want to reference, keep this in sync with `dev/.release`
-        {%- for package_with_doc in ["CAP_project/CAP", "CAP_project/CompilerForCAP", "CAP_project/MonoidalCategories", "CAP_project/CartesianCategories", "CAP_project/FreydCategoriesForCAP", "HigherHomologicalAlgebra/ToolsForHigherHomologicalAlgebra", "homalg_project/homalg", "homalg_project/Modules", "Toposes" ] %}
+        {%- for package_with_doc in ["CAP_project/CAP", "CAP_project/CompilerForCAP", "CAP_project/MonoidalCategories", "CAP_project/CartesianCategories", "CAP_project/FreydCategoriesForCAP", "HigherHomologicalAlgebra/ToolsForHigherHomologicalAlgebra", "homalg_project/homalg", "homalg_project/Modules", "CategoricalTowers/CategoryConstructor", "CategoricalTowers/Toposes" ] %}
           [ -d "{{ package_with_doc }}" ] && make -C "{{ package_with_doc }}" doc
         {%- endfor %}
         {%- if ci_do_not_run_tests is not defined or not ci_do_not_run_tests %}
