@@ -993,7 +993,7 @@
             names:
               - SymmetricAlgebraInternalToS4rep
               - S4rep
-          - url: https://github.com/homalg-project/HigherHomologicalAlgebra/blob/master/Notebooks/TiltingEquivalence.ipynb
+          - url: https://github.com/homalg-project/HigherHomologicalAlgebra/blob/master/DerivedCategories/examples/notebooks/TiltingEquivalence.ipynb
             names:
               - TiltingEquivalence
           - url: https://github.com/homalg-project/CategoricalTowers/blob/master/ZariskiFrames/examples/julia/notebooks/uMPS(2%2C2%2C4)_0dim.ipynb
@@ -1005,6 +1005,12 @@
           - url: https://github.com/homalg-project/CapAndHomalgNotebooks/blob/master/CohP1.ipynb
             names:
               - CohP1
+          - url: https://github.com/homalg-project/CapAndHomalgNotebooks/blob/master/ImageOfPullback_in_AbelianClosure_using_Adelman.ipynb
+            names:
+              - ImageOfPullback
+          - url: https://github.com/homalg-project/CapAndHomalgNotebooks/blob/master/ImageOfPullback_in_AbelianClosure_using_Freyd.ipynb
+            names:
+              - ImageOfPullback_using_Freyd
           - url: https://github.com/homalg-project/LoopIntegrals/blob/master/examples/julia/notebooks/1LoopBox_using_Ore_algebra.ipynb
             names:
               - 1LoopBox
