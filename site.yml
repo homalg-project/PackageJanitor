@@ -591,6 +591,10 @@
             tests_only_basic: true
           - name: InternalExteriorAlgebraForCAP
             description: Constructions for Modules over the Internal Exterior Algebra for CAP
+            has_HOMALG_IO: true
+            tests_additional_packages_to_load:
+              - IO_ForHomalg
+              - HomologicalAlgebraForCAP
             tests_only_basic: true
           - name: LinearAlgebraForCAP
             description: Category of Matrices over a Field for CAP
