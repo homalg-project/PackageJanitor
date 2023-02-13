@@ -998,6 +998,9 @@
           - url: https://github.com/homalg-project/CategoricalTowers/blob/master/ZariskiFrames/examples/julia/notebooks/uMPS(2%2C2%2C5)_0dim.ipynb
             names:
               - uMPS225
+          - url: https://github.com/homalg-project/CapAndHomalgNotebooks/blob/master/CohP1.ipynb
+            names:
+              - CohP1
           - url: https://github.com/homalg-project/LoopIntegrals/blob/master/examples/julia/notebooks/1LoopBox_using_Ore_algebra.ipynb
             names:
               - 1LoopBox
