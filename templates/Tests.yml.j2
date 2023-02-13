@@ -25,43 +25,63 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: {% raw %}${{ matrix.image }}{% endraw %}
+    defaults:
+      run:
+        working-directory: /home/gap/.gap/pkg/
+    env:
+      HOME: /home/gap
     steps:
-      # keep workflow active even if repository has no activity for 60 days (do not execute for pull requests)
-      - run: '[ "$GITHUB_EVENT_NAME" = "pull_request" ] || curl --fail -X PUT -H "Accept: application/vnd.github.v3+json" -H "Authorization: token {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}" https://api.github.com/repos/$GITHUB_REPOSITORY/actions/workflows/Tests.yml/enable'
-      - uses: actions/checkout@v3
+      - name: Keep workflow active even if repository has no activity for 60 days
+        if: github.event_name != 'pull_request'
+        run: |
+          curl --fail -X PUT -H "Accept: application/vnd.github.v3+json" -H "Authorization: token {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}" "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/workflows/Tests.yml/enable"
+      - name: Check out repo
+        uses: actions/checkout@v3
         with:
           # the persisted token interferes with the subsplit token used below
           persist-credentials: false
           fetch-depth: 0
-      - run: cp -a $GITHUB_WORKSPACE /home/gap/.gap/pkg/
-      - run: |
-          export HOME="/home/gap"
-          cd /home/gap/.gap/pkg/
-        {%- if ci_ubuntu_additional_apt_packages is defined %}
+      - name: Move checked out repo to GAP user root dir
+        run: |
+          cp -a $GITHUB_WORKSPACE /home/gap/.gap/pkg/
+    {%- if ci_ubuntu_additional_apt_packages is defined %}
+      - name: Install additional apt packages
+        run: |
           sudo apt update
           sudo apt install -y{% for apt_package in ci_ubuntu_additional_apt_packages %} {{ apt_package }}{% endfor %}
-        {%- endif %}
+    {%- endif %}
+      - name: Prepare environment
+        run: |
           cp ./{{ package.name }}/dev/ci_gaprc /home/gap/.gap/gaprc
           git clone --depth 1 -vv https://github.com/gap-packages/AutoDoc.git
         {%- for additional_repo in ci_additional_repositories_enriched %}
           git clone --depth 1 -vv https://github.com/{% if "/" not in additional_repo %}homalg-project/{% endif %}{{ additional_repo }}.git
         {%- endfor %}
-          # build documentation of packages which we might want to reference, keep this in sync with `dev/.release`
+      - name: Build documentation of packages which we might want to reference
+        run: |
+          # keep this in sync with `dev/.release`
         {%- for package_with_doc in ["CAP_project/CAP", "CAP_project/CompilerForCAP", "CAP_project/MonoidalCategories", "CAP_project/CartesianCategories", "CAP_project/FreydCategoriesForCAP", "HigherHomologicalAlgebra/ToolsForHigherHomologicalAlgebra", "homalg_project/homalg", "homalg_project/Modules", "CategoricalTowers/CategoryConstructor", "CategoricalTowers/Toposes" ] %}
-          [ -d "{{ package_with_doc }}" ] && make -C "{{ package_with_doc }}" doc
+          if [ -d "{{ package_with_doc }}" ]; then make -C "{{ package_with_doc }}" doc; fi
         {%- endfor %}
-        {%- if ci_do_not_run_tests is not defined or not ci_do_not_run_tests %}
+    {%- if ci_do_not_run_tests is not defined or not ci_do_not_run_tests %}
+      - name: Test {{ package.name }}
+        run: |
           make -C {{ package.name }} -j $(nproc) --output-sync ci-test
-        {%- else %}
+    {%- else %}
+      - name: Build documentation of {{ package.name }}
+        run: |
           make -C {{ package.name }} -j $(nproc) --output-sync doc
-        {%- endif %}
-        {%- for package_to_test in ci_packages_to_test %}
+    {%- endif %}
+    {%- for package_to_test in ci_packages_to_test %}
+      - name: Test {{ package_to_test }}
+        run: |
           make -C {{ package_to_test }} -j $(nproc) --output-sync ci-test
-        {%- endfor %}
+    {%- endfor %}
+      - name: Release package or simulate release
+        run: |
           cd {{ package.name }}
         {%- if ci_do_not_run_tests is not defined or not ci_do_not_run_tests %}
           LANG=C.UTF-8 python3 dev/process_coverage.py
-          [ "$GITHUB_EVENT_NAME" != "schedule" ] && [ "{% raw %}${{ matrix.image }}{% endraw %}" = "ghcr.io/homalg-project/gap-docker-master:latest" ] && ./dev/upload_codecov.sh
         {%- endif %}
           git config --global user.name "Bot"
           git config --global user.email "empty"
@@ -84,3 +104,10 @@ jobs:
             LANG=C.UTF-8 ./dev/make_dist.sh --token "{% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}" --only-tarball; \
           fi
         {%- endif %}
+    {%- if ci_do_not_run_tests is not defined or not ci_do_not_run_tests %}
+      - name: Upload code coverage
+        if: github.event_name != 'schedule' && matrix.image == 'ghcr.io/homalg-project/gap-docker-master:latest'
+        run: |
+          cd {{ package.name }}
+          ./dev/upload_codecov.sh
+    {%- endif %}
