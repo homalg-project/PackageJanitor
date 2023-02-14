@@ -29,8 +29,8 @@ jobs:
       run:
         working-directory: /home/gap/.gap/pkg/
     env:
+      # HOME is already set in the docker container, but GitHub Actions overwrites it
       HOME: /home/gap
-      LANG: C.UTF-8
     steps:
       - name: Keep workflow active even if repository has no activity for 60 days
         if: github.event_name != 'pull_request'
