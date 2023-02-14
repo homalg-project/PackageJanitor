@@ -86,6 +86,12 @@
     path: "{{ pkg_dir }}/{{ package.name }}/make_dist.sh"
     state: absent
 
+- name: simulate_dist.sh
+  template:
+    src: simulate_dist.sh.j2
+    dest: "{{ pkg_dir }}/{{ package.name }}/dev/simulate_dist.sh"
+    mode: a+x
+
 - name: .release
   copy:
     src: .release

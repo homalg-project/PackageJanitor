@@ -30,6 +30,7 @@ jobs:
         working-directory: /home/gap/.gap/pkg/
     env:
       HOME: /home/gap
+      LANG: C.UTF-8
     steps:
       - name: Keep workflow active even if repository has no activity for 60 days
         if: github.event_name != 'pull_request'
@@ -91,17 +92,9 @@ jobs:
         {%- if ci_automated_release is not defined or ci_automated_release %}
           if [ "{% raw %}${{ matrix.image }}{% endraw %}" = "ghcr.io/homalg-project/gap-docker:latest" ] && [ "$CUR_SHA" = "$(git rev-parse origin/master)" ] && [ $(dirname "$GITHUB_REPOSITORY") = "homalg-project" ]; then \
             git checkout master; \
-            LANG=C.UTF-8 ./dev/make_dist.sh --token "{% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}"; \
-      {%- if is_meta_package %}
-            # publish subsplits
-        {%- for subpackage in subpackages %}
-          {%- if subpackage.has_subsplit is defined and subpackage.has_subsplit %}
-            git subtree split --prefix={{ subpackage.name }} -b {{ subpackage.name }}-split && git push https://homalg-project:{% raw %}${{ secrets.SUBSPLIT_PUSH_SECRET }}{% endraw %}@github.com/homalg-project/{{ subpackage.name }} {{ subpackage.name }}-split:master; \
-          {%- endif %}
-        {%- endfor %}
-      {%- endif %}
+            TOKEN="{% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}" SUBSPLIT_PUSH_SECRET="{% raw %}${{ secrets.SUBSPLIT_PUSH_SECRET }}{% endraw %}" ./dev/make_dist.sh; \
           else \
-            LANG=C.UTF-8 ./dev/make_dist.sh --token "{% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}" --only-tarball; \
+            TOKEN="{% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}" ./dev/simulate_dist.sh; \
           fi
         {%- endif %}
     {%- if ci_do_not_run_tests is not defined or not ci_do_not_run_tests %}
