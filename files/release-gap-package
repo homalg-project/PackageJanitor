@@ -463,7 +463,7 @@ rm -rf "${TMP_DIR:?}/$BASENAME"*
 umask 0022
 
 notice "Exporting repository content for tag '$TAG'"
-git archive --prefix="$BASENAME/" "$TAG" . | tar xf - -C "$TMP_DIR"
+git archive --prefix="$BASENAME/" HEAD . | tar xf - -C "$TMP_DIR"
 
 
 # Build the package documentation, run autoconf, etc.
