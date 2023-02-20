@@ -131,7 +131,6 @@
             needed_other_repositories:
               - homalg_project
               - CAP_project
-              - InfiniteLists
             has_subsplit: true
           - name: InternalModules
             description: "Modules over internal algebras"
@@ -146,7 +145,6 @@
             needed_other_repositories:
               - homalg_project
               - CAP_project
-              - InfiniteLists
             tests_additional_packages_to_load:
               - IO_ForHomalg
             has_subsplit: true
