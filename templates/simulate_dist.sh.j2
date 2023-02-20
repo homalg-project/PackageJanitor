@@ -5,11 +5,13 @@ set -e
 {% for subpackage in subpackages %}
 
 # {{ subpackage.name }}
+echo "Simulate release of {{ subpackage.name }}"
 ./dev/release-gap-package --srcdir "$PWD/{{ subpackage.name }}" --webdir "$PWD/gh-pages/{{ subpackage.name }}" --update-script "$PWD/gh-pages/update.g" --release-script "$PWD/dev/.release" --only-tarball
 {% if subpackage.has_subsplit is defined and subpackage.has_subsplit %}
 # creating subsplits is slow and should only rarely result in errors -> do not simulate to keep testing PRs as fast as possible
 #git subtree split --prefix={{ subpackage.name }} -b {{ subpackage.name }}-split
 {% endif %}
+echo ""
 {% endfor %}
 {% else %}
 

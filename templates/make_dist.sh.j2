@@ -5,11 +5,13 @@ set -e
 {% for subpackage in subpackages %}
 
 # {{ subpackage.name }}
+echo "Release {{ subpackage.name }}"
 ./dev/release-gap-package --skip-existing-release --srcdir "$PWD/{{ subpackage.name }}" --webdir "$PWD/gh-pages/{{ subpackage.name }}" --update-script "$PWD/gh-pages/update.g" --release-script "$PWD/dev/.release"
 {% if subpackage.has_subsplit is defined and subpackage.has_subsplit %}
 git subtree split --prefix={{ subpackage.name }} -b {{ subpackage.name }}-split
 git push https://homalg-project:$SUBSPLIT_PUSH_SECRET@github.com/homalg-project/{{ subpackage.name }} {{ subpackage.name }}-split:master
 {% endif %}
+echo ""
 {% endfor %}
 {% else %}
 
