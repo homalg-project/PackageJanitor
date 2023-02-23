@@ -405,14 +405,18 @@
           - name: BBGG
             description: Beilinson monads and derived categories for coherent sheaves over P^n
             has_HOMALG_IO: true
-            tests_additional_packages_to_load:
-              - IO_ForHomalg
-              - FreydCategoriesForCAP
             tests_only_basic: true
           - name: Bicomplexes
             description: Bicomplexes for Abelian categories
+            doc_additional_latex_preamble: |
+              \usepackage{amsmath}
+              \usepackage[T1]{fontenc}
+              \usepackage{tikz}
+              \usetikzlibrary{shapes,arrows,matrix}
             tests_additional_packages_to_load:
-              - ModulePresentations
+              - ModulePresentationsForCAP
+              - FreydCategoriesForCAP
+              - Algebroids
             tests_only_basic: true
           - name: ComplexesCategories
             description: Category of (co)chain complexes of an additive category
@@ -424,8 +428,8 @@
               \usetikzlibrary{shapes,arrows,matrix}
             tests_additional_packages_to_load:
               - IO_ForHomalg
-              - ModulePresentations
               - FreydCategoriesForCAP
+              - Algebroids
             tests_only_basic: true
           - name: DerivedCategories
             description: Derived categories of Abelian categories
@@ -433,8 +437,10 @@
             tests_only_basic: true
             tests_additional_packages_to_load:
               - IO_ForHomalg
-              - Algebroids
               - FreydCategoriesForCAP
+              - Algebroids
+              - FunctorCategories
+              - SubcategoriesForCAP
           - name: HomotopyCategories
             description: Homotopy categories of additive categories
             doc_additional_latex_preamble: |
@@ -442,8 +448,8 @@
               \usepackage{tikz}
               \usetikzlibrary{shapes,arrows,matrix}
             tests_additional_packages_to_load:
+              - IO_ForHomalg
               - Algebroids
-              - ModulePresentations
               - FreydCategoriesForCAP
             tests_only_basic: true
           - name: QuotientCategories
@@ -453,17 +459,25 @@
             tests_only_basic: true
           - name: StableCategories
             description: Stable categories of additive categories
-            has_HOMALG_IO: true
-            tests_additional_packages_to_load:
-              - GradedModules
-              - ModulePresentations
-              - IO_ForHomalg
-              - FinSetsForCAP
-              - QPA
-              - Algebroids
-              - FreydCategoriesForCAP
-              - DerivedCategories
-              - FunctorCategories
+            doc_additional_latex_preamble: |
+              \usepackage[T1]{fontenc}
+              \usepackage{microtype}
+              \usepackage{amssymb}
+              \usepackage{cite}
+              \usepackage{mathrsfs}
+              \usepackage{amsmath}
+              \usepackage{mathtools}
+              \usepackage{faktor}
+              \usepackage{tikz-cd}
+              \newcommand{\comp}[2]{ #1 \cdot #2 }
+              \newcommand{\CC}{\mathscr{C}}
+              \newcommand{\EE}{\mathcal{E}}
+              \newcommand{\QQ}{\mathcal{Q}}
+              \newcommand{\LL}{\mathcal{L}}
+              \newcommand{\id}{\mathrm{id}}
+              \newcommand{\Ch}[1]{\mathrm{Ch}^b(#1)}
+              \newcommand{\Ho}[1]{\mathrm{K}^b(#1)}
+            has_HOMALG_IO: false
             tests_only_basic: true
           - name: ToolsForHigherHomologicalAlgebra
             description: Tools for the Higher Homological Algebra project
@@ -488,6 +502,8 @@
           - FinSetsForCAP
           - QPA2
           - Algebroids
+          - PreSheaves
+          - FiniteCocompletion
           - FunctorCategories
           - SubcategoriesForCAP
           - CategoryConstructor
