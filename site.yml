@@ -1,4 +1,26 @@
 ---
+- name: HeckeCategories
+  hosts: HeckeCategories
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
+    - import_tasks: tasks/package.yml
+      vars:
+        package:
+          name: HeckeCategories
+          description: "Categorification of Hecke algebras"
+          has_HOMALG_IO: true
+          doc_additional_latex_preamble: |
+            \usepackage{mathtools}
+          needed_other_repositories:
+            - homalg_project
+            - CAP_project
+            - CategoricalTowers
+          tests_additional_packages_to_load:
+            - IO_ForHomalg
+          tests_only_basic: true
+
 - name: CategoricalTowers
   hosts: CategoricalTowers
   connection: local
