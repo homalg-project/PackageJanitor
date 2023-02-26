@@ -50,14 +50,14 @@ To obtain current versions of all dependencies, `git clone` (or `git pull` to up
 [tests-url]: https://github.com/homalg-project/{{ meta_package.name }}/actions/workflows/Tests.yml?query=branch%3Amaster
 
 {% if is_meta_package %}
-[codecov-img]: https://codecov.io/gh/homalg-project/{{ meta_package.name }}/branch/master/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/homalg-project/{{ meta_package.name }}
+[codecov-img]: https://app.codecov.io/gh/homalg-project/{{ meta_package.name }}/branch/master/graph/badge.svg
+[codecov-url]: https://app.codecov.io/gh/homalg-project/{{ meta_package.name }}
 
 [code-img]: https://img.shields.io/badge/-View%20code-blue?logo=github
 [code-url]: https://github.com/homalg-project/{{ meta_package.name }}#top
 {% else %}
-[codecov-img]: https://codecov.io/gh/homalg-project/{{ meta_package.name }}/branch/master/graph/badge.svg?flag={{ package.name }}
-[codecov-url]: https://codecov.io/gh/homalg-project/{{ meta_package.name }}/tree/master/{{ package.name }}
+[codecov-img]: https://app.codecov.io/gh/homalg-project/{{ meta_package.name }}/branch/master/graph/badge.svg?flag={{ package.name }}
+[codecov-url]: https://app.codecov.io/gh/homalg-project/{{ meta_package.name }}/tree/master/{{ package.name }}
 
 [code-img]: https://img.shields.io/badge/-View%20code-blue?logo=github
 [code-url]: https://github.com/homalg-project/{{ meta_package.name }}/tree/master/{{ package.name }}#top
@@ -66,8 +66,8 @@ To obtain current versions of all dependencies, `git clone` (or `git pull` to up
 [tests-img]: https://github.com/homalg-project/{{ package.name }}/actions/workflows/Tests.yml/badge.svg?branch=master
 [tests-url]: https://github.com/homalg-project/{{ package.name }}/actions/workflows/Tests.yml?query=branch%3Amaster
 
-[codecov-img]: https://codecov.io/gh/homalg-project/{{ package.name }}/branch/master/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/homalg-project/{{ package.name }}
+[codecov-img]: https://app.codecov.io/gh/homalg-project/{{ package.name }}/branch/master/graph/badge.svg
+[codecov-url]: https://app.codecov.io/gh/homalg-project/{{ package.name }}
 
 [code-img]: https://img.shields.io/badge/-View%20code-blue?logo=github
 [code-url]: https://github.com/homalg-project/{{ package.name }}#top
