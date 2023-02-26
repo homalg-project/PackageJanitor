@@ -34,10 +34,10 @@
 
 {% if package.name == package.repo_name %}
 [codecov-{{ package.name }}-img]: https://codecov.io/gh/homalg-project/{{ package.name }}/branch/master/graph/badge.svg
-[codecov-{{ package.name }}-url]: https://codecov.io/gh/homalg-project/{{ package.name }}
+[codecov-{{ package.name }}-url]: https://app.codecov.io/gh/homalg-project/{{ package.name }}
 {% else %}
 [codecov-{{ package.name }}-img]: https://codecov.io/gh/homalg-project/{{ package.repo_name }}/branch/master/graph/badge.svg?flag={{ package.name }}
-[codecov-{{ package.name }}-url]: https://codecov.io/gh/homalg-project/{{ package.repo_name }}/tree/master/{{ package.name }}
+[codecov-{{ package.name }}-url]: https://app.codecov.io/gh/homalg-project/{{ package.repo_name }}/tree/master/{{ package.name }}
 {% endif %}
 
 {% endif %}
