@@ -98,6 +98,18 @@
               - Toposes
             tests_only_basic: true
             has_subsplit: true
+          - name: DiscreteCategories
+            description: "Discrete categories"
+            doc_additional_latex_preamble: |
+              \usepackage{mathtools}
+              \DeclareUnicodeCharacter{22A4}{\ensuremath{\top}}
+              \DeclareUnicodeCharacter{22A5}{\ensuremath{\bot}}
+            needed_other_repositories:
+              - homalg_project
+              - CAP_project
+            tests_only_basic: true
+            tests_without_precompiled_code: true
+            has_subsplit: true
           - name: ExteriorPowersCategories
             description: "The graded category of exterior powers of objects of a given Ab-category"
             has_HOMALG_IO: true
@@ -941,6 +953,7 @@
               - path: HigherHomologicalAlgebra/ComplexesCategories
               - path:              CAP_project/DeductiveSystemForCAP
               - path: HigherHomologicalAlgebra/DerivedCategories
+              - path:        CategoricalTowers/DiscreteCategories
               - path:        CategoricalTowers/ExteriorPowersCategories
               - path:                          FinSetsForCAP
               - path:                          FinGSetsForCAP
