@@ -160,6 +160,7 @@
             tests_additional_packages_to_load:
               - FreydCategoriesForCAP
               - Toposes
+              - Locales
             tests_only_basic: true
             has_subsplit: true
           - name: GradedCategories
