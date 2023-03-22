@@ -25,6 +25,7 @@ if [ ! -d "$JULIA_PKG_DIR$PKG_NAME" ]; then
 fi
 
 mkdir -p "$JULIA_PKG_DIR$PKG_NAME/src/gap/"
+mkdir -p "$JULIA_PKG_DIR$PKG_NAME/docs/src/"
 
 if [ -d "$GAP_PKG_DIR$PKG_FULL_NAME/gap/precompiled_categories/" ]; then
 	mkdir -p "$JULIA_PKG_DIR$PKG_NAME/src/gap/precompiled_categories/"
@@ -40,64 +41,207 @@ cat "read.g" | sed "s/ReadPackage( \"$PKG_NAME\", /include( /g" | sed 's/" );$/.
 
 cd gap
 
-find . \( -type d -name .git -prune \) -o \( -type f -name '*.g[di]' \) -exec sh -c "cat '{}' \
-| sed 's/ = / == /g' \
-| sed 's/ <> / != /g' \
-| sed 's/ :=/ =/g' \
-| sed 's/ : /; /g' \
-| sed 's/ :$/,/g' \
-| sed 's/!\\././g' \
-| sed 's/ then$//g' \
-| sed 's/fi;$/end;/g' \
-| sed 's/ do$//g' \
-| sed 's/od;$/end;/g' \
-| sed 's/ and / \\&\\& /g' \
-| sed 's/ and$/ \\&\\&/g' \
-| sed 's/ or / || /g' \
-| sed 's/ or$/ ||/g' \
-| sed 's/not /!/g' \
-| sed 's/elif/elseif/g' \
-| sed 's/\\.( \\([^)]*\\) )/[\1]/g' \
-| sed 's/\\.(\\([^)]*\\))/[\1]/g' \
-| sed 's/infinity/Inf/g' \
-| sed 's/\\$/ /g' \
-| sed 's/\\[ \\([^.[]*\\) \\.\\. \\([^]]*\\)\\ ]/(\1):(\2)/g' \
-| sed 's/Unbind( \\(.*\\) );$/\1 = nothing;/g' \
-| sed 's/ Int(/ int(/g' \
-| sed 's/ String(/ string(/g' \
-| sed 's/{ arg } ->/( arg... ) ->/g' \
-| sed 's/{\\([^}]*\\)} ->/(\1) ->/g' \
-| sed 's/{/[/g' \
-| sed 's/}/]/g' \
-| sed 's/# !/#/g' \
-| sed 's/ in / ⥉ /g' \
-| sed 's/for \\([^⥉]*\\) ⥉ \\([^⥉]*\\)$/for \1 in \2/g' \
-| sed 's/\\\\mapsto/\\\\\\\\mapsto/g' \
-| sed 's/\\\\mathtt/\\\\\\\\mathtt/g' \
-| sed 's/function( arg )/function( arg... )/g' \
-| sed 's/function ( arg )/function ( arg... )/g' \
-| sed 's/Method( \\\\\\[\\\\\\],/Method( getindex,/g' \
-| sed 's/Method( \\\\=,/Method( ==,/g' \
-| sed 's/Method( \\\\+,/Method( +,/g' \
-| sed 's/Method( \\\\-,/Method( -,/g' \
-| sed 's/Method( \\\\\\*,/Method( \\*,/g' \
-| sed 's/Method( \\\\\\/,/Method( \\/,/g' \
-| sed 's/Method( \\\\in,/Method( in,/g' \
-| sed 's/NTuple/nTuple/g' \
-| sed 's/^DeclareInfoClass(/@DeclareInfoClass(/g' \
-| sed 's/^DeclareAttribute(/@DeclareAttribute(/g' \
-| sed 's/^DeclareSynonymAttr(/@DeclareSynonymAttr(/g' \
-| sed 's/^DeclareProperty(/@DeclareProperty(/g' \
-| sed 's/^DeclareFilter(/@DeclareFilter(/g' \
-| sed 's/^DeclareCategory(/@DeclareFilter(/g' \
-| sed 's/^InstallValue(/@InstallValueConst(/g' \
-| sed 's/InstallValue(/@InstallValue(/g' \
-| sed 's/BindGlobal(/@BindGlobal(/g' \
-| sed 's/DeclareGlobalFunction(/@DeclareGlobalFunction(/g' \
-| sed 's/InstallGlobalFunction(/@InstallGlobalFunction(/g' \
-| sed 's/^DeclareOperation(/@DeclareOperation(/g' \
-| sed 's/^DeclareOperationWithCache(/@DeclareOperation(/g' \
-| sed 's/^KeyDependentOperation(/@KeyDependentOperation(/g' \
-| sed 's/^InstallMethod(/InstallMethod( @__MODULE__, /g' \
-| sed 's/^InstallMethodForCompilerForCAP(/InstallMethod( @__MODULE__, /g' \
-> $JULIA_PKG_DIR$PKG_NAME/src/gap/'{}'.autogen.jl" \;
+chmod u+w "$JULIA_PKG_DIR$PKG_NAME"/src/gap/*.autogen.jl
+
+syntax_replacements() {
+	sed 's/ = / == /g' \
+	| sed 's/ <> / != /g' \
+	| sed 's/ :=/ =/g' \
+	| sed 's/ : /; /g' \
+	| sed 's/ :$/,/g' \
+	| sed 's/!\././g' \
+	| sed 's/ then$//g' \
+	| sed 's/fi;$/end;/g' \
+	| sed 's/ do$//g' \
+	| sed 's/od;$/end;/g' \
+	| sed 's/ and / \&\& /g' \
+	| sed 's/ and$/ \&\&/g' \
+	| sed 's/ or / || /g' \
+	| sed 's/ or$/ ||/g' \
+	| sed 's/not /!/g' \
+	| sed 's/elif/elseif/g' \
+	| sed 's/\.( \([^)]*\) )/[\1]/g' \
+	| sed 's/\.(\([^)]*\))/[\1]/g' \
+	| sed 's/infinity/Inf/g' \
+	| sed 's/\[ \([^.[]*\) \.\. \([^]]*\)\ ]/(\1):(\2)/g' \
+	| sed 's/Unbind( \(.*\) );$/\1 = nothing;/g' \
+	| sed 's/{ arg } ->/( arg... ) ->/g' \
+	| sed 's/{\([^}]*\)} ->/(\1) ->/g' \
+	| sed 's/{/[/g' \
+	| sed 's/}/]/g' \
+	| sed 's/ in / ⥉ /g' `# we want "in" to bind stronger than "!"` \
+	| sed 's/for \([^⥉]*\) ⥉ \([^⥉]*\)$/for \1 in \2/g' \
+	| sed 's/function( arg )/function( arg... )/g' \
+	| sed 's/function ( arg )/function ( arg... )/g' \
+	| sed 's/Method( \\\[\\\],/Method( getindex,/g' \
+	| sed 's/Method( \\=,/Method( ==,/g' \
+	| sed 's/Method( \\+,/Method( +,/g' \
+	| sed 's/Method( \\-,/Method( -,/g' \
+	| sed 's/Method( \\\*,/Method( *,/g' \
+	| sed 's/Method( \\\/,/Method( \/,/g' \
+	| sed 's/Method( \\in,/Method( in,/g' \
+	| sed 's/^DeclareInfoClass(/@DeclareInfoClass(/g' \
+	| sed 's/^DeclareAttribute(/@DeclareAttribute(/g' \
+	| sed 's/^DeclareSynonymAttr(/@DeclareSynonymAttr(/g' \
+	| sed 's/^DeclareProperty(/@DeclareProperty(/g' \
+	| sed 's/^DeclareFilter(/@DeclareFilter(/g' \
+	| sed 's/^DeclareCategory(/@DeclareFilter(/g' \
+	| sed 's/^InstallValue(/@InstallValueConst(/g' \
+	| sed 's/InstallValue(/@InstallValue(/g' \
+	| sed 's/BindGlobal(/@BindGlobal(/g' \
+	| sed 's/DeclareGlobalFunction(/@DeclareGlobalFunction(/g' \
+	| sed 's/InstallGlobalFunction(/@InstallGlobalFunction(/g' \
+	| sed 's/^DeclareOperation(/@DeclareOperation(/g' \
+	| sed 's/^DeclareOperationWithCache(/@DeclareOperation(/g' \
+	| sed 's/^KeyDependentOperation(/@KeyDependentOperation(/g' \
+	| sed 's/^InstallMethod(/InstallMethod( @__MODULE__, /g' \
+	| sed 's/^InstallMethodForCompilerForCAP(/InstallMethod( @__MODULE__, /g' \
+	| sed 's/\bNTuple\b/NTupleGAP/g' \
+	| sed 's/\bPair\b/PairGAP/g' \
+	| sed 's/\bUnion\b/UnionGAP/g' \
+	| sed 's/\bInt\b/IntGAP/g' \
+	| sed 's/\bString\b/StringGAP/g'
+}
+export -f syntax_replacements
+
+test_replacements() {
+	if [ "$1" = "CAP" ]; then
+		USING="using CAP"
+	else
+		USING="using CAP; using $1"
+	fi
+	sed 's/^gap> /julia> /g' \
+	| sed 's/^> /        /g' \
+	| sed 's/;$//g' \
+	| sed 's/julia> LoadPackage( .*/julia> true/g' \
+	| sed '/^#$/d' \
+	| sed '/^# doc\/.*/d' \
+	| sed '/^# \/doc\/.*/d' \
+	| sed '/^$/d' \
+	| sed 's/julia> /\njulia> /g' \
+	| sed "s/julia> START_TEST(.*/\`\`\`jldoctest\njulia> $USING/g" \
+	| sed 's/julia> STOP_TEST(.*/\`\`\`/g'
+}
+export -f test_replacements
+
+find . \( -type d -name .git -prune \) -o \( -type f -name '*.g[di]' \) -exec bash -c "cat '{}' | syntax_replacements > $JULIA_PKG_DIR$PKG_NAME/src/gap/'{}'.autogen.jl" \;
+
+chmod a-w "$JULIA_PKG_DIR$PKG_NAME"/src/gap/*.autogen.jl
+
+cd ../tst
+
+chmod u+w "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.autogen.md
+
+find . \( -type d -name .git -prune \) -o \( -type f -name '*.tst' \) -exec bash -c "cat '{}' | syntax_replacements | test_replacements $PKG_NAME > $JULIA_PKG_DIR$PKG_NAME/docs/src/'{}'.autogen.md" \;
+
+rm $JULIA_PKG_DIR$PKG_NAME/docs/src/100_LoadPackage.tst.autogen.md
+
+if [ "$PKG_NAME" = "CAP" ]; then
+	# ReadPackage
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap10.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap11.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap21.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap22.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap23.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap24.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap25.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap26.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap27.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap28.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap29.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap30.tst.autogen.md
+
+	# HomalgFieldOfRationals
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap12.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap13.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap14.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap15.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap17.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap18.tst.autogen.md
+
+	# MonoidalCategories
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap16.tst.autogen.md
+
+	# Functor example (continued)
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap02.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap03.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap04.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap05.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap06.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap07.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap08.tst.autogen.md
+
+	# needs CapCat
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/CAP_INTERNAL_ASSERT_VALUE_IS_OF_TYPE_GETTER.tst.autogen.md
+
+	# TerminalCategoryWithMultipleObjects uses String
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap19.tst.autogen.md
+
+	# TerminalCategoryWithSingleObject has different number of operations because many derivations are missing explicit preconditions
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap20.tst.autogen.md
+fi
+
+if [ "$PKG_NAME" = "FinSetsForCAP" ]; then
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/compare.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/CartesianClosedOpposite.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/SkeletalCartesianClosedOpposite.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap01.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap02.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap03.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap04.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap05.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap06.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap07.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap08.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap09.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap10.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap11.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap12.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap13.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap14.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap15.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap16.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap17.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap18.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap19.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap20.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap21.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap22.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap23.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap24.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap25.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap26.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap27.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap28.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap29.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap30.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap32.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap33.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap34.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap35.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap36.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap37.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap38.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap39.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap40.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap41.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap42.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap43.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap44.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap45.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap46.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap47.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap48.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap49.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap50.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap51.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap52.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap53.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap54.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap55.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap56.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap57.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap58.tst.autogen.md
+fi
+
+chmod a-w "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.autogen.md
