@@ -100,7 +100,8 @@ syntax_replacements() {
 	| sed 's/\bPair\b/PairGAP/g' \
 	| sed 's/\bUnion\b/UnionGAP/g' \
 	| sed 's/\bInt\b/IntGAP/g' \
-	| sed 's/\bString\b/StringGAP/g'
+	| sed 's/\bString\b/StringGAP/g' \
+	| sed 's/\bSet\b/SetGAP/g'
 }
 export -f syntax_replacements
 
@@ -120,7 +121,11 @@ test_replacements() {
 	| sed '/^$/d' \
 	| sed 's/julia> /\njulia> /g' \
 	| sed "s/julia> START_TEST(.*/\`\`\`jldoctest\njulia> $USING/g" \
-	| sed 's/julia> STOP_TEST(.*/\`\`\`/g'
+	| sed 's/julia> STOP_TEST(.*/\`\`\`/g' \
+	| sed 's/^<A[n ].*object ⥉ /<An object in /g' \
+	| sed 's/^A[n ].*object ⥉ /<An object in /g' \
+	| sed 's/^<A[n ].*morphism ⥉ /<A morphism in /g' \
+	| sed 's/^A[n ].*morphism ⥉ /<A morphism in /g'
 }
 export -f test_replacements
 
@@ -174,18 +179,20 @@ if [ "$PKG_NAME" = "CAP" ]; then
 	# needs CapCat
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/CAP_INTERNAL_ASSERT_VALUE_IS_OF_TYPE_GETTER.tst.autogen.md
 
-	# TerminalCategoryWithMultipleObjects uses String
+	# TerminalCategoryWith*Object has different number of operations because many derivations are missing explicit preconditions
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap19.tst.autogen.md
-
-	# TerminalCategoryWithSingleObject has different number of operations because many derivations are missing explicit preconditions
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap20.tst.autogen.md
 fi
 
 if [ "$PKG_NAME" = "FinSetsForCAP" ]; then
+	# needs CartesianCategories
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/compare.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/CartesianClosedOpposite.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/SkeletalCartesianClosedOpposite.tst.autogen.md
+	
+	# lists with holes
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap01.tst.autogen.md
+	
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap02.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap03.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap04.tst.autogen.md
@@ -215,15 +222,12 @@ if [ "$PKG_NAME" = "FinSetsForCAP" ]; then
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap28.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap29.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap30.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap32.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap33.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap34.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap35.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap36.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap37.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap38.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap39.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap40.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap41.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap42.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap43.tst.autogen.md

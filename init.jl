@@ -10,7 +10,7 @@ end
 # export all symbols
 # many thanks to https://discourse.julialang.org/t/exportall/4970/16
 for n in names(@__MODULE__; all=true)
-    if Base.isidentifier(n) && n ∉ (Symbol(@__MODULE__), :eval, :include, :__init__)
+    if (Base.isidentifier(n) || n in [:⥉]) && n ∉ (Symbol(@__MODULE__), :eval, :include, :__init__)
         @eval export $n
     end
 end
