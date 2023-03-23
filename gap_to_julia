@@ -122,10 +122,12 @@ test_replacements() {
 	| sed 's/julia> /\njulia> /g' \
 	| sed "s/julia> START_TEST(.*/\`\`\`jldoctest\njulia> $USING/g" \
 	| sed 's/julia> STOP_TEST(.*/\`\`\`/g' \
+	`# revert some code changes also affecting output lines` \
 	| sed 's/^<A[n ].*object ⥉ /<An object in /g' \
 	| sed 's/^A[n ].*object ⥉ /<An object in /g' \
 	| sed 's/^<A[n ].*morphism ⥉ /<A morphism in /g' \
-	| sed 's/^A[n ].*morphism ⥉ /<A morphism in /g'
+	| sed 's/^A[n ].*morphism ⥉ /<A morphism in /g' \
+	| sed 's/^(\([0-9]*\)):(\([0-9]*\))$/[ \1 .. \2 ]/g'
 }
 export -f test_replacements
 
@@ -137,7 +139,7 @@ cd ../tst
 
 chmod u+w "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.autogen.md
 
-find . \( -type d -name .git -prune \) -o \( -type f -name '*.tst' \) -exec bash -c "cat '{}' | syntax_replacements | test_replacements $PKG_NAME > $JULIA_PKG_DIR$PKG_NAME/docs/src/'{}'.autogen.md" \;
+find . \( -type d -name .git -prune \) -o \( -type f -name '*.tst' \) -exec bash -c "cat '{}' | perl -p -e 's/\\\\\\n//' | syntax_replacements | test_replacements $PKG_NAME > $JULIA_PKG_DIR$PKG_NAME/docs/src/'{}'.autogen.md" \;
 
 rm $JULIA_PKG_DIR$PKG_NAME/docs/src/100_LoadPackage.tst.autogen.md
 
@@ -189,63 +191,40 @@ if [ "$PKG_NAME" = "FinSetsForCAP" ]; then
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/compare.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/CartesianClosedOpposite.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/SkeletalCartesianClosedOpposite.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap22.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap50.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap53.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap24.tst.autogen.md
+	
+	# needs Toposes
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap07.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap08.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap25.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap26.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap28.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap54.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap55.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap57.tst.autogen.md
+	# derivation of CanonicalIdentificationFromImageObjectToCoimage lives in Toposes
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap17.tst.autogen.md
 	
 	# lists with holes
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap01.tst.autogen.md
-	
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap02.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap03.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap04.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap05.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap06.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap07.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap08.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap09.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap10.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap11.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap12.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap13.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap14.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap15.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap16.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap17.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap18.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap19.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap20.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap21.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap22.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap23.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap24.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap25.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap26.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap27.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap28.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap29.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap30.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap33.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap35.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap36.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap37.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap38.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap39.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap41.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap42.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap43.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap44.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap45.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap46.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap47.tst.autogen.md
+	
+	# CompilerForCAP
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap58.tst.autogen.md
+	
+	# continuation
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap48.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap49.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap50.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap51.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap52.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap53.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap54.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap55.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap56.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap57.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap58.tst.autogen.md
+	
+	# ViewString for ranges
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap23.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap39.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap45.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap47.tst.autogen.md
 fi
 
 chmod a-w "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.autogen.md
