@@ -95,7 +95,10 @@ syntax_replacements() {
 	| sed 's/^DeclareOperationWithCache(/@DeclareOperation(/g' \
 	| sed 's/^KeyDependentOperation(/@KeyDependentOperation(/g' \
 	| sed 's/^InstallMethod(/InstallMethod( @__MODULE__, /g' \
+	| sed 's/^InstallOtherMethod(/InstallMethod( @__MODULE__, /g' \
 	| sed 's/^InstallMethodForCompilerForCAP(/InstallMethod( @__MODULE__, /g' \
+	| sed 's/^InstallOtherMethodForCompilerForCAP(/InstallMethod( @__MODULE__, /g' \
+	| sed 's/\bAssert\b/@Assert/g' \
 	| sed 's/\bNTuple\b/NTupleGAP/g' \
 	| sed 's/\bPair\b/PairGAP/g' \
 	| sed 's/\bUnion\b/UnionGAP/g' \
@@ -108,14 +111,21 @@ export -f syntax_replacements
 test_replacements() {
 	if [ "$1" = "CAP" ]; then
 		USING="using CAP"
+	elif [ "$1" = "MonoidalCategories" ]; then
+		USING="using CAP; using $1"
+	elif [ "$1" = "CartesianCategories" ]; then
+		USING="using CAP; using $1"
+	elif [ "$1" = "FinSetsForCAP" ]; then
+		USING="using CAP; using CartesianCategories; using $1"
 	else
+		echo "Unkown package $1, please explicitly add its dependencies"
 		USING="using CAP; using $1"
 	fi
 	sed 's/^gap> /julia> /g' \
 	| sed 's/^> /        /g' \
 	| sed 's/;$//g' \
 	| sed 's/julia> LoadPackage( .*/julia> true/g' \
-	| sed '/^#$/d' \
+	| sed '/^#/d' \
 	| sed '/^# doc\/.*/d' \
 	| sed '/^# \/doc\/.*/d' \
 	| sed '/^$/d' \
@@ -187,14 +197,9 @@ if [ "$PKG_NAME" = "CAP" ]; then
 fi
 
 if [ "$PKG_NAME" = "FinSetsForCAP" ]; then
-	# needs CartesianCategories
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/compare.tst.autogen.md
+	# problems with world age
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/CartesianClosedOpposite.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/SkeletalCartesianClosedOpposite.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap22.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap50.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap53.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap24.tst.autogen.md
 	
 	# needs Toposes
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap07.tst.autogen.md
@@ -202,6 +207,7 @@ if [ "$PKG_NAME" = "FinSetsForCAP" ]; then
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap25.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap26.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap28.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap50.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap54.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap55.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap57.tst.autogen.md
@@ -225,6 +231,28 @@ if [ "$PKG_NAME" = "FinSetsForCAP" ]; then
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap39.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap45.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap47.tst.autogen.md
+fi
+
+if [ "$PKG_NAME" = "MonoidalCategories" ]; then
+	# needs GaussForHomalg
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/monoidalcategories01.tst.autogen.md
+	
+	# needs CommutativeRingOfLinearCategoryOperation
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/TerminalCategoryMonoidal.tst.autogen.md
+fi
+
+if [ "$PKG_NAME" = "CartesianCategories" ]; then
+	# needs implication `InstallTrueMethod( IsBicartesianClosedCategory, IsCartesianClosedCategory and IsCocartesianCategory )`
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cartesiancategories01.tst.autogen.md
+	
+	# problems with whitespace
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cartesiancategories02.tst.autogen.md
+	
+	# needs CommutativeRingOfLinearCategoryOperation
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/TerminalCategoryCartesian.tst.autogen.md
+	
+	# problems with world age
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/TerminalCategoryCocartesian.tst.autogen.md
 fi
 
 chmod a-w "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.autogen.md
