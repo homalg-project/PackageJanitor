@@ -14,6 +14,8 @@ if [ -d "$GAP_PKG_DIR$PKG_NAME" ]; then
 	PKG_FULL_NAME="$PKG_NAME"
 elif [ -d "$GAP_PKG_DIR/CAP_project/$PKG_NAME" ]; then
 	PKG_FULL_NAME="CAP_project/$PKG_NAME"
+elif [ -d "$GAP_PKG_DIR/CategoricalTowers/$PKG_NAME" ]; then
+	PKG_FULL_NAME="CategoricalTowers/$PKG_NAME"
 else
 	echo "Could not find GAP package $PKG_NAME"
 	exit 1
@@ -115,8 +117,10 @@ test_replacements() {
 		USING="using CAP; using $1"
 	elif [ "$1" = "CartesianCategories" ]; then
 		USING="using CAP; using $1"
+	elif [ "$1" = "Toposes" ]; then
+		USING="using CAP; using CartesianCategories; using FinSetsForCAP; using $1"
 	elif [ "$1" = "FinSetsForCAP" ]; then
-		USING="using CAP; using CartesianCategories; using $1"
+		USING="using CAP; using CartesianCategories; using Toposes; using $1"
 	else
 		echo "Unkown package $1, please explicitly add its dependencies"
 		USING="using CAP; using $1"
@@ -201,18 +205,8 @@ if [ "$PKG_NAME" = "FinSetsForCAP" ]; then
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/CartesianClosedOpposite.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/SkeletalCartesianClosedOpposite.tst.autogen.md
 	
-	# needs Toposes
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap07.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap08.tst.autogen.md
+	# line continuation
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap25.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap26.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap28.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap50.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap54.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap55.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap57.tst.autogen.md
-	# derivation of CanonicalIdentificationFromImageObjectToCoimage lives in Toposes
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap17.tst.autogen.md
 	
 	# lists with holes
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap01.tst.autogen.md
@@ -223,8 +217,11 @@ if [ "$PKG_NAME" = "FinSetsForCAP" ]; then
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap58.tst.autogen.md
 	
 	# continuation
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap26.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap28.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap48.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap49.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap57.tst.autogen.md
 	
 	# ViewString for ranges
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap23.tst.autogen.md
@@ -253,6 +250,17 @@ if [ "$PKG_NAME" = "CartesianCategories" ]; then
 	
 	# problems with world age
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/TerminalCategoryCocartesian.tst.autogen.md
+fi
+
+if [ "$PKG_NAME" = "Toposes" ]; then
+	# continuation
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/toposes03.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/toposes05.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/toposes07.tst.autogen.md
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/toposes08.tst.autogen.md
+	
+	# needs implication `InstallTrueMethod( IsBicartesianClosedCategory, IsCartesianClosedCategory and IsCocartesianCategory )`
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/toposes09.tst.autogen.md
 fi
 
 chmod a-w "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.autogen.md
