@@ -65,7 +65,8 @@ syntax_replacements() {
 	| sed 's/\.( \([^)]*\) )/[\1]/g' \
 	| sed 's/\.(\([^)]*\))/[\1]/g' \
 	| sed 's/infinity/Inf/g' \
-	| sed 's/\[ \([^.[]*\) \.\. \([^]]*\)\ ]/(\1):(\2)/g' \
+	| sed 's/\[ \([^].[]*\) \.\. \([^][]*\) \]/(\1):(\2)/g' `# [ a .. b ] -> (a):(b) where a and b do not contain square brackets` \
+	| sed 's/\[ \([^].[]*\) \.\. \([^][]*\)\[\([^].[]*\)\]\([^][]*\) \]/(\1):(\2[\3]\4)/g' `# [ a .. b ] -> (a):(b) where b contains a pair of square brackets` \
 	| sed 's/Unbind( \(.*\) );$/\1 = nothing;/g' \
 	| sed 's/{ arg } ->/( arg... ) ->/g' \
 	| sed 's/{\([^}]*\)} ->/(\1) ->/g' \
@@ -125,14 +126,17 @@ test_replacements() {
 		echo "Unkown package $1, please explicitly add its dependencies"
 		USING="using CAP; using $1"
 	fi
-	sed 's/^gap> /julia> /g' \
+	# revert printing of ranges, hack: repeat this for multiple ranges occuring in the same line
+	sed 's/^\([^>g].*\)(\([0-9]*\)):(\([0-9]*\))/\1[ \2 .. \3 ]/g' \
+	| sed 's/^\([^>g].*\)(\([0-9]*\)):(\([0-9]*\))/\1[ \2 .. \3 ]/g' \
+	| sed 's/^\([^>g].*\)(\([0-9]*\)):(\([0-9]*\))/\1[ \2 .. \3 ]/g' \
+	| sed 's/^\([^>g].*\)(\([0-9]*\)):(\([0-9]*\))/\1[ \2 .. \3 ]/g' \
+	| sed 's/^\([^>g].*\)(\([0-9]*\)):(\([0-9]*\))/\1[ \2 .. \3 ]/g' \
+	| sed 's/^gap> /julia> /g' \
 	| sed 's/^> /        /g' \
 	| sed 's/;$//g' \
 	| sed 's/julia> LoadPackage( .*/julia> true/g' \
 	| sed '/^#/d' \
-	| sed '/^# doc\/.*/d' \
-	| sed '/^# \/doc\/.*/d' \
-	| sed '/^$/d' \
 	| sed 's/julia> /\njulia> /g' \
 	| sed "s/julia> START_TEST(.*/\`\`\`jldoctest\njulia> $USING/g" \
 	| sed 's/julia> STOP_TEST(.*/\`\`\`/g' \
@@ -153,7 +157,8 @@ cd ../tst
 
 chmod u+w "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.autogen.md
 
-find . \( -type d -name .git -prune \) -o \( -type f -name '*.tst' \) -exec bash -c "cat '{}' | perl -p -e 's/\\\\\\n//' | syntax_replacements | test_replacements $PKG_NAME > $JULIA_PKG_DIR$PKG_NAME/docs/src/'{}'.autogen.md" \;
+# use perl to handle line continuation and empty lines starting comments
+find . \( -type d -name .git -prune \) -o \( -type f -name '*.tst' \) -exec bash -c "cat '{}' | perl -p -e 's/\\\\\\n//' | perl -0 -p -e 's/\\n\\n#.*\\n/\\n/g' | syntax_replacements | test_replacements $PKG_NAME > $JULIA_PKG_DIR$PKG_NAME/docs/src/'{}'.autogen.md" \;
 
 rm $JULIA_PKG_DIR$PKG_NAME/docs/src/100_LoadPackage.tst.autogen.md
 
@@ -192,19 +197,12 @@ if [ "$PKG_NAME" = "CAP" ]; then
 
 	# needs CapCat
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/CAP_INTERNAL_ASSERT_VALUE_IS_OF_TYPE_GETTER.tst.autogen.md
-
-	# problems with whitespace
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap19.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap20.tst.autogen.md
 fi
 
 if [ "$PKG_NAME" = "FinSetsForCAP" ]; then
 	# problems with world age
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/CartesianClosedOpposite.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/SkeletalCartesianClosedOpposite.tst.autogen.md
-	
-	# line continuation
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap25.tst.autogen.md
 	
 	# lists with holes
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap01.tst.autogen.md
@@ -220,12 +218,6 @@ if [ "$PKG_NAME" = "FinSetsForCAP" ]; then
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap48.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap49.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap57.tst.autogen.md
-	
-	# ViewString for ranges
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap23.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap39.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap45.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap47.tst.autogen.md
 fi
 
 if [ "$PKG_NAME" = "MonoidalCategories" ]; then
@@ -239,9 +231,6 @@ fi
 if [ "$PKG_NAME" = "CartesianCategories" ]; then
 	# needs implication `InstallTrueMethod( IsBicartesianClosedCategory, IsCartesianClosedCategory and IsCocartesianCategory )`
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cartesiancategories01.tst.autogen.md
-	
-	# problems with whitespace
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cartesiancategories02.tst.autogen.md
 	
 	# needs CommutativeRingOfLinearCategoryOperation
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/TerminalCategoryCartesian.tst.autogen.md
