@@ -955,6 +955,16 @@
           - name: ToolsForHomalg
             description: Special methods and knowledge propagation tools
             tests_only_basic: true
+        ci_additional_repositories:
+          - alcove
+          - alexander
+          - CddInterface
+          - CAP_project
+          - D-Modules
+          - NConvex
+          - Sheaves
+          - ToricVarieties_project
+          - VirtualCAS
 
 - name: homalg-project.github.io
   hosts: homalg-project.github.io
