@@ -224,7 +224,7 @@ if [ "$PKG_NAME" = "MonoidalCategories" ]; then
 	# needs GaussForHomalg
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/monoidalcategories01.tst.autogen.md
 	
-	# needs CommutativeRingOfLinearCategoryOperation
+	# problems with world age
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/TerminalCategoryMonoidal.tst.autogen.md
 fi
 
@@ -232,10 +232,8 @@ if [ "$PKG_NAME" = "CartesianCategories" ]; then
 	# needs implication `InstallTrueMethod( IsBicartesianClosedCategory, IsCartesianClosedCategory and IsCocartesianCategory )`
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cartesiancategories01.tst.autogen.md
 	
-	# needs CommutativeRingOfLinearCategoryOperation
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/TerminalCategoryCartesian.tst.autogen.md
-	
 	# problems with world age
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/TerminalCategoryCartesian.tst.autogen.md
 	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/TerminalCategoryCocartesian.tst.autogen.md
 fi
 
