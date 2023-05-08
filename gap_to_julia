@@ -139,7 +139,7 @@ test_replacements() {
 	| sed '/^#/d' \
 	| sed 's/julia> /\njulia> /g' \
 	| sed "s/julia> START_TEST(.*/\`\`\`jldoctest\njulia> $USING/g" \
-	| sed 's/julia> STOP_TEST(.*/\`\`\`/g' \
+	| sed 's/julia> STOP_TEST(.*/```/g' \
 	`# revert some code changes also affecting output lines` \
 	| sed 's/^<A[n ].*object ⥉ /<An object in /g' \
 	| sed 's/^A[n ].*object ⥉ /An object in /g' \
@@ -149,7 +149,7 @@ test_replacements() {
 }
 export -f test_replacements
 
-find . \( -type d -name .git -prune \) -o \( -type f -name '*.g[di]' \) -exec bash -c "cat '{}' | syntax_replacements > $JULIA_PKG_DIR$PKG_NAME/src/gap/'{}'.autogen.jl" \;
+find . \( -type d -name .git -prune \) -o \( -type f -name '*.g[di]' \) -exec bash -c "cat '{}' | syntax_replacements > \"$JULIA_PKG_DIR$PKG_NAME\"/src/gap/'{}'.autogen.jl" \;
 
 chmod a-w "$JULIA_PKG_DIR$PKG_NAME"/src/gap/*.autogen.jl
 
@@ -158,88 +158,91 @@ cd ../tst
 chmod u+w "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.autogen.md
 
 # use perl to handle line continuation and empty lines starting comments
-find . \( -type d -name .git -prune \) -o \( -type f -name '*.tst' \) -exec bash -c "cat '{}' | perl -p -e 's/\\\\\\n//' | perl -0 -p -e 's/\\n\\n#.*\\n/\\n/g' | syntax_replacements | test_replacements $PKG_NAME > $JULIA_PKG_DIR$PKG_NAME/docs/src/'{}'.autogen.md" \;
+find . \( -type d -name .git -prune \) -o \( -type f -name '*.tst' \) -exec bash -c "cat '{}' | perl -p -e 's/\\\\\\n//' | perl -0 -p -e 's/\\n\\n#.*\\n/\\n/g' | syntax_replacements | test_replacements $PKG_NAME > \"$JULIA_PKG_DIR$PKG_NAME\"/docs/src/'{}'.autogen.md" \;
 
-rm $JULIA_PKG_DIR$PKG_NAME/docs/src/100_LoadPackage.tst.autogen.md
+rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/100_LoadPackage.tst.autogen.md
 
 if [ "$PKG_NAME" = "CAP" ]; then
 	# ReadPackage
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap10.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap11.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap21.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap22.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap23.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap24.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap25.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap26.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap27.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap28.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap29.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap30.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap10.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap11.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap21.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap22.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap23.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap24.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap25.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap26.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap27.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap28.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap29.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap30.tst.autogen.md
 
 	# HomalgFieldOfRationals
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap12.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap13.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap14.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap15.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap16.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap17.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap18.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap12.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap13.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap14.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap15.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap16.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap17.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap18.tst.autogen.md
 
 	# Functor example (continued)
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap02.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap03.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap04.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap05.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap06.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap07.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cap08.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap02.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap03.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap04.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap05.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap06.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap07.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap08.tst.autogen.md
 
 	# needs CapCat
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/CAP_INTERNAL_ASSERT_VALUE_IS_OF_TYPE_GETTER.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/CAP_INTERNAL_ASSERT_VALUE_IS_OF_TYPE_GETTER.tst.autogen.md
 fi
 
 if [ "$PKG_NAME" = "FinSetsForCAP" ]; then
 	# problems with world age
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/CartesianClosedOpposite.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/SkeletalCartesianClosedOpposite.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/CartesianClosedOpposite.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/SkeletalCartesianClosedOpposite.tst.autogen.md
 	
 	# lists with holes
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap01.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap03.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap05.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/finsetsforcap01.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/finsetsforcap03.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/finsetsforcap05.tst.autogen.md
+	
+	# CategoryOfRelations
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/finsetsforcap28.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/finsetsforcap57.tst.autogen.md
 	
 	# CompilerForCAP
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap58.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/finsetsforcap58.tst.autogen.md
 	
-	# continuation
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap26.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap28.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap48.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap49.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/finsetsforcap57.tst.autogen.md
+	cat "$JULIA_PKG_DIR$PKG_NAME"/docs/src/finsetsforcap*.tst.autogen.md > "$JULIA_PKG_DIR$PKG_NAME"/docs/src/AutoDocTests.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/finsetsforcap*.tst.autogen.md
+	
+	sed -i 's/```jldoctest/```jldoctest AutoDocTests/g' "$JULIA_PKG_DIR$PKG_NAME"/docs/src/AutoDocTests.tst.autogen.md
 fi
 
 if [ "$PKG_NAME" = "MonoidalCategories" ]; then
 	# needs GaussForHomalg
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/monoidalcategories01.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/monoidalcategories01.tst.autogen.md
 	
 	# problems with world age
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/TerminalCategoryMonoidal.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/TerminalCategoryMonoidal.tst.autogen.md
 fi
 
 if [ "$PKG_NAME" = "CartesianCategories" ]; then
 	# needs implication `InstallTrueMethod( IsBicartesianClosedCategory, IsCartesianClosedCategory and IsCocartesianCategory )`
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/cartesiancategories01.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cartesiancategories01.tst.autogen.md
 	
 	# problems with world age
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/TerminalCategoryCartesian.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/TerminalCategoryCocartesian.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/TerminalCategoryCartesian.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/TerminalCategoryCocartesian.tst.autogen.md
 fi
 
 if [ "$PKG_NAME" = "Toposes" ]; then
-	# AutoDoc examples are unstable
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/toposes*.tst.autogen.md
+	# AutoDoc examples have unstable numbering
+	# one test needs implication `InstallTrueMethod( IsBicartesianClosedCategory, IsCartesianClosedCategory and IsCocartesianCategory )`
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/toposes*.tst.autogen.md
 fi
 
 chmod a-w "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.autogen.md
