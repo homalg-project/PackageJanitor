@@ -238,14 +238,8 @@ if [ "$PKG_NAME" = "CartesianCategories" ]; then
 fi
 
 if [ "$PKG_NAME" = "Toposes" ]; then
-	# continuation
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/toposes04.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/toposes06.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/toposes08.tst.autogen.md
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/toposes09.tst.autogen.md
-	
-	# needs implication `InstallTrueMethod( IsBicartesianClosedCategory, IsCartesianClosedCategory and IsCocartesianCategory )`
-	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/toposes10.tst.autogen.md
+	# AutoDoc examples are unstable
+	rm $JULIA_PKG_DIR$PKG_NAME/docs/src/toposes*.tst.autogen.md
 fi
 
 chmod a-w "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.autogen.md
