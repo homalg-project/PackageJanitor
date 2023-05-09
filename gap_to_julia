@@ -33,6 +33,8 @@ if [ -d "$GAP_PKG_DIR$PKG_FULL_NAME/gap/precompiled_categories/" ]; then
 	mkdir -p "$JULIA_PKG_DIR$PKG_NAME/src/gap/precompiled_categories/"
 fi
 
+cp "$(dirname $(realpath $0))/files/LICENSE" "$JULIA_PKG_DIR$PKG_NAME/LICENSE"
+
 cp -u "$(dirname $(realpath $0))/init.jl" "$JULIA_PKG_DIR$PKG_NAME/src/init.jl"
 cmp -s "$(dirname $(realpath $0))/init.jl" "$JULIA_PKG_DIR$PKG_NAME/src/init.jl" || echo "init.jl in Julia package was modified, not overwriting"
 
