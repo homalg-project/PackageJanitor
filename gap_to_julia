@@ -109,7 +109,8 @@ syntax_replacements() {
 	| sed 's/\bUnion\b/UnionGAP/g' \
 	| sed 's/\bInt\b/IntGAP/g' \
 	| sed 's/\bString\b/StringGAP/g' \
-	| sed 's/\bSet\b/SetGAP/g'
+	| sed 's/\bSet\b/SetGAP/g' \
+	| sed 's/\bConcatenation(/@Concatenation(/g'
 }
 export -f syntax_replacements
 
