@@ -102,6 +102,7 @@ syntax_replacements() {
 	| sed 's/^InstallOtherMethod(/InstallMethod( @__MODULE__, /g' \
 	| sed 's/^InstallMethodForCompilerForCAP(/InstallMethod( @__MODULE__, /g' \
 	| sed 's/^InstallOtherMethodForCompilerForCAP(/InstallMethod( @__MODULE__, /g' \
+	| sed 's/\brec(/@rec(/g' \
 	| sed 's/\bAssert(/@Assert(/g' \
 	| sed 's/\bConcatenation(/@Concatenation(/g' \
 	| sed 's/\bInfo(/@Info(/g' \
