@@ -69,7 +69,6 @@ syntax_replacements() {
 	| sed 's/infinity/Inf/g' \
 	| sed 's/\[ \([^].[]*\) \.\. \([^][]*\) \]/(\1):(\2)/g' `# [ a .. b ] -> (a):(b) where a and b do not contain square brackets` \
 	| sed 's/\[ \([^].[]*\) \.\. \([^][]*\)\[\([^].[]*\)\]\([^][]*\) \]/(\1):(\2[\3]\4)/g' `# [ a .. b ] -> (a):(b) where b contains a pair of square brackets` \
-	| sed 's/Unbind( \(.*\) );$/\1 = nothing;/g' \
 	| sed 's/{ arg } ->/( arg... ) ->/g' \
 	| sed 's/{\([^}]*\)} ->/(\1) ->/g' \
 	| sed 's/{/[/g' \
@@ -103,14 +102,18 @@ syntax_replacements() {
 	| sed 's/^InstallOtherMethod(/InstallMethod( @__MODULE__, /g' \
 	| sed 's/^InstallMethodForCompilerForCAP(/InstallMethod( @__MODULE__, /g' \
 	| sed 's/^InstallOtherMethodForCompilerForCAP(/InstallMethod( @__MODULE__, /g' \
-	| sed 's/\bAssert\b/@Assert/g' \
+	| sed 's/\bAssert(/@Assert(/g' \
+	| sed 's/\bConcatenation(/@Concatenation(/g' \
+	| sed 's/\bInfo(/@Info(/g' \
+	| sed 's/\bUnbind(/@Unbind(/g' \
+	| sed 's/\bIsBound(/@IsBound(/g' \
 	| sed 's/\bNTuple\b/NTupleGAP/g' \
 	| sed 's/\bPair\b/PairGAP/g' \
 	| sed 's/\bUnion\b/UnionGAP/g' \
 	| sed 's/\bInt\b/IntGAP/g' \
 	| sed 's/\bString\b/StringGAP/g' \
 	| sed 's/\bSet\b/SetGAP/g' \
-	| sed 's/\bConcatenation(/@Concatenation(/g'
+	# terminate line continuation
 }
 export -f syntax_replacements
 
