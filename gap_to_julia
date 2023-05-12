@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 GAP_PKG_DIR=~/.gap/pkg/
 JULIA_PKG_DIR=~/.julia/dev/
 
