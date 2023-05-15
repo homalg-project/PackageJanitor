@@ -213,11 +213,6 @@ if [ "$PKG_NAME" = "FinSetsForCAP" ]; then
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/CartesianClosedOpposite.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/SkeletalCartesianClosedOpposite.tst.autogen.md
 	
-	# lists with holes
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/finsetsforcap01.tst.autogen.md
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/finsetsforcap03.tst.autogen.md
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/finsetsforcap05.tst.autogen.md
-	
 	# CategoryOfRelations
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/finsetsforcap28.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/finsetsforcap57.tst.autogen.md
