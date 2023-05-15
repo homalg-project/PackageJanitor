@@ -209,7 +209,7 @@ if [ "$PKG_NAME" = "CAP" ]; then
 fi
 
 if [ "$PKG_NAME" = "FinSetsForCAP" ]; then
-	# problems with world age
+	# cannot handle dual_preprocessor_func as strings yet
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/CartesianClosedOpposite.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/SkeletalCartesianClosedOpposite.tst.autogen.md
 	
@@ -235,7 +235,7 @@ if [ "$PKG_NAME" = "MonoidalCategories" ]; then
 	# needs GaussForHomalg
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/monoidalcategories01.tst.autogen.md
 	
-	# problems with world age
+	# cannot handle dual_preprocessor_func as strings yet
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/TerminalCategoryMonoidal.tst.autogen.md
 fi
 
@@ -243,7 +243,7 @@ if [ "$PKG_NAME" = "CartesianCategories" ]; then
 	# needs implication `InstallTrueMethod( IsBicartesianClosedCategory, IsCartesianClosedCategory and IsCocartesianCategory )`
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cartesiancategories01.tst.autogen.md
 	
-	# problems with world age
+	# cannot handle dual_preprocessor_func as strings yet
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/TerminalCategoryCartesian.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/TerminalCategoryCocartesian.tst.autogen.md
 fi
