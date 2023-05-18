@@ -209,10 +209,6 @@ if [ "$PKG_NAME" = "CAP" ]; then
 fi
 
 if [ "$PKG_NAME" = "FinSetsForCAP" ]; then
-	# CategoryOfRelations
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/finsetsforcap28.tst.autogen.md
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/finsetsforcap57.tst.autogen.md
-	
 	# CompilerForCAP
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/finsetsforcap58.tst.autogen.md
 	
