@@ -164,7 +164,7 @@ chmod a-w "$JULIA_PKG_DIR$PKG_NAME"/src/gap/*.autogen.jl
 
 cd ../tst
 
-chmod u+w "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.autogen.md
+chmod u+w "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.autogen.md || true
 
 # use perl to handle line continuation and empty lines starting comments
 find . \( -type d -name .git -prune \) -o \( -type f -name '*.tst' \) -exec bash -c "cat '{}' | perl -p -e 's/\\\\\\n//' | perl -0 -p -e 's/\\n\\n#.*\\n/\\n/g' | syntax_replacements | test_replacements $PKG_NAME > \"$JULIA_PKG_DIR$PKG_NAME\"/docs/src/'{}'.autogen.md" \;
@@ -209,10 +209,6 @@ if [ "$PKG_NAME" = "CAP" ]; then
 fi
 
 if [ "$PKG_NAME" = "FinSetsForCAP" ]; then
-	# cannot handle dual_preprocessor_func as strings yet
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/CartesianClosedOpposite.tst.autogen.md
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/SkeletalCartesianClosedOpposite.tst.autogen.md
-	
 	# CategoryOfRelations
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/finsetsforcap28.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/finsetsforcap57.tst.autogen.md
@@ -229,18 +225,11 @@ fi
 if [ "$PKG_NAME" = "MonoidalCategories" ]; then
 	# needs GaussForHomalg
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/monoidalcategories01.tst.autogen.md
-	
-	# cannot handle dual_preprocessor_func as strings yet
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/TerminalCategoryMonoidal.tst.autogen.md
 fi
 
 if [ "$PKG_NAME" = "CartesianCategories" ]; then
 	# needs implication `InstallTrueMethod( IsBicartesianClosedCategory, IsCartesianClosedCategory and IsCocartesianCategory )`
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cartesiancategories01.tst.autogen.md
-	
-	# cannot handle dual_preprocessor_func as strings yet
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/TerminalCategoryCartesian.tst.autogen.md
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/TerminalCategoryCocartesian.tst.autogen.md
 fi
 
 if [ "$PKG_NAME" = "Toposes" ]; then
