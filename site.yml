@@ -677,6 +677,7 @@
           - name: LinearAlgebraForCAP
             description: Category of Matrices over a Field for CAP
             tests_only_basic: true
+            tests_without_precompiled_code: true
           - name: ModulePresentationsForCAP
             description: Category R-pres for CAP
             has_HOMALG_IO: true
