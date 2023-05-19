@@ -209,8 +209,8 @@ if [ "$PKG_NAME" = "CAP" ]; then
 fi
 
 if [ "$PKG_NAME" = "FinSetsForCAP" ]; then
-	# CompilerForCAP
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/finsetsforcap58.tst.autogen.md
+	# remove tests neededing CompilerForCAP
+	rm -f $(grep -l "CapJitPrecompileCategoryAndCompareResult(" "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.tst.autogen.md)
 	
 	cat "$JULIA_PKG_DIR$PKG_NAME"/docs/src/finsetsforcap*.tst.autogen.md > "$JULIA_PKG_DIR$PKG_NAME"/docs/src/AutoDocTests.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/finsetsforcap*.tst.autogen.md
@@ -224,14 +224,17 @@ if [ "$PKG_NAME" = "MonoidalCategories" ]; then
 fi
 
 if [ "$PKG_NAME" = "CartesianCategories" ]; then
-	# needs implication `InstallTrueMethod( IsBicartesianClosedCategory, IsCartesianClosedCategory and IsCocartesianCategory )`
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cartesiancategories01.tst.autogen.md
+	cat "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cartesiancategories*.tst.autogen.md > "$JULIA_PKG_DIR$PKG_NAME"/docs/src/AutoDocTests.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cartesiancategories*.tst.autogen.md
+	
+	sed -i 's/```jldoctest/```jldoctest AutoDocTests/g' "$JULIA_PKG_DIR$PKG_NAME"/docs/src/AutoDocTests.tst.autogen.md
 fi
 
 if [ "$PKG_NAME" = "Toposes" ]; then
-	# AutoDoc examples have unstable numbering
-	# one test needs implication `InstallTrueMethod( IsBicartesianClosedCategory, IsCartesianClosedCategory and IsCocartesianCategory )`
+	cat "$JULIA_PKG_DIR$PKG_NAME"/docs/src/toposes*.tst.autogen.md > "$JULIA_PKG_DIR$PKG_NAME"/docs/src/AutoDocTests.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/toposes*.tst.autogen.md
+	
+	sed -i 's/```jldoctest/```jldoctest AutoDocTests/g' "$JULIA_PKG_DIR$PKG_NAME"/docs/src/AutoDocTests.tst.autogen.md
 fi
 
 chmod a-w "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.autogen.md
