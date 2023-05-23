@@ -68,7 +68,6 @@ syntax_replacements() {
 	| sed 's/elif/elseif/g' \
 	| sed 's/\.( \([^)]*\) )/[\1]/g' \
 	| sed 's/\.(\([^)]*\))/[\1]/g' \
-	| sed 's/infinity/Inf/g' \
 	| sed 's/\[ \([^].[]*\) \.\. \([^][]*\) \]/(\1):(\2)/g' `# [ a .. b ] -> (a):(b) where a and b do not contain square brackets` \
 	| sed 's/\[ \([^].[]*\) \.\. \([^][]*\)\[\([^].[]*\)\]\([^][]*\) \]/(\1):(\2[\3]\4)/g' `# [ a .. b ] -> (a):(b) where b contains a pair of square brackets` \
 	| sed 's/{ arg } ->/( arg... ) ->/g' \
