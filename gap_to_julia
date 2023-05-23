@@ -60,11 +60,32 @@ syntax_replacements() {
 	| sed 's/fi;$/end;/g' \
 	| sed 's/ do$//g' \
 	| sed 's/od;$/end;/g' \
-	| sed 's/ and / \&\& /g' \
-	| sed 's/ and$/ \&\&/g' \
-	| sed 's/ or / || /g' \
-	| sed 's/ or$/ ||/g' \
-	| sed 's/not /!/g' \
+	| sed 's/"\([^"]*\)"/⦇\1⦈/g' `# replace pairs of quotation marks by special brackets so we can later selectively replace things inside strings` \
+	| sed '/^\s*#/! s/ and / \&\& /g' \
+	| sed '/^\s*#/! s/ and$/ \&\&/g' \
+	| sed 's/⦇\([^⦇⦈]*\) \&\& \([^⦇⦈]*\)⦈/⦇\1 and \2⦈/g' `# re-replace "&&" by "and" inside strings, HACK: repeat this multiple times for multiple occurrences` \
+	| sed 's/⦇\([^⦇⦈]*\) \&\& \([^⦇⦈]*\)⦈/⦇\1 and \2⦈/g' \
+	| sed 's/⦇\([^⦇⦈]*\) \&\& \([^⦇⦈]*\)⦈/⦇\1 and \2⦈/g' \
+	| sed 's/⦇\([^⦇⦈]*\) \&\& \([^⦇⦈]*\)⦈/⦇\1 and \2⦈/g' \
+	| sed '/^\s*#/! s/ or / || /g' \
+	| sed '/^\s*#/! s/ or$/ ||/g' \
+	| sed 's/⦇\([^⦇⦈]*\) || \([^⦇⦈]*\)⦈/⦇\1 or \2⦈/g' `# re-replace "||" by "or" inside strings, HACK: repeat this multiple times for multiple occurrences` \
+	| sed 's/⦇\([^⦇⦈]*\) || \([^⦇⦈]*\)⦈/⦇\1 or \2⦈/g' \
+	| sed 's/⦇\([^⦇⦈]*\) || \([^⦇⦈]*\)⦈/⦇\1 or \2⦈/g' \
+	| sed 's/⦇\([^⦇⦈]*\) || \([^⦇⦈]*\)⦈/⦇\1 or \2⦈/g' \
+	| sed '/^\s*#/! s/not /¬/g' `# Replace "not" by "¬" and later replace "¬" by "!". This is a hack so we can replace re-replace "¬" by "not" inside strings, which might already contain "!".` \
+	| sed 's/⦇\([^⦇⦈]*\)¬\([^⦇⦈]*\)⦈/⦇\1not \2⦈/g' `# re-replace "¬" by "not" inside strings, HACK: repeat this multiple times for multiple occurrences` \
+	| sed 's/⦇\([^⦇⦈]*\)¬\([^⦇⦈]*\)⦈/⦇\1not \2⦈/g' \
+	| sed 's/⦇\([^⦇⦈]*\)¬\([^⦇⦈]*\)⦈/⦇\1not \2⦈/g' \
+	| sed 's/⦇\([^⦇⦈]*\)¬\([^⦇⦈]*\)⦈/⦇\1not \2⦈/g' \
+	| sed 's/¬/!/g' \
+	| sed '/^\s*#/! s/ in / ⥉ /g' `# we want "in" to bind stronger than "!"` \
+	| sed 's/⦇\([^⦇⦈]*\) ⥉ \([^⦇⦈]*\)⦈/⦇\1 in \2⦈/g' `# re-replace "||" by "or" inside strings, HACK: repeat this multiple times for multiple occurrences` \
+	| sed 's/⦇\([^⦇⦈]*\) ⥉ \([^⦇⦈]*\)⦈/⦇\1 in \2⦈/g' \
+	| sed 's/⦇\([^⦇⦈]*\) ⥉ \([^⦇⦈]*\)⦈/⦇\1 in \2⦈/g' \
+	| sed 's/⦇\([^⦇⦈]*\) ⥉ \([^⦇⦈]*\)⦈/⦇\1 in \2⦈/g' \
+	| sed 's/⦇\([^⦇⦈]*\)⦈/"\1"/g' `# replace special brackets by quotation marks again` \
+	| sed 's/for \([^⥉]*\) ⥉ \([^⥉]*\)$/for \1 in \2/g' \
 	| sed 's/elif/elseif/g' \
 	| sed 's/\.( \([^)]*\) )/[\1]/g' \
 	| sed 's/\.(\([^)]*\))/[\1]/g' \
@@ -74,8 +95,6 @@ syntax_replacements() {
 	| sed 's/{\([^}]*\)} ->/(\1) ->/g' \
 	| sed 's/{/[/g' \
 	| sed 's/}/]/g' \
-	| sed 's/ in / ⥉ /g' `# we want "in" to bind stronger than "!"` \
-	| sed 's/for \([^⥉]*\) ⥉ \([^⥉]*\)$/for \1 in \2/g' \
 	| sed 's/function( arg )/function( arg... )/g' \
 	| sed 's/function ( arg )/function ( arg... )/g' \
 	| sed 's/Method( \\\[\\\],/Method( getindex,/g' \
@@ -134,8 +153,13 @@ test_replacements() {
 		echo "Unkown package $1, please explicitly add its dependencies"
 		USING="using CAP; using $1"
 	fi
-	# revert printing of ranges
+	# first, revert some code changes also affecting output lines
 	sed '/^[>g]/! s/(\([0-9]*\)):(\([0-9]*\))/[ \1 .. \2 ]/g' \
+	| sed 's/^<A[n ].*object ⥉ /<An object in /g' \
+	| sed 's/^A[n ].*object ⥉ /An object in /g' \
+	| sed 's/^<A[n ].*morphism ⥉ /<A morphism in /g' \
+	| sed 's/^A[n ].*morphism ⥉ /A morphism in /g' \
+	| sed 's/but !yet algorithmically/but not yet algorithmically/g' \
 	| sed 's/^gap> /julia> /g' \
 	| sed 's/^> /        /g' \
 	| sed 's/;$//g' \
@@ -144,12 +168,7 @@ test_replacements() {
 	| sed 's/julia> /\njulia> /g' \
 	| sed "s/julia> START_TEST(.*/\`\`\`jldoctest\njulia> $USING/g" \
 	| sed 's/julia> STOP_TEST(.*/```/g' \
-	`# revert some code changes also affecting output lines` \
-	| sed 's/^<A[n ].*object ⥉ /<An object in /g' \
-	| sed 's/^A[n ].*object ⥉ /An object in /g' \
-	| sed 's/^<A[n ].*morphism ⥉ /<A morphism in /g' \
-	| sed 's/^A[n ].*morphism ⥉ /A morphism in /g' \
-	| sed 's/^(\([0-9]*\)):(\([0-9]*\))$/[ \1 .. \2 ]/g'
+	# terminate line continuation
 }
 export -f test_replacements
 
