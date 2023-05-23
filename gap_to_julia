@@ -134,12 +134,8 @@ test_replacements() {
 		echo "Unkown package $1, please explicitly add its dependencies"
 		USING="using CAP; using $1"
 	fi
-	# revert printing of ranges, hack: repeat this for multiple ranges occuring in the same line
-	sed 's/^\([^>g].*\)(\([0-9]*\)):(\([0-9]*\))/\1[ \2 .. \3 ]/g' \
-	| sed 's/^\([^>g].*\)(\([0-9]*\)):(\([0-9]*\))/\1[ \2 .. \3 ]/g' \
-	| sed 's/^\([^>g].*\)(\([0-9]*\)):(\([0-9]*\))/\1[ \2 .. \3 ]/g' \
-	| sed 's/^\([^>g].*\)(\([0-9]*\)):(\([0-9]*\))/\1[ \2 .. \3 ]/g' \
-	| sed 's/^\([^>g].*\)(\([0-9]*\)):(\([0-9]*\))/\1[ \2 .. \3 ]/g' \
+	# revert printing of ranges
+	sed '/^[>g]/! s/(\([0-9]*\)):(\([0-9]*\))/[ \1 .. \2 ]/g' \
 	| sed 's/^gap> /julia> /g' \
 	| sed 's/^> /        /g' \
 	| sed 's/;$//g' \
