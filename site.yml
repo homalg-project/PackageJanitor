@@ -143,7 +143,7 @@
             - CAP_project
             tests_only_basic: true
             has_subsplit: true
-          - name: FiniteCocompletion
+          - name: FiniteCocompletions
             description: Finite (co)product/(co)limit (co)completions
             doc_additional_latex_preamble: |
               \usepackage{mathtools}
@@ -567,7 +567,7 @@
           - QPA2
           - Algebroids
           - PreSheaves
-          - FiniteCocompletion
+          - FiniteCocompletions
           - FunctorCategories
           - SubcategoriesForCAP
           - CategoryConstructor
@@ -997,7 +997,7 @@
               - path:        CategoricalTowers/ExteriorPowersCategories
               - path:                          FinSetsForCAP
               - path:                          FinGSetsForCAP
-              - path:        CategoricalTowers/FiniteCocompletion
+              - path:        CategoricalTowers/FiniteCocompletions
               - path:              CAP_project/FreydCategoriesForCAP
               - path:        CategoricalTowers/FunctorCategories
               - path:              CAP_project/GeneralizedMorphismsForCAP
