@@ -106,6 +106,7 @@
             tests_additional_packages_to_load:
               - Locales
               - SubcategoriesForCAP
+              - FreydCategoriesForCAP
             tests_only_basic: true
             has_subsplit: true
           - name: CatReps
