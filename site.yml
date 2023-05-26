@@ -263,6 +263,8 @@
             has_HOMALG_IO: true
             doc_additional_latex_preamble: |
               \usepackage{mathtools}
+              \DeclareUnicodeCharacter{22A4}{\ensuremath{\top}}
+              \DeclareUnicodeCharacter{22A5}{\ensuremath{\bot}}
             needed_other_repositories:
               - homalg_project
               - CAP_project
