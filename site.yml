@@ -272,6 +272,7 @@
             tests_additional_packages_to_load:
               - IO_ForHomalg
               - Toposes
+              - FunctorCategories
               - FreydCategoriesForCAP
               - SubcategoriesForCAP
               - LazyCategories
