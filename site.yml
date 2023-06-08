@@ -271,10 +271,10 @@
               - CAP_project
             tests_additional_packages_to_load:
               - IO_ForHomalg
-              - Toposes
-              - FunctorCategories
               - FreydCategoriesForCAP
+              - Toposes
               - SubcategoriesForCAP
+              - FunctorCategories
               - LazyCategories
             tests_only_basic: true
             tests_without_precompiled_code: true
