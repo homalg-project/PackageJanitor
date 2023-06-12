@@ -47,7 +47,7 @@ cat "read.g" | sed "s/ReadPackage( \"$PKG_NAME\", /include( /g" | sed 's/" );$/.
 
 cd gap
 
-chmod u+w "$JULIA_PKG_DIR$PKG_NAME"/src/gap/*.autogen.jl
+chmod u+w "$JULIA_PKG_DIR$PKG_NAME"/src/gap/*.autogen.jl || true
 
 syntax_replacements() {
 	sed 's/ = / == /g' \
