@@ -56,10 +56,16 @@ syntax_replacements() {
 	| sed 's/ : /; /g' \
 	| sed 's/ :$/,/g' \
 	| sed 's/!\././g' \
-	| sed 's/ then$//g' \
+	| sed 's/^\(\s*\)if /\1if (/g' \
+	| sed 's/^\(\s*\)elif /\1elseif (/g' \
+	| sed 's/ then$/)/g' \
 	| sed 's/fi;$/end;/g' \
 	| sed 's/ do$//g' \
 	| sed 's/od;$/end;/g' \
+	`# We turn "not" into a macro "@not" which causes problems with "or", see gap_emulation.jl. To reduce the number if places which have to be adjust manually, we insert the parantheses here for three special cases.` \
+	| sed 's/not \([^()]*([^()]*)\) or/not (\1) or/g' `# match "not func( arguments ) or"` \
+	| sed 's/not \([^()][^()]*([^()]*([^()]*)[^()]*)\) or/not (\1) or/g' `# match "not func( ... func2( arguments ) ... ) or"` \
+	| sed 's/not \([^()][^()]*([^()]*([^()]*)[^()]*([^()]*)[^()]*)\) or/not (\1) or/g' `# match "not func( ... func2( arguments ) ... func3( arguments ) ... ) or"` \
 	| sed 's/"\([^"]*\)"/⦇\1⦈/g' `# replace pairs of quotation marks by special brackets so we can later selectively replace things inside strings` \
 	| sed '/^\s*#/! s/ and / \&\& /g' \
 	| sed '/^\s*#/! s/ and$/ \&\&/g' \
@@ -73,20 +79,14 @@ syntax_replacements() {
 	| sed 's/⦇\([^⦇⦈]*\) || \([^⦇⦈]*\)⦈/⦇\1 or \2⦈/g' \
 	| sed 's/⦇\([^⦇⦈]*\) || \([^⦇⦈]*\)⦈/⦇\1 or \2⦈/g' \
 	| sed 's/⦇\([^⦇⦈]*\) || \([^⦇⦈]*\)⦈/⦇\1 or \2⦈/g' \
-	| sed '/^\s*#/! s/not /¬/g' `# Replace "not" by "¬" and later replace "¬" by "!". This is a hack so we can replace re-replace "¬" by "not" inside strings, which might already contain "!".` \
-	| sed 's/⦇\([^⦇⦈]*\)¬\([^⦇⦈]*\)⦈/⦇\1not \2⦈/g' `# re-replace "¬" by "not" inside strings, HACK: repeat this multiple times for multiple occurrences` \
-	| sed 's/⦇\([^⦇⦈]*\)¬\([^⦇⦈]*\)⦈/⦇\1not \2⦈/g' \
-	| sed 's/⦇\([^⦇⦈]*\)¬\([^⦇⦈]*\)⦈/⦇\1not \2⦈/g' \
-	| sed 's/⦇\([^⦇⦈]*\)¬\([^⦇⦈]*\)⦈/⦇\1not \2⦈/g' \
-	| sed 's/¬/!/g' \
-	| sed '/^\s*#/! s/ in / ⥉ /g' `# we want "in" to bind stronger than "!"` \
-	| sed 's/⦇\([^⦇⦈]*\) ⥉ \([^⦇⦈]*\)⦈/⦇\1 in \2⦈/g' `# re-replace "||" by "or" inside strings, HACK: repeat this multiple times for multiple occurrences` \
-	| sed 's/⦇\([^⦇⦈]*\) ⥉ \([^⦇⦈]*\)⦈/⦇\1 in \2⦈/g' \
-	| sed 's/⦇\([^⦇⦈]*\) ⥉ \([^⦇⦈]*\)⦈/⦇\1 in \2⦈/g' \
-	| sed 's/⦇\([^⦇⦈]*\) ⥉ \([^⦇⦈]*\)⦈/⦇\1 in \2⦈/g' \
+	| sed '/^\s*#/! s/not\s*(/!(/g' \
+	| sed '/^\s*#/! s/not /@not /g' \
+	| sed 's/⦇\([^⦇⦈]*\)@not \([^⦇⦈]*\)⦈/⦇\1not \2⦈/g' `# re-replace "@not" by "not" inside strings, HACK: repeat this multiple times for multiple occurrences` \
+	| sed 's/⦇\([^⦇⦈]*\)@not \([^⦇⦈]*\)⦈/⦇\1not \2⦈/g' \
+	| sed 's/⦇\([^⦇⦈]*\)@not \([^⦇⦈]*\)⦈/⦇\1not \2⦈/g' \
+	| sed 's/⦇\([^⦇⦈]*\)@not \([^⦇⦈]*\)⦈/⦇\1not \2⦈/g' \
 	| sed 's/⦇\([^⦇⦈]*\)⦈/"\1"/g' `# replace special brackets by quotation marks again` \
 	| sed 's/for \([^⥉]*\) ⥉ \([^⥉]*\)$/for \1 in \2/g' \
-	| sed 's/elif/elseif/g' \
 	| sed 's/\.( \([^)]*\) )/[\1]/g' \
 	| sed 's/\.(\([^)]*\))/[\1]/g' \
 	| sed 's/\[ \([^].[]*\) \.\. \([^][]*\) \]/(\1):(\2)/g' `# [ a .. b ] -> (a):(b) where a and b do not contain square brackets` \
@@ -155,11 +155,11 @@ test_replacements() {
 	fi
 	# first, revert some code changes also affecting output lines
 	sed '/^[>g]/! s/(\([0-9]*\)):(\([0-9]*\))/[ \1 .. \2 ]/g' \
-	| sed 's/^<A[n ].*object ⥉ /<An object in /g' \
-	| sed 's/^A[n ].*object ⥉ /An object in /g' \
-	| sed 's/^<A[n ].*morphism ⥉ /<A morphism in /g' \
-	| sed 's/^A[n ].*morphism ⥉ /A morphism in /g' \
-	| sed 's/but !yet algorithmically/but not yet algorithmically/g' \
+	| sed 's/^<A[n ].*object in /<An object in /g' \
+	| sed 's/^A[n ].*object in /An object in /g' \
+	| sed 's/^<A[n ].*morphism in /<A morphism in /g' \
+	| sed 's/^A[n ].*morphism in /A morphism in /g' \
+	| sed 's/but @not yet algorithmically/but not yet algorithmically/g' \
 	| sed 's/^gap> /julia> /g' \
 	| sed 's/^> /        /g' \
 	| sed 's/;$//g' \
