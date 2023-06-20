@@ -1060,7 +1060,7 @@
             names:
               - CategoryOfRepresentations
               - C3C3
-          - url: https://github.com/homalg-project/MatroidGeneration/blob/master/examples/julia/notebooks/DivFreeNotIndFree.ipynb
+          - url: https://github.com/homalg-project/MatroidGeneration/blob/master/examples/notebooks/DivFreeNotIndFree.ipynb
             names:
               - DivFreeNotIndFree
           - url: https://github.com/homalg-project/CategoricalTowers/blob/master/LazyCategories/examples/notebooks/SnakeInAbelian.ipynb
