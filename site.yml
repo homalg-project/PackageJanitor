@@ -349,6 +349,7 @@
               - CAP_project
             tests_additional_packages_to_load:
               - IO_ForHomalg
+              - Digraphs
             tests_only_basic: true
             has_subsplit: true
         ci_additional_repositories:
@@ -764,6 +765,7 @@
             - ParallelizedIterators
             - alcove
           tests_additional_packages_to_load:
+            - Digraphs
             - ZariskiFrames
             - IO_ForHomalg
           tests_only_basic: true
