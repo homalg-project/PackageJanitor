@@ -1,4 +1,28 @@
 ---
+- name: "Ensure {{ pkg_dir }}/{{ package.name }}/gh-pages/_data/ exists"
+  file:
+    path: "{{ pkg_dir }}/{{ package.name }}/gh-pages/_data/"
+    state: directory
+
+- name: "Ensure {{ pkg_dir }}/{{ package.name }}/gh-pages/_data/package.yml exists"
+  file:
+    path: "{{ pkg_dir }}/{{ package.name }}/gh-pages/_data/package.yml"
+    state: touch
+    modification_time: preserve
+    access_time: preserve
+
+- name: "Ensure {{ pkg_dir }}/{{ package.name }}/gh-pages/index.md does not exist"
+  file:
+    path: "{{ pkg_dir }}/{{ package.name }}/gh-pages/index.md"
+    state: absent
+
+- name: index.html
+  template:
+    src: redirect.html.j2
+    dest: "{{ pkg_dir }}/{{ package.name }}/gh-pages/index.html"
+  vars:
+    url: "{% raw %}{{ site.data.package.www }}{% endraw %}"
+
 - name: download_pdf.html
   template:
     src: redirect.html.j2
