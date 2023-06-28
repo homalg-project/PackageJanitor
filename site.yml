@@ -590,6 +590,7 @@
           - FunctorCategories
           - SubcategoriesForCAP
           - CategoryConstructor
+          - Locales
 
 - name: CAP_project
   hosts: CAP_project
