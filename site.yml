@@ -472,6 +472,7 @@
             - HigherHomologicalAlgebra
             - QPA2
             - CategoricalTowers
+          tests_without_precompiled_code: true
 
 - name: HigherHomologicalAlgebra
   hosts: HigherHomologicalAlgebra
