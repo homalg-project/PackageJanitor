@@ -149,12 +149,15 @@ test_replacements() {
 		USING="using CAP; using CartesianCategories; using FinSetsForCAP; using $1"
 	elif [ "$1" = "FinSetsForCAP" ]; then
 		USING="using CAP; using CartesianCategories; using Toposes; using $1"
+	elif [ "$1" = "ZXCalculusForCAP" ]; then
+		USING="using CAP; using MonoidalCategories; using $1"
 	else
-		echo "Unkown package $1, please explicitly add its dependencies"
+		>&2 echo "Unkown package $1, please explicitly add its dependencies"
 		USING="using CAP; using $1"
 	fi
 	# first, revert some code changes also affecting output lines
 	sed '/^[>g]/! s/(\([0-9]*\)):(\([0-9]*\))/[ \1 .. \2 ]/g' \
+	| sed '/^[>g]/! s/&&/and/g' \
 	| sed 's/^<A[n ].*object in /<An object in /g' \
 	| sed 's/^A[n ].*object in /An object in /g' \
 	| sed 's/^<A[n ].*morphism in /<A morphism in /g' \
