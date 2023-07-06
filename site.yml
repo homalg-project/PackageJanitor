@@ -465,6 +465,7 @@
           tests_additional_packages_to_load:
             - Toposes
             - FreydCategoriesForCAP
+            - FunctorCategories
           needed_other_repositories:
             - homalg_project
             - CAP_project
