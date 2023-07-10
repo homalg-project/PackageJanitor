@@ -113,6 +113,7 @@ syntax_replacements() {
 	| sed 's/^InstallValue(/@InstallValueConst(/g' \
 	| sed 's/InstallValue(/@InstallValue(/g' \
 	| sed 's/BindGlobal(/@BindGlobal(/g' \
+	| sed 's/DeclareSynonym(/@BindGlobal(/g' \
 	| sed 's/DeclareGlobalFunction(/@DeclareGlobalFunction(/g' \
 	| sed 's/InstallGlobalFunction(/@InstallGlobalFunction(/g' \
 	| sed 's/^DeclareOperation(/@DeclareOperation(/g' \
