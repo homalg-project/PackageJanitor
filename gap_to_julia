@@ -227,7 +227,7 @@ if [ "$PKG_NAME" = "CAP" ]; then
 fi
 
 if [ "$PKG_NAME" = "FinSetsForCAP" ]; then
-	# remove tests neededing CompilerForCAP
+	# remove tests needing CompilerForCAP
 	rm -f $(grep -l "CapJitPrecompileCategoryAndCompareResult(" "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.tst.autogen.md)
 	
 	cat "$JULIA_PKG_DIR$PKG_NAME"/docs/src/finsetsforcap*.tst.autogen.md > "$JULIA_PKG_DIR$PKG_NAME"/docs/src/AutoDocTests.tst.autogen.md
@@ -249,6 +249,10 @@ if [ "$PKG_NAME" = "CartesianCategories" ]; then
 fi
 
 if [ "$PKG_NAME" = "Toposes" ]; then
+	# remove tests computing HasPushoutComplement
+	# the one using FinSets runs out of memory in GitHub actions
+	rm -f $(grep -l "HasPushoutComplement(" "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.tst.autogen.md)
+	
 	cat "$JULIA_PKG_DIR$PKG_NAME"/docs/src/toposes*.tst.autogen.md > "$JULIA_PKG_DIR$PKG_NAME"/docs/src/AutoDocTests.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/toposes*.tst.autogen.md
 	
