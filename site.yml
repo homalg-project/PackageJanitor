@@ -98,6 +98,7 @@
             doc_additional_latex_preamble: |
               \usepackage{mathtools}
               \usepackage{tikz}
+              \usepackage{newtxmath}
               \usetikzlibrary{arrows}
               \pgfarrowsdeclarecombine{twohead}{twohead}{latex}{latex}{latex}{latex}
             needed_other_repositories:
