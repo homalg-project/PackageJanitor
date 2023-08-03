@@ -176,6 +176,7 @@
               - FreydCategoriesForCAP
               - Toposes
               - Locales
+              - ComplexesCategories
             tests_only_basic: true
             has_subsplit: true
           - name: GradedCategories
