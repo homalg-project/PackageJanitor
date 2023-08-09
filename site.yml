@@ -105,6 +105,7 @@
               - CAP_project
             tests_additional_packages_to_load:
               - Locales
+              - FinSetsForCAP
               - SubcategoriesForCAP
               - FreydCategoriesForCAP
             tests_only_basic: true
