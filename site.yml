@@ -100,6 +100,7 @@
               \usepackage{tikz}
               \usetikzlibrary{arrows}
               \pgfarrowsdeclarecombine{twohead}{twohead}{latex}{latex}{latex}{latex}
+              \DeclareUnicodeCharacter{2C76}{\ensuremath{\vdash}\!\!}
             needed_other_repositories:
               - homalg_project
               - CAP_project
