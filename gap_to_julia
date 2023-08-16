@@ -163,7 +163,7 @@ test_replacements() {
 	| sed 's/^A[n ].*object in /An object in /g' \
 	| sed 's/^<A[n ].*morphism in /<A morphism in /g' \
 	| sed 's/^A[n ].*morphism in /A morphism in /g' \
-	| sed 's/but @not yet algorithmically/but not yet algorithmically/g' \
+	| sed 's/ @not yet algorithmically/ not yet algorithmically/g' \
 	| sed 's/^gap> /julia> /g' \
 	| sed 's/^> /        /g' \
 	| sed 's/;$//g' \
