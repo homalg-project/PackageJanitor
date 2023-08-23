@@ -153,6 +153,8 @@ test_replacements() {
 		USING="using CAP; using CartesianCategories; using Toposes; using $1"
 	elif [ "$1" = "ZXCalculusForCAP" ]; then
 		USING="using CAP; using MonoidalCategories; using $1"
+	elif [ "$1" = "LinearAlgebraForCAP" ]; then
+		USING="using MatricesForHomalg; using CAP; using MonoidalCategories; using $1"
 	else
 		>&2 echo "Unkown package $1, please explicitly add its dependencies"
 		USING="using CAP; using $1"
