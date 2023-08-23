@@ -193,25 +193,14 @@ if [ "$PKG_NAME" = "CAP" ]; then
 	# ReadPackage
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap10.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap11.tst.autogen.md
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap21.tst.autogen.md
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap22.tst.autogen.md
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap23.tst.autogen.md
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap24.tst.autogen.md
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap25.tst.autogen.md
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap26.tst.autogen.md
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap27.tst.autogen.md
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap28.tst.autogen.md
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap29.tst.autogen.md
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap30.tst.autogen.md
 
-	# HomalgFieldOfRationals
+	# HomalgRingOfIntegers/HomalgFieldOfRationals
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap12.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap13.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap14.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap15.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap16.tst.autogen.md
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap17.tst.autogen.md
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap18.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap19.tst.autogen.md
 
 	# Functor example (continued)
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap02.tst.autogen.md
