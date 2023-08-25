@@ -203,7 +203,8 @@ if [ "$PKG_NAME" = "CAP" ]; then
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap14.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap15.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap16.tst.autogen.md
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap19.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap17.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap20.tst.autogen.md
 
 	# Functor example (continued)
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap02.tst.autogen.md
