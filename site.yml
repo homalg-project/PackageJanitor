@@ -178,7 +178,6 @@
               - FreydCategoriesForCAP
               - Toposes
               - Locales
-              - ComplexesCategories
             tests_only_basic: true
             has_subsplit: true
           - name: GradedCategories
@@ -203,6 +202,7 @@
               - CAP_project
             tests_additional_packages_to_load:
               - IO_ForHomalg
+            tests_only_basic: true
             has_subsplit: true
           - name: IntrinsicCategories
             description: "Intrinsic categories for CAP"
