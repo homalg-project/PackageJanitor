@@ -299,6 +299,12 @@
               - FinSetsForCAP
             tests_only_basic: true
             has_subsplit: true
+          - name: QuotientCategories
+            description: Quotient categories
+            tests_additional_packages_to_load:
+              - ModulePresentations
+            tests_only_basic: true
+            has_subsplit: true
           - name: SubcategoriesForCAP
             description: "Subcategory and other related constructors for CAP categories"
             has_HOMALG_IO: true
@@ -541,11 +547,6 @@
               - Algebroids
               - FreydCategoriesForCAP
             tests_only_basic: true
-          - name: QuotientCategories
-            description: Quotient categories of CAP categories by two-sided ideals
-            tests_additional_packages_to_load:
-              - ModulePresentations
-            tests_only_basic: true
           - name: StableCategories
             description: Stable categories of additive categories
             doc_additional_latex_preamble: |
@@ -592,6 +593,7 @@
           - QPA2
           - Algebroids
           - PreSheaves
+          - QuotientCategories
           - FiniteCocompletions
           - FunctorCategories
           - SubcategoriesForCAP
@@ -1043,7 +1045,7 @@
               - path:              CAP_project/MonoidalCategories
               - path:        CategoricalTowers/PreSheaves
               - path:                          QPA2
-              - path: HigherHomologicalAlgebra/QuotientCategories
+              - path:        CategoricalTowers/QuotientCategories
               - path: HigherHomologicalAlgebra/StableCategories
               - path:        CategoricalTowers/SubcategoriesForCAP
               - path:        CategoricalTowers/Toposes
