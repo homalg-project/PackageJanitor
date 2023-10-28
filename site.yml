@@ -122,8 +122,9 @@
               - QPA2
               - FinSetsForCAP
             tests_additional_packages_to_load:
+              - CategoryConstructor ## load before FinSetsForCAP
+              - FinSetsForCAP       ## load before FreydCategoriesForCAP
               - FreydCategoriesForCAP
-              - Toposes
             tests_only_basic: true
             has_subsplit: true
           - name: ExteriorPowersCategories
@@ -149,7 +150,8 @@
               - homalg_project
               - CAP_project
             tests_additional_packages_to_load:
-              - Toposes
+              - CategoryConstructor ## load before FinSetsForCAP
+              - FinSetsForCAP       ## load before FreydCategoriesForCAP
               - FreydCategoriesForCAP
               - FunctorCategories
               - LazyCategories
@@ -175,9 +177,10 @@
               \DeclareUnicodeCharacter{21A6}{\ensuremath{\mapsto}}
               \DeclareUnicodeCharacter{227B}{\ensuremath{\succ}}
             tests_additional_packages_to_load:
-              - FreydCategoriesForCAP
-              - Toposes
+              - CategoryConstructor ## load before FinSetsForCAP
+              - FinSetsForCAP       ## load before FreydCategoriesForCAP
               - Locales
+              - FreydCategoriesForCAP
             tests_only_basic: true
             has_subsplit: true
           - name: GradedCategories
@@ -274,8 +277,8 @@
               - CAP_project
             tests_additional_packages_to_load:
               - IO_ForHomalg
+              - FinSetsForCAP
               - FreydCategoriesForCAP
-              - Toposes
               - SubcategoriesForCAP
               - FunctorCategories
               - LazyCategories
