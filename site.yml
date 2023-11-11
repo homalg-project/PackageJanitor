@@ -93,8 +93,8 @@
               - IO_ForHomalg
             tests_only_basic: true
             has_subsplit: true
-          - name: CategoryConstructor
-            description: "Construct categories out of given ones"
+          - name: ToolsForCategoricalTowers
+            description: "Tools for CategoricalTowers"
             doc_additional_latex_preamble: |
               \usepackage{mathtools}
               \usepackage{tikz}
@@ -122,7 +122,7 @@
               - QPA2
               - FinSetsForCAP
             tests_additional_packages_to_load:
-              - CategoryConstructor ## load before FinSetsForCAP
+              - ToolsForCategoricalTowers ## load before FinSetsForCAP
               - FinSetsForCAP       ## load before FreydCategoriesForCAP
               - FreydCategoriesForCAP
             tests_only_basic: true
@@ -150,7 +150,7 @@
               - homalg_project
               - CAP_project
             tests_additional_packages_to_load:
-              - CategoryConstructor ## load before FinSetsForCAP
+              - ToolsForCategoricalTowers ## load before FinSetsForCAP
               - FinSetsForCAP       ## load before FreydCategoriesForCAP
               - FreydCategoriesForCAP
               - FunctorCategories
@@ -177,7 +177,7 @@
               \DeclareUnicodeCharacter{21A6}{\ensuremath{\mapsto}}
               \DeclareUnicodeCharacter{227B}{\ensuremath{\succ}}
             tests_additional_packages_to_load:
-              - CategoryConstructor ## load before FinSetsForCAP
+              - ToolsForCategoricalTowers ## load before FinSetsForCAP
               - FinSetsForCAP       ## load before FreydCategoriesForCAP
               - Locales
               - FreydCategoriesForCAP
@@ -344,7 +344,7 @@
               - homalg_project
               - CAP_project
             tests_additional_packages_to_load:
-              - CategoryConstructor
+              - ToolsForCategoricalTowers
             tests_only_basic: true
             has_subsplit: true
           - name: ZariskiFrames
@@ -600,7 +600,7 @@
           - FiniteCocompletions
           - FunctorCategories
           - SubcategoriesForCAP
-          - CategoryConstructor
+          - ToolsForCategoricalTowers
           - Locales
 
 - name: CAP_project
@@ -806,7 +806,7 @@
         ci_additional_repositories:
           - CAP_project
           - Toposes
-          - CategoryConstructor
+          - ToolsForCategoricalTowers
           - Locales
           - ZariskiFrames
 
@@ -1015,7 +1015,6 @@
               - path: HigherHomologicalAlgebra/BBGG
               - path: HigherHomologicalAlgebra/Bicomplexes
               - path:              CAP_project/CartesianCategories
-              - path:        CategoricalTowers/CategoryConstructor
               - path:        CategoricalTowers/CategoriesWithAmbientObjects
               - path:        CategoricalTowers/CatReps
               - path:              CAP_project/CompilerForCAP
@@ -1051,6 +1050,7 @@
               - path:        CategoricalTowers/QuotientCategories
               - path: HigherHomologicalAlgebra/StableCategories
               - path:        CategoricalTowers/SubcategoriesForCAP
+              - path:        CategoricalTowers/ToolsForCategoricalTowers
               - path:        CategoricalTowers/Toposes
               - path:              CAP_project/ToricSheaves
               - path: HigherHomologicalAlgebra/TriangulatedCategories
