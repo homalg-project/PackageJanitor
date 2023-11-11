@@ -158,6 +158,24 @@
             tests_only_basic: true
             tests_without_precompiled_code: true
             has_subsplit: true
+          - name: FpCategories
+            description: "Finitely presented categories by generating quivers and relations"
+            has_HOMALG_IO: true
+            doc_additional_latex_preamble: |
+              \usepackage{mathtools}
+              \usepackage{tikz-cd}
+              \DeclareUnicodeCharacter{2B47}{\ensuremath{\!\!\xrightarrow{\sim}\!}}
+              \DeclareUnicodeCharacter{227B}{\ensuremath{\succ}}
+              \DeclareUnicodeCharacter{2022}{\ensuremath{\bullet}}
+            needed_other_repositories:
+              - homalg_project
+              - CAP_project
+              - HigherHomologicalAlgebra
+              - QPA2
+              - FinSetsForCAP
+            tests_only_basic: true
+            tests_without_precompiled_code: true
+            has_subsplit: true
           - name: FunctorCategories
             description: "Categories of functors"
             needed_other_repositories:
@@ -1025,6 +1043,7 @@
               - path:                          FinSetsForCAP
               - path:                          FinGSetsForCAP
               - path:        CategoricalTowers/FiniteCocompletions
+              - path:        CategoricalTowers/FpCategories
               - path:              CAP_project/FreydCategoriesForCAP
               - path:        CategoricalTowers/FunctorCategories
               - path:              CAP_project/GeneralizedMorphismsForCAP
