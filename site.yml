@@ -530,8 +530,9 @@
               \usepackage{tikz}
               \usetikzlibrary{shapes,arrows,matrix}
             tests_additional_packages_to_load:
-              - ModulePresentationsForCAP
+              - FinSetsForCAP
               - FreydCategoriesForCAP
+              - ModulePresentationsForCAP
               - Algebroids
             tests_only_basic: true
           - name: ComplexesCategories
@@ -544,6 +545,7 @@
               \usetikzlibrary{shapes,arrows,matrix}
             tests_additional_packages_to_load:
               - IO_ForHomalg
+              - FinSetsForCAP
               - FreydCategoriesForCAP
               - Algebroids
             tests_only_basic: true
@@ -553,6 +555,7 @@
             tests_only_basic: true
             tests_additional_packages_to_load:
               - IO_ForHomalg
+              - FinSetsForCAP
               - FreydCategoriesForCAP
               - Algebroids
               - FunctorCategories
@@ -565,8 +568,9 @@
               \usetikzlibrary{shapes,arrows,matrix}
             tests_additional_packages_to_load:
               - IO_ForHomalg
-              - Algebroids
+              - FinSetsForCAP
               - FreydCategoriesForCAP
+              - Algebroids
             tests_only_basic: true
           - name: StableCategories
             description: Stable categories of additive categories
@@ -593,6 +597,7 @@
           - name: ToolsForHigherHomologicalAlgebra
             description: Tools for the Higher Homological Algebra project
             tests_additional_packages_to_load:
+              - FinSetsForCAP
               - FreydCategoriesForCAP
             tests_only_basic: true
           - name: TriangulatedCategories
@@ -612,6 +617,7 @@
           - Toposes
           - FinSetsForCAP
           - QPA2
+          - FpCategories
           - Algebroids
           - PreSheaves
           - QuotientCategories
