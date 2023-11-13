@@ -342,7 +342,6 @@
               - CAP_project
             tests_additional_packages_to_load:
               - IO_ForHomalg
-              - FreydCategoriesForCAP
               - FinSetsForCAP
               - Locales
             tests_only_basic: true
