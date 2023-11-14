@@ -830,6 +830,7 @@
           - CAP_project
           - Toposes
           - ToolsForCategoricalTowers
+          - FpCategories
           - Locales
           - ZariskiFrames
 
