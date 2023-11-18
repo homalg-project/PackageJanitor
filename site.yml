@@ -160,7 +160,6 @@
             has_subsplit: true
           - name: FpCategories
             description: "Finitely presented categories by generating quivers and relations"
-            has_HOMALG_IO: true
             doc_additional_latex_preamble: |
               \usepackage{mathtools}
               \usepackage{tikz-cd}
