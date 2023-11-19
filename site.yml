@@ -160,7 +160,6 @@
             has_subsplit: true
           - name: FpCategories
             description: "Finitely presented categories by generating quivers and relations"
-            has_HOMALG_IO: true
             doc_additional_latex_preamble: |
               \usepackage{mathtools}
               \usepackage{tikz-cd}
@@ -342,6 +341,7 @@
               - CAP_project
             tests_additional_packages_to_load:
               - IO_ForHomalg
+              - FreydCategoriesForCAP
               - FinSetsForCAP
               - Locales
             tests_only_basic: true
