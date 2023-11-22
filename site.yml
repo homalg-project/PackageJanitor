@@ -93,24 +93,6 @@
               - IO_ForHomalg
             tests_only_basic: true
             has_subsplit: true
-          - name: ToolsForCategoricalTowers
-            description: "Tools for CategoricalTowers"
-            doc_additional_latex_preamble: |
-              \usepackage{mathtools}
-              \usepackage{tikz}
-              \usetikzlibrary{arrows}
-              \pgfarrowsdeclarecombine{twohead}{twohead}{latex}{latex}{latex}{latex}
-              \DeclareUnicodeCharacter{2C76}{\ensuremath{\vdash}\!\!}
-            needed_other_repositories:
-              - homalg_project
-              - CAP_project
-            tests_additional_packages_to_load:
-              - Locales
-              - FinSetsForCAP
-              - SubcategoriesForCAP
-              - FreydCategoriesForCAP
-            tests_only_basic: true
-            has_subsplit: true
           - name: CatReps
             description: "Representations and cohomology of finite categories"
             doc_additional_latex_preamble: |
@@ -348,6 +330,24 @@
               - Locales
             tests_only_basic: true
             tests_without_precompiled_code: true
+            has_subsplit: true
+          - name: ToolsForCategoricalTowers
+            description: "Tools for CategoricalTowers"
+            doc_additional_latex_preamble: |
+              \usepackage{mathtools}
+              \usepackage{tikz}
+              \usetikzlibrary{arrows}
+              \pgfarrowsdeclarecombine{twohead}{twohead}{latex}{latex}{latex}{latex}
+              \DeclareUnicodeCharacter{2C76}{\ensuremath{\vdash}\!\!}
+            needed_other_repositories:
+              - homalg_project
+              - CAP_project
+            tests_additional_packages_to_load:
+              - Locales
+              - FinSetsForCAP
+              - SubcategoriesForCAP
+              - FreydCategoriesForCAP
+            tests_only_basic: true
             has_subsplit: true
           - name: Toposes
             description: "Elementary toposes"
