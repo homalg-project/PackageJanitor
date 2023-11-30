@@ -193,27 +193,30 @@ find . \( -type d -name .git -prune \) -o \( -type f -name '*.tst' \) -exec bash
 rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/100_LoadPackage.tst.autogen.md
 
 if [ "$PKG_NAME" = "CAP" ]; then
+	# DummyRing
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap02.tst.autogen.md
+	
 	# ReadPackage
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap10.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap11.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap12.tst.autogen.md
 
 	# HomalgRingOfIntegers/HomalgFieldOfRationals
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap12.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap13.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap14.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap15.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap16.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap17.tst.autogen.md
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap20.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap18.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap21.tst.autogen.md
 
 	# Functor example (continued)
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap02.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap03.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap04.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap05.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap06.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap07.tst.autogen.md
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap08.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/cap09.tst.autogen.md
 
 	# needs CapCat
 	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/CAP_INTERNAL_ASSERT_VALUE_IS_OF_TYPE_GETTER.tst.autogen.md
