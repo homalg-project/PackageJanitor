@@ -75,6 +75,8 @@
               - HigherHomologicalAlgebra
               - QPA2
               - FinSetsForCAP
+            tests_additional_packages_to_load:
+              - IO_ForHomalg
             tests_only_basic: true
             tests_without_precompiled_code: true
             has_subsplit: true
@@ -161,6 +163,7 @@
             has_subsplit: true
           - name: FunctorCategories
             description: "Categories of functors"
+            has_HOMALG_IO: true
             needed_other_repositories:
               - homalg_project
               - CAP_project
@@ -182,6 +185,7 @@
               - FinSetsForCAP       ## load before FreydCategoriesForCAP
               - Locales
               - FreydCategoriesForCAP
+              - IO_ForHomalg
             tests_only_basic: true
             has_subsplit: true
           - name: GradedCategories
