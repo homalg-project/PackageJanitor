@@ -668,7 +668,7 @@
             description: "Cartesian and cocartesian categories and various subdoctrines"
             tests_only_basic: true
           - name: CompilerForCAP
-            description: Speed up computations in CAP categories
+            description: Speed up and verify categorical algorithms
             has_HOMALG_IO: true
             doc_additional_latex_preamble: |
               % this is the only way to suppress an overfull hbox in the signature of CapJitIterateOverTree
