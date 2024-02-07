@@ -232,6 +232,7 @@ fi
 if [ "$PKG_NAME" = "FinSetsForCAP" ]; then
 	# remove tests needing CompilerForCAP
 	rm -f $(grep -l "CapJitPrecompileCategoryAndCompareResult(" "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.tst.autogen.md)
+	rm -f $(grep -l "CapJitCompiledFunction(" "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.tst.autogen.md)
 fi
 
 if [ "$PKG_NAME" = "MonoidalCategories" ]; then
