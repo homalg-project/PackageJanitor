@@ -44,6 +44,9 @@ cmp -s "$(dirname $(realpath $0))/init.jl" "$JULIA_PKG_DIR$PKG_NAME/src/init.jl"
 cat > "$JULIA_PKG_DIR$PKG_NAME/makefile" << EOS
 .PHONY: test
 
+gen:
+	gap_to_julia $PKG_NAME
+
 test:
 	julia -e 'using Pkg; Pkg.test("$PKG_NAME", julia_args = ["--warn-overwrite=no"]);'
 EOS
