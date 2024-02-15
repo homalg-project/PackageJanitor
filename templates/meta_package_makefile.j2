@@ -25,3 +25,11 @@ ci-test_{{ doc_package.name }}:
 	$(MAKE) -C {{ doc_package.name }} ci-test
 {% endfor %}
 
+################################
+update-notebooks:
+	for package in */; do \
+		if [ -f "$$package/makefile" ] && grep -q "update-notebooks:" "$$package/makefile"; then \
+			$(MAKE) -C $$package update-notebooks; \
+		fi \
+	done
+
