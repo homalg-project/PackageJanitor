@@ -189,7 +189,9 @@ test_replacements() {
 }
 export -f test_replacements
 
-find . \( -type d -name .git -prune \) -o \( -type f -name '*.g[di]' \) -exec bash -c "cat '{}' | syntax_replacements > \"$JULIA_PKG_DIR$PKG_NAME\"/src/gap/'{}'.autogen.jl" \;
+for FILE in $(git ls-files); do
+	cat "$FILE" | syntax_replacements > "$JULIA_PKG_DIR$PKG_NAME"/src/gap/"$FILE".autogen.jl
+done
 
 chmod a-w "$JULIA_PKG_DIR$PKG_NAME"/src/gap/*.autogen.jl
 
