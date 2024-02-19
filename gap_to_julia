@@ -141,6 +141,8 @@ syntax_replacements() {
 	| sed 's/\bUnbind(/@Unbind(/g' \
 	| sed 's/\bIsBound(/@IsBound(/g' \
 	| sed 's/\bNTuple\b/@NTupleGAP/g' \
+	| sed 's/\bFunctionWithNamedArguments\b/@FunctionWithNamedArguments/g' \
+	| sed 's/CAP_NAMED_ARGUMENTS\.//g' \
 	| sed 's/\bPair\b/PairGAP/g' \
 	| sed 's/\bUnion\b/UnionGAP/g' \
 	| sed 's/\bInt\b/IntGAP/g' \
