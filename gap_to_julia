@@ -130,10 +130,10 @@ syntax_replacements() {
 	| sed 's/^DeclareOperation(/@DeclareOperation(/g' \
 	| sed 's/^DeclareOperationWithCache(/@DeclareOperation(/g' \
 	| sed 's/^KeyDependentOperation(/@KeyDependentOperation(/g' \
-	| sed 's/^InstallMethod(/InstallMethod( @__MODULE__, /g' \
-	| sed 's/^InstallOtherMethod(/InstallMethod( @__MODULE__, /g' \
-	| sed 's/^InstallMethodForCompilerForCAP(/InstallMethod( @__MODULE__, /g' \
-	| sed 's/^InstallOtherMethodForCompilerForCAP(/InstallMethod( @__MODULE__, /g' \
+	| sed 's/^InstallOtherMethod(/InstallMethod(/g' \
+	| sed 's/^InstallMethodForCompilerForCAP(/InstallMethod(/g' \
+	| sed 's/^InstallOtherMethodForCompilerForCAP(/InstallMethod(/g' \
+	| sed 's/^InstallMethod(/@InstallMethod(/g' \
 	| sed 's/\brec(/@rec(/g' \
 	| sed 's/\bAssert(/@Assert(/g' \
 	| sed 's/\bConcatenation(/@Concatenation(/g' \
