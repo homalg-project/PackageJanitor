@@ -371,6 +371,7 @@
               - CAP_project
             tests_additional_packages_to_load:
               - ToolsForCategoricalTowers
+              - LazyCategories
             tests_only_basic: true
             has_subsplit: true
           - name: ZariskiFrames
