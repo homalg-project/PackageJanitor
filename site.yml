@@ -136,6 +136,7 @@
               - homalg_project
               - CAP_project
             tests_additional_packages_to_load:
+              - Digraphs
               - ToolsForCategoricalTowers ## load before FinSetsForCAP
               - FinSetsForCAP       ## load before FreydCategoriesForCAP
               - FreydCategoriesForCAP
@@ -184,6 +185,7 @@
               \DeclareUnicodeCharacter{227B}{\ensuremath{\succ}}
               \DeclareUnicodeCharacter{22C5}{\ensuremath{\cdot}}
             tests_additional_packages_to_load:
+              - Digraphs
               - ToolsForCategoricalTowers ## load before FinSetsForCAP
               - FinSetsForCAP       ## load before FreydCategoriesForCAP
               - Locales
@@ -285,6 +287,7 @@
               - CAP_project
             tests_additional_packages_to_load:
               - IO_ForHomalg
+              - Digraphs
               - FinSetsForCAP
               - FreydCategoriesForCAP
               - SubcategoriesForCAP
