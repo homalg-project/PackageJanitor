@@ -396,7 +396,6 @@
           - alcove
           - MatroidGeneration
         ci_additional_packages_to_test:
-          - FinSetsForCAP
           - MatroidGeneration
 
 - name: FinSetsForCAP
