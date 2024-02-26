@@ -9,7 +9,7 @@
 
 - name: Set subpackages_enriched
   set_fact:
-    subpackages_enriched: "{{ subpackages_enriched + [ item | combine( { 'path': meta_package.name + '/' + item.name, 'repo': meta_package.name, 'docu_only': item.docu_only|default(false), 'GAPDoc_docu': item.GAPDoc_docu|default(false), 'tests_without_precompiled_code': item.tests_without_precompiled_code|default(false) } ) ] }}"
+    subpackages_enriched: "{{ subpackages_enriched + [ item | combine( { 'path': meta_package.name + '/' + item.name, 'repo': meta_package.name, 'docu_only': item.docu_only|default(false), 'GAPDoc_docu': item.GAPDoc_docu|default(false), 'tests_without_precompiled_code': item.tests_without_precompiled_code|default(false), 'has_notebooks': (pkg_dir | expanduser + '/' + meta_package.name + '/' + item.name + '/examples/notebooks/') is directory } ) ] }}"
   loop: "{{ subpackages }}"
   no_log: true
 
