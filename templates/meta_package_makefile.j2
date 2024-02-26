@@ -25,3 +25,16 @@ ci-test_{{ doc_package.name }}:
 	$(MAKE) -C {{ doc_package.name }} ci-test
 {% endfor %}
 
+{% if (doc_packages | map(attribute="has_notebooks")) is any %}
+################################
+update-notebooks:{% for doc_package in doc_packages %}{% if doc_package.has_notebooks %} update-notebooks_{{ doc_package.name }}{% endif %}{% endfor %}
+
+{% for doc_package in doc_packages %}
+{% if doc_package.has_notebooks %}
+
+update-notebooks_{{ doc_package.name }}:
+	$(MAKE) -C {{ doc_package.name }} update-notebooks
+{% endif %}
+{% endfor %}
+
+{% endif %}
