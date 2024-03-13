@@ -7,6 +7,22 @@ CAP.IS_PRECOMPILING = true
 include("init.g.autogen.jl")
 include("read.g.autogen.jl")
 
+for operation in Operations( CAP_INTERNAL_DERIVATION_GRAPH )
+	
+	for derivation in CAP_INTERNAL_DERIVATION_GRAPH.derivations_by_target[operation]
+		
+		precompile(CategoryFilter( derivation ), (IsCapCategory.abstract_type, ))
+		
+	end
+	
+end
+
+for derivation in CAP_INTERNAL_FINAL_DERIVATION_LIST
+	
+	precompile(CategoryFilter( derivation.dummy_derivation ), (IsCapCategory.abstract_type, ))
+	
+end
+
 @init_CAP_package
 
 CAP.IS_PRECOMPILING = false
