@@ -1,9 +1,13 @@
+@IMPORT_CAP_OPERATIONS()
+
 push!(ModulesForEvaluationStack, @__MODULE__)
 
 CAP.IS_PRECOMPILING = true
 
 include("init.g.autogen.jl")
 include("read.g.autogen.jl")
+
+@init_CAP_package
 
 CAP.IS_PRECOMPILING = false
 
@@ -14,8 +18,6 @@ function __init__()
 	push!(ModulesForEvaluationStack, @__MODULE__)
 	
 	RESTORE_CAP_STATE(CAP_STATE)
-	
-	@init_CAP_package
 	
 end
 
