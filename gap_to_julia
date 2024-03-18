@@ -48,7 +48,7 @@ gen:
 	gap_to_julia $PKG_NAME
 
 test:
-	julia -e 'using Pkg; Pkg.test("$PKG_NAME", julia_args = ["--warn-overwrite=no"]);'
+	julia -e 'using Pkg; Pkg.test("$PKG_NAME");'
 EOS
 
 cd "$GAP_PKG_DIR$PKG_FULL_NAME"
