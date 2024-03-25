@@ -531,10 +531,6 @@
           name: HigherHomologicalAlgebra
           description: Higher Homological Algebra
         subpackages:
-          - name: BBGG
-            description: Beilinson monads and derived categories for coherent sheaves over P^n
-            has_HOMALG_IO: true
-            tests_only_basic: true
           - name: Bicomplexes
             description: Bicomplexes for Abelian categories
             doc_additional_latex_preamble: |
@@ -1052,7 +1048,6 @@
               - path:        CategoricalTowers/Algebroids
               - path:              CAP_project/ActionsForCAP
               - path:              CAP_project/AttributeCategoryForCAP
-              - path: HigherHomologicalAlgebra/BBGG
               - path: HigherHomologicalAlgebra/Bicomplexes
               - path:              CAP_project/CartesianCategories
               - path:        CategoricalTowers/CategoriesWithAmbientObjects
@@ -1149,6 +1144,9 @@
           - url: https://github.com/homalg-project/CategoricalTowers/blob/master/FunctorCategories/examples/notebooks/PastingLawForPullbacks.ipynb
             names:
               - PastingLawForPullbacks
+          - url: https://github.com/homalg-project/CategoricalTowers/blob/master/FunctorCategories/examples/notebooks/LogicInToposOfFinQuivers.ipynb
+            names:
+              - LogicInToposOfFinQuivers
           - url: https://github.com/homalg-project/CategoricalTowers/blob/master/InternalModules/examples/notebooks/SymmetricAlgebraInternalToS4rep.ipynb
             names:
               - SymmetricAlgebraInternalToS4rep
