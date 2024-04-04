@@ -70,7 +70,7 @@
   lineinfile:
     path: "{{ pkg_dir }}/{{ package.path }}/PackageInfo.g"
     regexp: "^  GAP := "
-    line: '  GAP := ">= 4.12.1",'
+    line: '  GAP := ">= 4.13.0",'
 
 - name: init.g header
   replace:
