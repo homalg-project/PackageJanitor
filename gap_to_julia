@@ -258,7 +258,7 @@ fi
 
 if [ "$PKG_NAME" = "ZXCalculusForCAP" ]; then
 	# needs json
-	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/CategoryOfZXDiagrams_export.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/CategoryOfZXDiagrams_import_export_file.tst.autogen.md
 fi
 
 # merge AutoDocTests into one big testfile to execute in the correct order
