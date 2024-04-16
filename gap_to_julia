@@ -148,6 +148,7 @@ syntax_replacements() {
 	| sed 's/\bInt\b/IntGAP/g' \
 	| sed 's/\bString\b/StringGAP/g' \
 	| sed 's/\bSet\b/SetGAP/g' \
+	| sed 's/\bNumber\b/NumberGAP/g' \
 	# terminate line continuation
 }
 export -f syntax_replacements
