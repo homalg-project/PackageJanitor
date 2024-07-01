@@ -355,6 +355,7 @@
               - homalg_project
               - CAP_project
             tests_additional_packages_to_load:
+              - Digraphs
               - Locales
               - FinSetsForCAP
               - SubcategoriesForCAP
