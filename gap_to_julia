@@ -47,6 +47,11 @@ cat > "$JULIA_PKG_DIR$PKG_NAME/makefile" << EOS
 gen:
 	gap_to_julia $PKG_NAME
 
+clean-gen:
+	rm -f ./src/gap/*.autogen.jl
+	rm -f ./docs/src/*.autogen.md
+	gap_to_julia $PKG_NAME
+
 test:
 	julia -e 'using Pkg; Pkg.test("$PKG_NAME");'
 EOS
