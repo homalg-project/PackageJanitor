@@ -266,6 +266,14 @@ if [ "$PKG_NAME" = "ZXCalculusForCAP" ]; then
 	rm -f $(grep -l "CapJitPrecompileCategoryAndCompareResult(" "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.tst.autogen.md)
 fi
 
+if [ "$PKG_NAME" = "LinearAlgebraForCAP" ]; then
+	# waiting for https://github.com/homalg-project/MatricesForHomalg.jl/issues/41
+	rm -f $(grep -l "matrix over an internal ring>" "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.tst.autogen.md)
+	rm -f $(grep -l "(an empty" "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.tst.autogen.md)
+	# ClosedMonoidalCategoriesTest is very slow because MonoidalPreComposeMorphism is very slow because multiplication of matrices of Rationals{BigInt} is very slow
+	rm -f $(grep -l "Braid" "$JULIA_PKG_DIR$PKG_NAME"/docs/src/TensorCorrespondenceMatrixCategoryAndOpposite.tst.autogen.md)
+fi
+
 # merge AutoDocTests into one big testfile to execute in the correct order
 if compgen -G "$JULIA_PKG_DIR$PKG_NAME"/docs/src/"$PKG_NAME_LOWERCASE"*.tst.autogen.md > /dev/null; then
 	cat "$JULIA_PKG_DIR$PKG_NAME"/docs/src/"$PKG_NAME_LOWERCASE"*.tst.autogen.md > "$JULIA_PKG_DIR$PKG_NAME"/docs/src/AutoDocTests.tst.autogen.md
