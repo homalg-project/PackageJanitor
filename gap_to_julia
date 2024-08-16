@@ -3,7 +3,7 @@
 set -e
 
 GAP_PKG_DIR=~/.gap/pkg/
-JULIA_PKG_DIR=~/.julia/dev/
+JULIA_PKG_DIR=~/.julia/dev/CAP_project.jl/
 
 if [ "$#" -ne 1 ]; then
 	echo "Usage: gap_to_julia PKG_NAME"
@@ -48,8 +48,8 @@ gen:
 	gap_to_julia $PKG_NAME
 
 clean-gen:
-	rm -f ./src/gap/*.autogen.jl
-	rm -f ./docs/src/*.autogen.md
+	rm -f ./src/gap/**/*.autogen.jl
+	rm -f ./docs/src/**/*.autogen.md
 	gap_to_julia $PKG_NAME
 
 test:
@@ -58,15 +58,16 @@ EOS
 
 cd "$GAP_PKG_DIR$PKG_FULL_NAME"
 
-cat "init.g" | sed "s/ReadPackage( \"$PKG_NAME\", /include( /g" | sed 's/" );$/.autogen.jl" );/' > "$JULIA_PKG_DIR$PKG_NAME/src/init.g.autogen.jl"
-cat "read.g" | sed "s/ReadPackage( \"$PKG_NAME\", /include( /g" | sed 's/" );$/.autogen.jl" );/' > "$JULIA_PKG_DIR$PKG_NAME/src/read.g.autogen.jl"
+cat "init.g" | sed "s/ReadPackage( \"$PKG_NAME\", \"\\(.*\\)\" );$/include( \"\\1.autogen.jl\" );/g" > "$JULIA_PKG_DIR$PKG_NAME/src/init.g.autogen.jl"
+cat "read.g" | sed "s/ReadPackage( \"$PKG_NAME\", \"\\(.*\\)\" );$/include( \"\\1.autogen.jl\" );/g" > "$JULIA_PKG_DIR$PKG_NAME/src/read.g.autogen.jl"
 
 cd gap
 
 chmod u+w "$JULIA_PKG_DIR$PKG_NAME"/src/gap/*.autogen.jl || true
 
 syntax_replacements() {
-	sed 's/ = / == /g' \
+	sed "s/ReadPackage( \"$1\", \"gap\/\\(.*\\)\" );$/include( \"\\1.autogen.jl\" );/g" \
+	| sed 's/ = / == /g' \
 	| sed 's/ <> / != /g' \
 	| sed 's/ :=/ =/g' \
 	| sed 's/ : /; /g' \
@@ -75,9 +76,11 @@ syntax_replacements() {
 	| sed 's/^\(\s*\)if /\1if (/g' \
 	| sed 's/^\(\s*\)elif /\1elseif (/g' \
 	| sed 's/ then$/)/g' \
-	| sed 's/fi;$/end;/g' \
+	| sed 's/ fi;/ end;/g' \
+	| sed 's/^fi;/end;/g' \
 	| sed 's/ do$//g' \
-	| sed 's/od;$/end;/g' \
+	| sed 's/ od;/ end;/g' \
+	| sed 's/^od;/end;/g' \
 	`# We turn "not" into a macro "@not" which causes problems with "or", see gap_emulation.jl. To reduce the number if places which have to be adjust manually, we insert the parantheses here for three special cases.` \
 	| sed 's/not \([^()]*([^()]*)\) or/not (\1) or/g' `# match "not func( arguments ) or"` \
 	| sed 's/not \([^()][^()]*([^()]*([^()]*)[^()]*)\) or/not (\1) or/g' `# match "not func( ... func2( arguments ) ... ) or"` \
@@ -102,7 +105,6 @@ syntax_replacements() {
 	| sed 's/⦇\([^⦇⦈]*\)@not \([^⦇⦈]*\)⦈/⦇\1not \2⦈/g' \
 	| sed 's/⦇\([^⦇⦈]*\)@not \([^⦇⦈]*\)⦈/⦇\1not \2⦈/g' \
 	| sed 's/⦇\([^⦇⦈]*\)⦈/"\1"/g' `# replace special brackets by quotation marks again` \
-	| sed 's/for \([^⥉]*\) ⥉ \([^⥉]*\)$/for \1 in \2/g' \
 	| sed 's/\.( \([^)]*\) )/[\1]/g' \
 	| sed 's/\.(\([^)]*\))/[\1]/g' \
 	| sed 's/\[ \([^].[]*\) \.\. \([^][]*\) \]/(\1):(\2)/g' `# [ a .. b ] -> (a):(b) where a and b do not contain square brackets` \
@@ -114,11 +116,15 @@ syntax_replacements() {
 	| sed 's/function( arg )/function( arg... )/g' \
 	| sed 's/function ( arg )/function ( arg... )/g' \
 	| sed 's/Method( \\\[\\\],/Method( getindex,/g' \
+	| sed 's/Method( \\\[\\,\\\],/Method( getindex,/g' \
+	| sed 's/MethodForCompilerForCAP( \\\[\\\],/MethodForCompilerForCAP( getindex,/g' \
+	| sed 's/MethodForCompilerForCAP( \\\[\\,\\\],/MethodForCompilerForCAP( getindex,/g' \
 	| sed 's/Method( \\=,/Method( ==,/g' \
 	| sed 's/Method( \\+,/Method( +,/g' \
 	| sed 's/Method( \\-,/Method( -,/g' \
 	| sed 's/Method( \\\*,/Method( *,/g' \
 	| sed 's/Method( \\\/,/Method( \/,/g' \
+	| sed 's/Method( \\\^,/Method( ^,/g' \
 	| sed 's/Method( \\in,/Method( in,/g' \
 	| sed 's/^DeclareInfoClass(/@DeclareInfoClass(/g' \
 	| sed 's/^DeclareAttribute(/@DeclareAttribute(/g' \
@@ -173,6 +179,8 @@ test_replacements() {
 		USING="using CAP; using MonoidalCategories; using $1"
 	elif [ "$1" = "LinearAlgebraForCAP" ]; then
 		USING="using MatricesForHomalg; using CAP; using MonoidalCategories; using $1"
+	elif [ "$1" = "FreydCategoriesForCAP" ]; then
+		USING="using MatricesForHomalg; using CAP; using MonoidalCategories; using $1"
 	else
 		>&2 echo "Unkown package $1, please explicitly add its dependencies"
 		USING="using CAP; using $1"
@@ -198,7 +206,7 @@ test_replacements() {
 export -f test_replacements
 
 for FILE in $(git ls-files); do
-	cat "$FILE" | syntax_replacements > "$JULIA_PKG_DIR$PKG_NAME"/src/gap/"$FILE".autogen.jl
+	cat "$FILE" | syntax_replacements $PKG_NAME > "$JULIA_PKG_DIR$PKG_NAME"/src/gap/"$FILE".autogen.jl
 done
 
 chmod a-w "$JULIA_PKG_DIR$PKG_NAME"/src/gap/*.autogen.jl
@@ -208,7 +216,7 @@ cd ../tst
 chmod u+w "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.autogen.md || true
 
 # use perl to handle line continuation and empty lines starting comments
-find . \( -type d -name .git -prune \) -o \( -type f -name '*.tst' \) -exec bash -c "cat '{}' | perl -p -e 's/\\\\\\n//' | perl -0 -p -e 's/\\n\\n#.*\\n/\\n/g' | syntax_replacements | test_replacements $PKG_NAME > \"$JULIA_PKG_DIR$PKG_NAME\"/docs/src/'{}'.autogen.md" \;
+find . \( -type d -name .git -prune \) -o \( -type f -name '*.tst' \) -exec bash -c "cat '{}' | perl -p -e 's/\\\\\\n//' | perl -0 -p -e 's/\\n\\n#.*\\n/\\n/g' | syntax_replacements $PKG_NAME | test_replacements $PKG_NAME > \"$JULIA_PKG_DIR$PKG_NAME\"/docs/src/'{}'.autogen.md" \;
 
 rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/100_LoadPackage.tst.autogen.md
 
@@ -270,8 +278,9 @@ if [ "$PKG_NAME" = "LinearAlgebraForCAP" ]; then
 	# waiting for https://github.com/homalg-project/MatricesForHomalg.jl/issues/41
 	rm -f $(grep -l "matrix over an internal ring>" "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.tst.autogen.md)
 	rm -f $(grep -l "(an empty" "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.tst.autogen.md)
-	# ClosedMonoidalCategoriesTest is very slow because MonoidalPreComposeMorphism is very slow because multiplication of matrices of Rationals{BigInt} is very slow
-	rm -f $(grep -l "Braid" "$JULIA_PKG_DIR$PKG_NAME"/docs/src/TensorCorrespondenceMatrixCategoryAndOpposite.tst.autogen.md)
+	# MonoidalPreComposeMorphism is very slow because multiplication of matrices of Rationals{BigInt} is very slow
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/ClosedAndCoclosedInMatrixCategory.tst.autogen.md
+	rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/TensorCorrespondenceMatrixCategoryAndOpposite.tst.autogen.md
 fi
 
 # merge AutoDocTests into one big testfile to execute in the correct order
