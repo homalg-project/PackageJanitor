@@ -651,17 +651,12 @@
         subpackages:
           - name: CAP
             description: Categories, Algorithms, Programming
-            has_HOMALG_IO: true
             doc_additional_latex_preamble: |
               \usepackage{tikz}
               \usetikzlibrary{arrows}
               \pgfarrowsdeclarecombine{twohead}{twohead}{latex}{latex}{latex}{latex}
             tests_additional_packages_to_load:
-              - IO_ForHomalg
-              - GaussForHomalg
               - ModulePresentationsForCAP
-              - LinearAlgebraForCAP
-              - RingsForHomalg
             tests_only_basic: true
           - name: ActionsForCAP
             description: Actions and Coactions for CAP
