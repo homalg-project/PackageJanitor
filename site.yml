@@ -42,6 +42,28 @@
             - IO_ForHomalg
           tests_only_basic: true
 
+- name: MatroidsForCAP
+  hosts: MatroidsForCAP
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg/"
+  tasks:
+    - import_tasks: tasks/package.yml
+      vars:
+        package:
+          name: MatroidsForCAP
+          description: "Matroids and arrangements for CAP"
+          has_HOMALG_IO: true
+          doc_additional_latex_preamble: |
+            \usepackage{mathtools}
+          needed_other_repositories:
+            - homalg_project
+            - CAP_project
+            - CategoricalTowers
+          tests_additional_packages_to_load:
+            - IO_ForHomalg
+          tests_only_basic: true
+
 - name: CategoricalTowers
   hosts: CategoricalTowers
   connection: local
@@ -1079,6 +1101,7 @@
               - path:              CAP_project/LinearAlgebraForCAP
               - path:        CategoricalTowers/Locales
               - path:                          MachineLearningForCAP
+              - path:                          MatroidsForCAP
               - path:              CAP_project/ModulePresentationsForCAP
               - path:              CAP_project/ModulesOverLocalRingsForCAP
               - path:              CAP_project/MonoidalCategories
