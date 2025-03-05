@@ -296,6 +296,7 @@
               - GeneralizedMorphismsForCAP
               - Algebroids
               - GRAPE
+              - Digraphs
               - Locales
               - SubcategoriesForCAP
             tests_only_basic: true
