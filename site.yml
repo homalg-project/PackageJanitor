@@ -442,7 +442,7 @@
       vars:
         package:
           name: FinSetsForCAP
-          description: "The elementary topos of (skeletal) finite sets"
+          description: "The (skeletal) elementary topos of finite sets"
           doc_additional_latex_preamble: |
             \usepackage{mathtools}
             \DeclareUnicodeCharacter{2205}{\ensuremath{\emptyset}}
@@ -467,7 +467,7 @@
       vars:
         package:
           name: FinGSetsForCAP
-          description: "The elementary topos of (skeletal) finite G-sets"
+          description: "The (skeletal) elementary topos of finite G-sets"
           doc_additional_latex_preamble: |
             \usepackage[T1]{fontenc}
             \usepackage[british]{babel}
