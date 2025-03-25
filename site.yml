@@ -385,8 +385,8 @@
               - Digraphs
               - Locales
               - FinSetsForCAP
-              - SubcategoriesForCAP
               - FreydCategoriesForCAP
+              - SubcategoriesForCAP
             tests_only_basic: true
             has_subsplit: true
           - name: Toposes
