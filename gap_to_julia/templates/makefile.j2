@@ -1,0 +1,23 @@
+.PHONY: test
+
+test:
+	julia -e 'using Pkg; Pkg.test("{{ package_name }}");'
+
+gen:
+	../gap_to_julia/gap_to_julia {{ package_name }}
+
+clean-gen:
+	rm -f ./src/gap/*.autogen.jl
+	rm -f ./src/gap/*/*.autogen.jl
+	rm -f ./docs/src/*.autogen.md
+	../gap_to_julia/gap_to_julia {{ package_name }}
+
+codecov:
+	julia --project=. -e 'using Coverage; using Pkg; Pkg.test(coverage=true); LCOV.writefile("coverage.lcov", process_folder(pwd()));'
+	genhtml -o coverage_report coverage.lcov
+	open coverage_report/index.html
+
+clean-codecov:
+	find . -type f -name "*.jl.*.cov" -exec rm -f {} +
+	rm -f coverage.lcov
+	rm -rf coverage_report
