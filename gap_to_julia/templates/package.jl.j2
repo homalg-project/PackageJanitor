@@ -1,0 +1,12 @@
+module {{ package_name }}
+
+@nospecialize
+
+{% for package in dependencies %}
+using {{ package }}
+
+{% endfor %}
+
+include("init.jl")
+
+end # module {{ package_name }}

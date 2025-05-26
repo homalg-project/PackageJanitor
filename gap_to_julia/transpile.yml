@@ -1,0 +1,31 @@
+---
+- name: Create a local Julia package
+  hosts: localhost
+  vars_files:
+    - site.yml
+    - hosts.yml
+
+  tasks:
+    - name: Select only packages listed in hosts.yml
+      set_fact:
+        matched_packages: >-
+          {{ julia_packages | selectattr('package_name', 'in', selected_packages) | list }}
+      when: selected_packages is defined and selected_packages is not none and selected_packages | length > 0
+
+    - name: Fail if no packages are matched
+      fail:
+        msg: "No packages matched the selected packages list in hosts.yml!"
+      when: matched_packages is not defined or  matched_packages | length == 0
+
+    - name: Display names of matched packages
+      debug:
+        msg: "Matched package: {{ item.package_name }}"
+      loop: "{{ matched_packages }}"
+      when: matched_packages | length > 0
+
+    - name: Use tasks.yml for each matched package
+      include_tasks: tasks/create_update_julia_package.yml
+      loop: "{{ matched_packages }}"
+      loop_control:
+        loop_var: current_package
+      when: matched_packages | length > 0
