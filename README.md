@@ -29,7 +29,7 @@ One can speed up the execution considerably by using the Ansible plugin [Mitogen
    to disable CircleCI for the `doc` branch.
 2. #### Error: `There was an error. Make sure there is a branch named 'gh-pages'.`
    If a package has an automated release process, the CI publishes the release via GitHub Pages and needs a branch named `gh-pages`.
-   You have to manually create this branch once.
+   You have to manually create this branch once (see [GitHubPages](https://github.com/gap-system/GitHubPagesForGAP?tab=readme-ov-file#using-an-existing-gh-pages-branch)).
    If you have activated CircleCI for the repository, create the file `.circleci/config.yml` on the `gh-pages` branch with content
    ```yaml
    version: 2.0
