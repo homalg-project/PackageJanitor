@@ -742,6 +742,12 @@
             tests_additional_packages_to_load:
               - IO_ForHomalg
             tests_only_basic: true
+          - name: GroupsAsCategoriesForCAP
+            description: Groups as categories on one object
+            tests_only_basic: true
+            tests_additional_packages_to_load:
+              - FinSetsForCAP
+            has_subsplit: true
           - name: HomologicalAlgebraForCAP
             description: Homological algebra algorithms for CAP
             has_HOMALG_IO: true
@@ -1091,6 +1097,7 @@
               - path:        CategoricalTowers/GradedCategories
               - path:              CAP_project/GradedModulePresentationsForCAP
               - path:              CAP_project/GroupRepresentationsForCAP
+              - path:              CAP_project/GroupsAsCategoriesForCAP
               - path:                          HeckeCategories
               - path:              CAP_project/HomologicalAlgebraForCAP
               - path: HigherHomologicalAlgebra/HomotopyCategories
