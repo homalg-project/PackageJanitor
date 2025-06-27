@@ -745,8 +745,6 @@
           - name: GroupsAsCategoriesForCAP
             description: Groups as categories on one object
             tests_only_basic: true
-            tests_additional_packages_to_load:
-              - FinSetsForCAP
             has_subsplit: true
           - name: HomologicalAlgebraForCAP
             description: Homological algebra algorithms for CAP
