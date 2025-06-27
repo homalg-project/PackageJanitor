@@ -745,7 +745,6 @@
           - name: GroupsAsCategoriesForCAP
             description: Groups as categories on one object
             tests_only_basic: true
-            has_subsplit: true
           - name: HomologicalAlgebraForCAP
             description: Homological algebra algorithms for CAP
             has_HOMALG_IO: true
