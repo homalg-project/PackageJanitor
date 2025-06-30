@@ -99,6 +99,7 @@
               - FinSetsForCAP
             tests_additional_packages_to_load:
               - IO_ForHomalg
+              - AdditiveClosuresForCAP
             tests_only_basic: true
             tests_without_precompiled_code: true
             has_subsplit: true
@@ -111,6 +112,7 @@
               - homalg_project
               - CAP_project
             tests_additional_packages_to_load:
+              - AdditiveClosuresForCAP
               - ModulePresentationsForCAP
               - HomologicalAlgebraForCAP
               - RingsForHomalg
@@ -130,6 +132,7 @@
             tests_additional_packages_to_load:
               - ToolsForCategoricalTowers ## load before FinSetsForCAP
               - FinSetsForCAP       ## load before FreydCategoriesForCAP
+              - AdditiveClosuresForCAP
               - FreydCategoriesForCAP
             tests_only_basic: true
             has_subsplit: true
@@ -161,6 +164,7 @@
               - Digraphs
               - ToolsForCategoricalTowers ## load before FinSetsForCAP
               - FinSetsForCAP       ## load before FreydCategoriesForCAP
+              - AdditiveClosuresForCAP
               - FreydCategoriesForCAP
               - FunctorCategories
               - LazyCategories
@@ -215,6 +219,7 @@
               - ToolsForCategoricalTowers ## load before FinSetsForCAP
               - FinSetsForCAP       ## load before FreydCategoriesForCAP
               - Locales
+              - AdditiveClosuresForCAP
               - FreydCategoriesForCAP
               - IO_ForHomalg
             tests_only_basic: true
@@ -292,6 +297,7 @@
               - homalg_project
               - CAP_project
             tests_additional_packages_to_load:
+              - AdditiveClosuresForCAP
               - LinearAlgebraForCAP
               - GeneralizedMorphismsForCAP
               - Algebroids
@@ -318,6 +324,7 @@
               - IO_ForHomalg
               - Digraphs
               - FinSetsForCAP
+              - AdditiveClosuresForCAP
               - FreydCategoriesForCAP
               - SubcategoriesForCAP
               - FunctorCategories
@@ -364,6 +371,7 @@
               - CAP_project
             tests_additional_packages_to_load:
               - IO_ForHomalg
+              - AdditiveClosuresForCAP
               - FreydCategoriesForCAP
               - FinSetsForCAP
               - Locales
@@ -385,6 +393,7 @@
               - Digraphs
               - Locales
               - FinSetsForCAP
+              - AdditiveClosuresForCAP
               - FreydCategoriesForCAP
               - SubcategoriesForCAP
             tests_only_basic: true
@@ -535,6 +544,7 @@
             \geometry{left=26mm,right=26mm}
           tests_additional_packages_to_load:
             - Toposes
+            - AdditiveClosuresForCAP
             - FreydCategoriesForCAP
             - FunctorCategories
             - json
@@ -568,6 +578,7 @@
               \usetikzlibrary{shapes,arrows,matrix}
             tests_additional_packages_to_load:
               - FinSetsForCAP
+              - AdditiveClosuresForCAP
               - FreydCategoriesForCAP
               - ModulePresentationsForCAP
               - Algebroids
@@ -583,6 +594,7 @@
             tests_additional_packages_to_load:
               - IO_ForHomalg
               - FinSetsForCAP
+              - AdditiveClosuresForCAP
               - FreydCategoriesForCAP
               - Algebroids
             tests_only_basic: true
@@ -593,6 +605,7 @@
             tests_additional_packages_to_load:
               - IO_ForHomalg
               - FinSetsForCAP
+              - AdditiveClosuresForCAP
               - FreydCategoriesForCAP
               - Algebroids
               - FunctorCategories
@@ -606,6 +619,7 @@
             tests_additional_packages_to_load:
               - IO_ForHomalg
               - FinSetsForCAP
+              - AdditiveClosuresForCAP
               - FreydCategoriesForCAP
               - Algebroids
             tests_only_basic: true
@@ -635,6 +649,7 @@
             description: Tools for the Higher Homological Algebra project
             tests_additional_packages_to_load:
               - FinSetsForCAP
+              - AdditiveClosuresForCAP
               - FreydCategoriesForCAP
             tests_only_basic: true
           - name: TriangulatedCategories
@@ -646,6 +661,7 @@
               \usetikzlibrary{shapes,arrows,matrix}
               \usepackage{tikz-cd}
             tests_additional_packages_to_load:
+              - AdditiveClosuresForCAP
               - DerivedCategories
             tests_only_basic: true
         ci_additional_repositories:
@@ -688,6 +704,16 @@
           - name: ActionsForCAP
             description: Actions and Coactions for CAP
             tests_only_basic: true
+          - name: AdditiveClosuresForCAP
+            description: Additive closures for pre-abelian categories
+            has_HOMALG_IO: true
+            doc_additional_scan_dirs:
+              - gap/CategoryOfGradedRowsAndColumns
+            tests_additional_packages_to_load:
+              - IO_ForHomalg
+              - RingsForHomalg
+              - GaussForHomalg
+            tests_only_basic: true
           - name: AttributeCategoryForCAP
             description: Automatic enhancement with attributes of a CAP category
             tests_only_basic: true
@@ -702,6 +728,7 @@
               \geometry{left=26mm,right=26mm}
             tests_additional_packages_to_load:
               - IO_ForHomalg
+              - AdditiveClosuresForCAP
               - FreydCategoriesForCAP
               - LinearAlgebraForCAP
               - RingsForHomalg
@@ -712,7 +739,6 @@
             description: Freyd categories - Formal (co)kernels for additive categories
             has_HOMALG_IO: true
             doc_additional_scan_dirs:
-              - gap/CategoryOfGradedRowsAndColumns
               - gap/GradedModulePresentationsByFreyd
             doc_additional_latex_preamble: |
               \usepackage{tikz}
@@ -722,6 +748,7 @@
               - IO_ForHomalg
               - RingsForHomalg
               - GaussForHomalg
+              - AdditiveClosuresForCAP
               - GeneralizedMorphismsForCAP
             tests_only_basic: true
             has_subsplit: true
@@ -1075,6 +1102,7 @@
               - path:              CAP_project/CAP
               - path:        CategoricalTowers/Algebroids
               - path:              CAP_project/ActionsForCAP
+              - path:              CAP_project/AdditiveClosuresForCAP
               - path:              CAP_project/AttributeCategoryForCAP
               - path: HigherHomologicalAlgebra/Bicomplexes
               - path:              CAP_project/CartesianCategories
