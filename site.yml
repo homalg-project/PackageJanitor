@@ -709,6 +709,10 @@
             has_HOMALG_IO: true
             doc_additional_scan_dirs:
               - gap/CategoryOfGradedRowsAndColumns
+            doc_additional_latex_preamble: |
+              \usepackage{tikz}
+              \usetikzlibrary{arrows}
+              \usetikzlibrary{calc}
             tests_additional_packages_to_load:
               - IO_ForHomalg
               - RingsForHomalg
