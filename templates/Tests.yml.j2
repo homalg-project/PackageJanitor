@@ -61,7 +61,7 @@ jobs:
       - name: Build documentation of packages which we might want to reference
         run: |
           # keep this in sync with `dev/.release`
-        {%- for package_with_doc in ["CAP_project/CAP", "CAP_project/CompilerForCAP", "CAP_project/MonoidalCategories", "CAP_project/CartesianCategories", "CAP_project/FreydCategoriesForCAP", "HigherHomologicalAlgebra/ToolsForHigherHomologicalAlgebra", "homalg_project/homalg", "homalg_project/Modules", "CategoricalTowers/ToolsForCategoricalTowers", "CategoricalTowers/Toposes" ] %}
+        {%- for package_with_doc in ["CAP_project/CAP", "CAP_project/CompilerForCAP", "CAP_project/MonoidalCategories", "CAP_project/CartesianCategories", "CAP_project/AdditiveClosuresForCAP", "CAP_project/FreydCategoriesForCAP", "HigherHomologicalAlgebra/ToolsForHigherHomologicalAlgebra", "homalg_project/homalg", "homalg_project/Modules", "CategoricalTowers/ToolsForCategoricalTowers", "CategoricalTowers/Toposes" ] %}
           if [ -d "{{ package_with_doc }}" ]; then make -C "{{ package_with_doc }}" doc; fi
         {%- endfor %}
     {%- if ci_do_not_run_tests is not defined or not ci_do_not_run_tests %}
