@@ -737,7 +737,7 @@
               - IO_ForHomalg
               - RingsForHomalg
               - GaussForHomalg
-              - AdditiveClosuresForCAP
+              - LinearClosuresForCAP
               - GeneralizedMorphismsForCAP
             tests_only_basic: true
             has_subsplit: true
@@ -781,6 +781,13 @@
             description: Category of Matrices over a Field for CAP
             tests_only_basic: true
             tests_without_precompiled_code: true
+          - name: LinearClosuresForCAP
+            description: Linear closures
+            has_HOMALG_IO: true
+            tests_additional_packages_to_load:
+              - IO_ForHomalg
+              - RingsForHomalg
+            tests_only_basic: true
           - name: ModulePresentationsForCAP
             description: Category R-pres for CAP
             has_HOMALG_IO: true
@@ -1122,6 +1129,7 @@
               - path:        CategoricalTowers/IntrinsicModules
               - path:        CategoricalTowers/LazyCategories
               - path:              CAP_project/LinearAlgebraForCAP
+              - path:              CAP_project/LinearClosuresForCAP
               - path:        CategoricalTowers/Locales
               - path:                          MachineLearningForCAP
               - path:                          MatroidsForCAP
