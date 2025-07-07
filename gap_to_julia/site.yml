@@ -1,66 +1,121 @@
-julia_packages:
-  - package_name: ToolsForCategoricalTowers
-    project_name: CategoricalTowers.jl
-    package_description: Tools for CategoricalTowers
-    package_uuid: e2cf920d-0824-4cbb-97bb-0be40824f89f
-    package_version: 0.0.1
-    julia_version: 1.11
-    dependencies:
-      CAP: 0.6
-      MonoidalCategories:
-      CartesianCategories:
-    weak_dependencies:
-    extras:
-      - Documenter
-      - Test
-      - Toposes
-      - FinSetsForCAP
-      - MatricesForHomalg
-      - FreydCategoriesForCAP
-    targets:
-      test: default
-    disable_method_overwrite_warning: true
-    cleanup_test_files_by_keywords:
-      - drop_example_in_Julia
-  - package_name: QuotientCategories
-    project_name: CategoricalTowers.jl
-    package_description: Quotient categories for CAP
-    package_uuid: c103c924-3523-4680-a691-c88f3312ec70
-    package_version: 0.0.1
-    julia_version: 1.11
-    dependencies:
-      CAP: 0.6
-      ToolsForCategoricalTowers:
-      MatricesForHomalg:
-    weak_dependencies:
-    extras:
-      - Documenter
-      - Test
-      - FreydCategoriesForCAP
-    targets:
-      test: default
-    disable_method_overwrite_warning: true
-    cleanup_test_files_by_keywords:
-      - drop_example_in_Julia
-  - package_name: FpCategories
-    project_name: CategoricalTowers.jl
-    package_description: Finitely presented categories by generating quivers and relations
-    package_uuid: b9f20f1b-1226-4811-b6a0-b2e47a225553
-    package_version: 0.0.1
-    julia_version: 1.11
-    dependencies:
-      CAP: 0.6
-      CartesianCategories:
-      ToolsForCategoricalTowers:
-      QuotientCategories:
-      FinSetsForCAP:
-    weak_dependencies:
-    extras:
-      - Documenter
-      - Test
-    targets:
-      test: default
-    disable_method_overwrite_warning: true
-    cleanup_test_files_by_keywords:
-      - drop_example_in_Julia
-      - Algebroids
+---
+- name: AdditiveClosuresForCAP
+  hosts: AdditiveClosuresForCAP
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: AdditiveClosuresForCAP
+          source: CAP_project
+          target: CAP_project.jl
+          description: Additive closures for pre-abelian categories
+          uuid: bbee75d5-3cb4-4478-8ae7-eddc7864e69e
+          version: 0.0.1
+          julia_version: 1.11
+          dependencies:
+            CAP: 0.6
+            MatricesForHomalg:
+            MonoidalCategories:
+          weak_dependencies:
+          extras:
+            - Documenter
+            - Test
+          targets:
+            test: default
+          disable_method_overwrite_warning: true
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
+
+- name: FpCategories
+  hosts: FpCategories
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: FpCategories
+          source: CategoricalTowers
+          target: CategoricalTowers.jl
+          description: Finitely presented categories by generating quivers and relations
+          uuid: b9f20f1b-1226-4811-b6a0-b2e47a225553
+          version: 0.0.1
+          julia_version: 1.11
+          dependencies:
+            CAP: 0.6
+            CartesianCategories:
+            ToolsForCategoricalTowers:
+            QuotientCategories:
+            FinSetsForCAP:
+          weak_dependencies:
+          extras:
+            - Documenter
+            - Test
+          targets:
+            test: default
+          disable_method_overwrite_warning: true
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
+            - Algebroids
+
+- name: QuotientCategories
+  hosts: QuotientCategories
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: QuotientCategories
+          source: CategoricalTowers
+          target: CategoricalTowers.jl
+          description: Quotient categories for CAP
+          uuid: c103c924-3523-4680-a691-c88f3312ec70
+          version: 0.0.1
+          julia_version: 1.11
+          dependencies:
+            CAP: 0.6
+            ToolsForCategoricalTowers:
+            MatricesForHomalg:
+          weak_dependencies:
+          extras:
+            - Documenter
+            - Test
+            - FreydCategoriesForCAP
+          targets:
+            test: default
+          disable_method_overwrite_warning: true
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
+
+- name: ToolsForCategoricalTowers
+  hosts: ToolsForCategoricalTowers
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: ToolsForCategoricalTowers
+          source: CategoricalTowers
+          target: CategoricalTowers.jl
+          description: Tools for CategoricalTowers
+          # to create a new uuid: using UUIDs; UUIDs.uuid4()
+          uuid: e2cf920d-0824-4cbb-97bb-0be40824f89f
+          version: 0.0.1
+          julia_version: 1.11
+          dependencies:
+            CAP: 0.6
+            MonoidalCategories:
+            CartesianCategories:
+          weak_dependencies:
+          extras:
+            - Documenter
+            - Test
+            - Toposes
+            - FinSetsForCAP
+            - MatricesForHomalg
+            - FreydCategoriesForCAP
+          targets:
+            test: default
+          disable_method_overwrite_warning: true
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia

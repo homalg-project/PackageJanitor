@@ -10,5 +10,6 @@ unsafe_store!(Base.cglobal(:jl_options, Base.JLOptions), new_opts)
 using Documenter, Test
 using {{ package_name }}
 
-# fix=true overwrites the output strings
-doctest({{ package_name }}; doctestfilters=[r"\s+" => " "], fix=false)
+# use r"\s+" => "" to ignore whitespaces
+# fix=true to overwrite the output strings
+doctest({{ package_name }}; doctestfilters=[r"\s+" => ""], fix=false)

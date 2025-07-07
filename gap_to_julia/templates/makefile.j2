@@ -1,16 +1,19 @@
 .PHONY: test
 
+install:
+	julia -e 'using Pkg; Pkg.develop(path=".");'
+
 test:
 	julia -e 'using Pkg; Pkg.test("{{ package_name }}");'
 
 gen:
-	../gap_to_julia/gap_to_julia {{ package_name }}
+	./.generate.sh
 
 clean-gen:
 	rm -f ./src/gap/*.autogen.jl
 	rm -f ./src/gap/*/*.autogen.jl
 	rm -f ./docs/src/*.autogen.md
-	../gap_to_julia/gap_to_julia {{ package_name }}
+	./.generate.sh
 
 codecov:
 	julia --project=. -e 'using Coverage; using Pkg; Pkg.test(coverage=true); LCOV.writefile("coverage.lcov", process_folder(pwd()));'

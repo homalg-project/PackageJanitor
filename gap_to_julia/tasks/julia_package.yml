@@ -1,83 +1,92 @@
-- name: Set package variables for {{ current_package.package_name }}
+- name: Set package variables for {{ package.name }}
   set_fact:
-    package_name: "{{ current_package.package_name }}"
-    project_name: "{{ current_package.project_name }}"
-    package_description: "{{ current_package.package_description | default('') }}"
-    package_uuid: "{{ current_package.package_uuid | default('') }}"
-    package_version: "{{ current_package.package_version | default('0.0.1') }}"
-    julia_version: "{{ current_package.julia_version | default('1.11') }}"
-    dependencies: "{{ current_package.dependencies | default({}) }}"
-    weak_dependencies: "{{ current_package.weak_dependencies | default({}) }}"
-    extras: "{{ current_package.extras | default([]) }}"
-    targets: "{{ current_package.targets | default({'test': 'default'}) }}"
-    disable_method_overwrite_warning: "{{ current_package.disable_method_overwrite_warning | default(false) }}"
-    cleanup_test_files_by_keywords: "{{ current_package.cleanup_test_files_by_keywords | default([]) }}"
-    parent_directory: ~/.julia/dev/{{ current_package.project_name }}
-    package_directory: ~/.julia/dev/{{ current_package.project_name }}/{{ current_package.package_name }}
-    gap_package_directory: "~/.gap/pkg/{{ current_package.project_name | regex_replace('.jl', '') }}/{{ current_package.package_name }}"
+    package_name: "{{ package.name }}"
+    project_name: "{{ package.target }}"
+    package_description: "{{ package.description | default('') }}"
+    target_path: ~/.julia/dev/{{ package.target }}
+    source_package_path: "~/.gap/pkg/{{ package.source }}/{{ package.name }}"
+    target_package_path: "~/.julia/dev/{{ package.target }}/{{ package.name }}"
+    package_uuid: "{{ package.uuid | default('') }}"
+    package_version: "{{ package.version | default('0.0.1') }}"
+    julia_version: "{{ package.julia_version | default('1.11') }}"
+    dependencies: "{{ package.dependencies | default({}) }}"
+    weak_dependencies: "{{ package.weak_dependencies | default({}) }}"
+    extras: "{{ package.extras | default([]) }}"
+    targets: "{{ package.targets | default({'test': 'default'}) }}"
+    disable_method_overwrite_warning: "{{ package.disable_method_overwrite_warning | default(false) }}"
+    cleanup_test_files_by_keywords: "{{ package.cleanup_test_files_by_keywords | default([]) }}"
+    playbook_dir_relative_to_home: "{{ playbook_dir | relpath(ansible_env.HOME) }}"
 
 - name: Verify the GAP package {{ package_name }} exists
   stat:
-    path: "{{ gap_package_directory }}"
+    path: "{{ source_package_path }}"
   register: gap_package_directory_exists
 
 - name: Fail if the GAP package {{ package_name }} does not exist
   fail:
-    msg: "The GAP package directory '{{ gap_package_directory }}' does not exist!"
+    msg: "The GAP package directory '{{ source_package_path }}' does not exist!"
   when: not gap_package_directory_exists.stat.exists
 
-- name: Run 'gap makedoc.g' in {{ gap_package_directory }} to update documentation
-  command: gap -q -c 'makedoc.g'
+- name: Run 'gap makedoc.g' in {{ source_package_path }} to update documentation silently
+  command: gap -q -c 'makedoc.g > /dev/null 2>&1'
   args:
-    chdir: '{{ gap_package_directory }}'
+    chdir: '{{ source_package_path }}'
   register: makedoc_result
-  changed_when: makedoc_result.stdout != ''
-
-- name: Does the GAP package {{ package_name }} contains a gap/precompiled_categories directory?
-  stat:
-    path: "{{ gap_package_directory }}/gap/precompiled_categories"
-  register: precompiled_categories_directory_exists
+  changed_when: false
 
 - name: Ensure the parent directory for the Julia package exists
   stat:
-    path: "{{ parent_directory }}"
-  register: parent_directory_exists
+    path: "{{ target_path }}"
+  register: target_path_exists
 
 - name: Fail if the parent directory does not exist
   fail:
-    msg: "The parent directory '{{ parent_directory }}' does not exist!"
-  when: not parent_directory_exists.stat.exists
+    msg: "The parent directory '{{ target_path }}' does not exist!"
+  when: not target_path_exists.stat.exists
 
 - name: Check whether the Julia package directory already exists
   stat:
-    path: '{{ package_directory }}'
+    path: '{{ target_package_path }}'
   register: package_directory_exists
 
 - name: Generate Julia package using Pkg.generate if it does not exist
   command: >
     julia -e "using Pkg; Pkg.generate(\"{{ package_name }}\")"
   args:
-    chdir: '{{ parent_directory }}'
+    chdir: '{{ target_path }}'
   when: package_directory_exists.stat.exists == false
   register: generate_julia_package
 
 - name: Add LICENSE file to package
   copy:
     src: LICENSE
-    dest: "{{ package_directory }}/LICENSE"
+    dest: "{{ target_package_path }}/LICENSE"
+    mode: '0644'
+  when: package_directory_exists.stat.exists == false
+
+- name: Add .gitignore file to package
+  copy:
+    src: gitignore
+    dest: "{{ target_package_path }}/.gitignore"
     mode: '0644'
 
 - name: Add {{ package_name }}.jl file to package
   template:
     src: package.jl.j2
-    dest: "{{ package_directory }}/src/{{ package_name }}.jl"
+    dest: "{{ target_package_path }}/src/{{ package_name }}.jl"
     mode: '0644'
 
 - name: Add Makefile to package
   template:
     src: makefile.j2
-    dest: "{{ package_directory }}/makefile"
+    dest: "{{ target_package_path }}/makefile"
     mode: '0644'
+
+- name: Add '.generate.sh' file to package
+  template:
+    src: generate.j2
+    dest: "{{ target_package_path }}/.generate.sh"
+    mode: '0755'
 
 - name: Extract the package authors
   shell: gap -q -c '{{ display_authors_command }}'
@@ -99,7 +108,20 @@
       QuitGap();
 
 - name: Find the UUIDs of dependencies
-  shell: julia -e 'using Pkg; packages= {{ dependencies_names }}; uuids = join([name * " = \"" * string(uuid) * "\"" for name in packages for (uuid, package) in Pkg.dependencies() if package.name == name], "\n"); println(uuids)'
+  shell: |
+    julia -e '
+      using Pkg
+      packages = {{ dependencies_names }}
+      uuids = join(
+        [name * " = \"" * string(uuid) * "\"" 
+          for name in packages 
+          for (uuid, package) in Pkg.dependencies() 
+          if package.name == name
+        ], 
+        "\n"
+      )
+      println(uuids)
+    '
   when: dependencies
   register: dependencies_uuids
   changed_when: false
@@ -107,7 +129,20 @@
     dependencies_names: "{{ dependencies.keys() | list | to_json }}"
 
 - name: Find the UUIDs of weak_dependencies
-  shell: julia -e 'using Pkg; packages= {{ weak_dependencies_names }}; uuids = join([name * " = \"" * string(uuid) * "\"" for name in packages for (uuid, package) in Pkg.dependencies() if package.name == name], "\n"); println(uuids)'
+  shell: |
+    julia -e '
+      using Pkg
+      packages = {{ weak_dependencies_names }}
+      uuids = join(
+        [name * " = \"" * string(uuid) * "\"" 
+          for name in packages 
+          for (uuid, package) in Pkg.dependencies() 
+          if package.name == name
+        ], 
+        "\n"
+      )
+      println(uuids)
+    '
   when: weak_dependencies
   register: weak_dependencies_uuids
   changed_when: false
@@ -115,7 +150,20 @@
     weak_dependencies_names: "{{ weak_dependencies.keys() | list | to_json }}"
 
 - name: Find the UUIDs of extras
-  shell: julia -e 'using Pkg; packages= {{ extras_names }}; uuids = join([name * " = \"" * string(uuid) * "\"" for name in packages for (uuid, package) in Pkg.dependencies() if package.name == name], "\n"); println(uuids)'
+  shell: |
+    julia -e '
+      using Pkg
+      packages = {{ extras_names }}
+      uuids = join(
+        [name * " = \"" * string(uuid) * "\"" 
+          for name in packages 
+          for (uuid, package) in Pkg.dependencies() 
+          if package.name == name
+        ], 
+        "\n"
+      )
+      println(uuids)
+    '
   when: extras
   register: extras_uuids
   changed_when: false
@@ -125,18 +173,18 @@
 - name: Add Project.toml to package
   template:
     src: Project.toml.j2
-    dest: "{{ package_directory }}/Project.toml"
+    dest: "{{ target_package_path }}/Project.toml"
     mode: '0644'
 
 - name: Add README.md to package
   template:
     src: README.md.j2
-    dest: "{{ package_directory }}/README.md"
+    dest: "{{ target_package_path }}/README.md"
     mode: '0644'
 
 - name: Make sure the directory test exists
   file:
-    path: "{{ package_directory }}/test"
+    path: "{{ target_package_path }}/test"
     state: directory
     mode: '0755'
 
@@ -146,35 +194,40 @@
     state: directory
     mode: '0755'
   with_items:
-    - "{{ package_directory }}/src"
-    - "{{ package_directory }}/src/gap"
-    - "{{ package_directory }}/docs"
-    - "{{ package_directory }}/docs/src"
-    - "{{ package_directory }}/test"
+    - "{{ target_package_path }}/src"
+    - "{{ target_package_path }}/src/gap"
+    - "{{ target_package_path }}/docs"
+    - "{{ target_package_path }}/docs/src"
+    - "{{ target_package_path }}/test"
 
-- name: Make sure the directory src/gap/precompiled_categories exists
+- name: List the names of all subdirectories in {{ source_package_path }}/gap
+  find:
+    paths: '{{ source_package_path }}/gap'
+    file_type: directory
+  register: gap_subdirs
+
+- name: Make sure these directories exist in the Julia package
   file:
-    path: "{{ package_directory }}/src/gap/precompiled_categories"
+    path: "{{ target_package_path }}/src/gap/{{ item.path | basename }}"
     state: directory
-    mode: '0755'
-  when: precompiled_categories_directory_exists.stat.exists
+  loop: '{{ gap_subdirs.files }}'
 
 - name: Add runtests.jl in test directory
   template:
     src: runtests.jl.j2
-    dest: "{{ package_directory }}/test/runtests.jl"
+    dest: "{{ target_package_path }}/test/runtests.jl"
     mode: '0644'
 
 - name: Copy init.jl to src directory
   copy:
     src: init.jl
-    dest: "{{ package_directory }}/src/init.jl"
+    dest: "{{ target_package_path }}/src/init.jl"
     mode: '0644'
 
 - name: Copy read.g and init.g files into julia src directory
   copy:
-    src: '{{ gap_package_directory }}/{{ item }}'
-    dest: '{{ package_directory }}/src/{{ item }}.autogen.jl'
+    src: '{{ source_package_path }}/{{ item }}'
+    dest: '{{ target_package_path }}/src/{{ item }}.autogen.jl'
     mode: '0644'
   with_items:
     - read.g
@@ -186,7 +239,7 @@
       -e 's/ReadPackage/include/g' \
       -e 's/"{{ package_name }}"\s*,\s*//g' \
       -e 's/\.g\([di]\)"/.g\1.autogen.jl"/g' \
-      {{ package_directory }}/src/{{ item }}
+      {{ target_package_path }}/src/{{ item }}
   with_items:
     - read.g.autogen.jl
     - init.g.autogen.jl
@@ -199,7 +252,7 @@
 
 - name: Find files in the docs/src
   find:
-    paths: '{{ package_directory }}/docs/src'
+    paths: '{{ target_package_path }}/docs/src'
     patterns: '*.md'
   register: docs_src_files
 
@@ -225,13 +278,13 @@
 
 - name: Find AutoDocTest fragments
   find:
-    paths: '{{ package_directory }}/docs/src'
+    paths: '{{ target_package_path }}/docs/src'
     patterns: '{{ package_name | lower }}*.tst.autogen.md'
   register: autodoctest_files
 
 - name: Merge AutoDocTest fragments
   shell: |
-    cat {{ autodoctest_files.files | map(attribute='path') | join(' ') }} > {{ package_directory }}/docs/src/AutoDocTests.tst.autogen.md
+    cat {{ autodoctest_files.files | map(attribute='path') | join(' ') }} > {{ target_package_path }}/docs/src/AutoDocTests.tst.autogen.md
   when: autodoctest_files.matched     
 - name: Remove AutoDocTest fragments
   file:
@@ -242,7 +295,7 @@
 
 - name: Execute tests in the same session
   shell: |
-    sed -i 's/```jldoctest/```jldoctest AutoDocTests/g' {{ package_directory }}/docs/src/AutoDocTests.tst.autogen.md
+    sed -i 's/```jldoctest/```jldoctest AutoDocTests/g' {{ target_package_path }}/docs/src/AutoDocTests.tst.autogen.md
 
 - name: debug
   debug:
@@ -250,4 +303,4 @@
 
 - name: Display success message
   debug:
-    msg: "Julia package '{{ package_name }}' created/updated in '{{ parent_directory }}'"
+    msg: "Julia package '{{ package_name }}' created/updated in '{{ target_path }}'"
