@@ -1,12 +1,21 @@
 module {{ package_name }}
 
 @nospecialize
-
+{% if import_dependencies %}
 {% for package in dependencies %}
-using {{ package }}
 
+using {{ package }}
 {% endfor %}
+{% endif %}
+{% if pre_init_file_exists %}
+
+include("pre_init.jl")
+{% endif %}
 
 include("init.jl")
+{% if post_init_file_exists %}
+
+include("post_init.jl")
+{% endif %}
 
 end # module {{ package_name }}

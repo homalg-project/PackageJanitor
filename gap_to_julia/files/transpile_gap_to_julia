@@ -7,14 +7,6 @@ JULIA_CAP_PROJECT_DIR=~/.julia/dev/CAP_project.jl/
 JULIA_CATEGORICAL_TOWERS_DIR=~/.julia/dev/CategoricalTowers.jl/
 LOGS=1
 
-if [ "$#" -ne 1 ]; then
-	echo "Usage: gap_to_julia PKG_NAME"
-	exit 1
-fi
-
-PKG_NAME="${1%/}"
-[ "$LOGS" = "0" ] || echo "PKG_NAME: $PKG_NAME"
-
 PKG_NAME_LOWERCASE=$(echo "$PKG_NAME" | tr '[:upper:]' '[:lower:]')
 [ "$LOGS" = "0" ] || echo "PKG_NAME_LOWERCASE: $PKG_NAME_LOWERCASE"
 
@@ -44,9 +36,6 @@ fi
 cd "$GAP_PKG_DIR$PKG_FULL_NAME"
 [ "$LOGS" = "0" ] || echo "Changed directory to $GAP_PKG_DIR$PKG_FULL_NAME"
 
-[ "$LOGS" = "0" ] || echo "Running 'make doc' in $GAP_PKG_DIR$PKG_FULL_NAME"
-make -C "$GAP_PKG_DIR$PKG_FULL_NAME" doc
-
 cd gap
 [ "$LOGS" = "0" ] || echo "Changed directory to $GAP_PKG_DIR$PKG_FULL_NAME/gap"
 
@@ -55,6 +44,7 @@ chmod -f u+w "$JULIA_PKG_DIR$PKG_NAME"/src/gap/*.autogen.jl || true
 
 syntax_replacements() {
 	sed "s/ReadPackage( \"$1\", \"gap\/\\(.*\\)\" );$/include( \"\\1.autogen.jl\" );/g" \
+  | sed 's/#% G2J:julia-only //g' \
 	| sed 's/ = / == /g' \
 	| sed 's/ <> / != /g' \
 	| sed 's/ :=/ =/g' \
@@ -95,9 +85,10 @@ syntax_replacements() {
 	| sed 's/⦇\([^⦇⦈]*\)⦈/"\1"/g' `# replace special brackets by quotation marks again` \
 	| sed 's/\.( \([^)]*\) )/[\1]/g' \
 	| sed 's/\.(\([^)]*\))/[\1]/g' \
-  | sed 's/\[ \([^].[]*\) \.\. \([^][]*\) \]/((\1):(\2))/g' `# [ a .. b ] -> ((a):(b)) where a and b do not contain square brackets` \
-  | sed 's/\[ \([^].[]*\) \.\. \([^][]*\)\[\([^].[]*\)\]\([^][]*\) \]/((\1):(\2[\3]\4))/g' `# [ a .. b ] -> ((a):(b)) where b contains a pair of square brackets` \
-  | sed 's/\[ \([^].[]*\) \.\. \([^][]*\)\[\([^].[]*\)\]\[\([^].[]*\)\]\([^].[]*\)\]/((\1):(\2[\3][\4]\5))/g' `# [ a .. b ] -> (a):(b) where b contains two pairs of square brackets` \
+  | sed 's/\[ \([^].[]*\) \.\. \([^][]*\) \]\[/((\1):(\2))[/g' `# [ a .. b ][ -> ((a):(b))[ where a and b do not contain square brackets` \
+  | sed 's/\[ \([^].[]*\) \.\. \([^][]*\) \]/(\1):(\2)/g' `# [ a .. b ] -> (a):(b) where a and b do not contain square brackets` \
+  | sed 's/\[ \([^].[]*\) \.\. \([^][]*\)\[\([^].[]*\)\]\([^][]*\) \]/(\1):(\2[\3]\4)/g' `# [ a .. b ] -> (a):(b) where b contains a pair of square brackets` \
+  | sed 's/\[ \([^].[]*\) \.\. \([^][]*\)\[\([^].[]*\)\]\[\([^].[]*\)\]\([^].[]*\)\]/(\1):(\2[\3][\4]\5)/g' `# [ a .. b ] -> (a):(b) where b contains two pairs of square brackets` \
 	| sed 's/{ arg } ->/( arg... ) ->/g' \
 	| sed 's/{\([^}]*\)} ->/(\1) ->/g' \
 	| sed 's/{/[/g' \
@@ -164,34 +155,6 @@ syntax_replacements() {
 export -f syntax_replacements
 
 test_replacements() {
-	if [ "$1" = "CAP" ]; then
-		USING="using $1"
-	elif [ "$1" = "MonoidalCategories" ]; then
-		USING="using CAP; using $1"
-	elif [ "$1" = "CartesianCategories" ]; then
-		USING="using CAP; using $1"
-	elif [ "$1" = "Toposes" ]; then
-		USING="using CAP; using CartesianCategories; using FinSetsForCAP; using $1"
-	elif [ "$1" = "FinSetsForCAP" ]; then
-		USING="using CAP; using CartesianCategories; using Toposes; using $1"
-	elif [ "$1" = "ZXCalculusForCAP" ]; then
-		USING="using CAP; using MonoidalCategories; using $1"
-	elif [ "$1" = "LinearAlgebraForCAP" ]; then
-		USING="using MatricesForHomalg; using CAP; using MonoidalCategories; using $1"
-	elif [ "$1" = "FreydCategoriesForCAP" ]; then
-		USING="using MatricesForHomalg; using CAP; using MonoidalCategories; using LinearAlgebraForCAP; using CartesianCategories; using Toposes; using FinSetsForCAP; using $1"
-	elif [ "$1" = "ModulePresentationsForCAP" ]; then
-		USING="using MatricesForHomalg; using CAP; using MonoidalCategories; using LinearAlgebraForCAP; using $1"
-  elif [ "$1" = "ToolsForCategoricalTowers" ]; then
-    USING="using CAP; using MonoidalCategories; using CartesianCategories; using Toposes; using FinSetsForCAP; using MatricesForHomalg; using FreydCategoriesForCAP; using $1"
-  elif [ "$1" = "QuotientCategories" ]; then
-    USING="using CAP; using ToolsForCategoricalTowers; using MatricesForHomalg; using FreydCategoriesForCAP; using $1"
-  elif [ "$1" = "FpCategories" ]; then
-    USING="using CAP; using QuotientCategories; using $1"
-	else
-    >&2 echo -e "\e[31mUnkown package $1, please explicitly add its dependencies.\e[0m"
-		USING="using CAP; using $1"
-	fi
 	# first, revert some code changes also affecting output lines
 	sed '/^[>g]/! s/(\([0-9]*\)):(\([0-9]*\))/[ \1 .. \2 ]/g' \
 	| sed '/^[>g]/! s/&&/and/g' \
@@ -211,7 +174,7 @@ test_replacements() {
 	| sed 's/^\(\s*\)if /\1if (/g' \
 	| sed '/^#/d' \
 	| sed 's/julia> /\njulia> /g' \
-	| sed "s/julia> START_TEST(.*/\`\`\`jldoctest\njulia> $USING/g" \
+	| sed "s/julia> START_TEST(.*/\`\`\`jldoctest\njulia> using $USING/g" \
 	| sed 's/julia> STOP_TEST(.*/```/g' \
 	# terminate line continuation
 }

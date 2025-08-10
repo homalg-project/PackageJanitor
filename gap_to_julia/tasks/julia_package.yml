@@ -1,194 +1,231 @@
 - name: Set package variables for {{ package.name }}
   set_fact:
     package_name: "{{ package.name }}"
-    project_name: "{{ package.target }}"
     package_description: "{{ package.description | default('') }}"
-    target_path: ~/.julia/dev/{{ package.target }}
-    source_package_path: "~/.gap/pkg/{{ package.source }}/{{ package.name }}"
-    target_package_path: "~/.julia/dev/{{ package.target }}/{{ package.name }}"
-    package_uuid: "{{ package.uuid | default('') }}"
-    package_version: "{{ package.version | default('0.0.1') }}"
+    target_path: "{{ lookup('env', 'HOME') }}/.julia/dev/{{ package.target }}"
+    package_url: "{{ '' if package.source == '' else (package.source ~ '/') }}{{ package.name }}"
+    source_package_path: "{{ lookup('env', 'HOME') }}/.gap/pkg/{{ '' if package.source == '' else (package.source ~ '/') }}{{ package.name }}"
+    target_package_path: "{{ lookup('env', 'HOME') }}/.julia/dev/{{ package.target }}/{{ package.name }}"
+    package_version: "{{ package.version | default('0.1.0') }}"
     julia_version: "{{ package.julia_version | default('1.11') }}"
-    dependencies: "{{ package.dependencies | default({}) }}"
-    weak_dependencies: "{{ package.weak_dependencies | default({}) }}"
+    dependencies: "{{ package.dependencies | default([]) }}"
+    weak_dependencies: "{{ package.weak_dependencies | default([]) }}"
     extras: "{{ package.extras | default([]) }}"
     targets: "{{ package.targets | default({'test': 'default'}) }}"
+    test_imports: "{{ package.test_imports | default([]) }}"
+    extensions: "{{ package.extensions | default({}) }}"
+    import_dependencies: "{{ package.import_dependencies | default(true) }}"
+    pre_init_file_exists: "{{ package.pre_init_file_exists | default(false) }}"
+    post_init_file_exists: "{{ package.post_init_file_exists | default(false) }}"
     disable_method_overwrite_warning: "{{ package.disable_method_overwrite_warning | default(false) }}"
     cleanup_test_files_by_keywords: "{{ package.cleanup_test_files_by_keywords | default([]) }}"
     playbook_dir_relative_to_home: "{{ playbook_dir | relpath(ansible_env.HOME) }}"
+    gen_full: "{{ gen_full | default('1') }}"
 
 - name: Verify the GAP package {{ package_name }} exists
   stat:
     path: "{{ source_package_path }}"
   register: gap_package_directory_exists
+  when: gen_full == '1'
 
 - name: Fail if the GAP package {{ package_name }} does not exist
   fail:
-    msg: "The GAP package directory '{{ source_package_path }}' does not exist!"
-  when: not gap_package_directory_exists.stat.exists
+    msg: "Could not find the GAP package '{{ source_package_path }}'. Please ensure it exists."
+  when: gen_full == '1' and not gap_package_directory_exists.stat.exists
 
-- name: Run 'gap makedoc.g' in {{ source_package_path }} to update documentation silently
-  command: gap -q -c 'makedoc.g > /dev/null 2>&1'
+- name: Run `make doc` in {{ source_package_path }} to update documentation
+  command: make doc
   args:
     chdir: '{{ source_package_path }}'
   register: makedoc_result
   changed_when: false
 
-- name: Ensure the parent directory for the Julia package exists
+- name: Verify the Julia package target path exists
   stat:
     path: "{{ target_path }}"
   register: target_path_exists
+  when: gen_full == '1'
 
-- name: Fail if the parent directory does not exist
+- name: Fail if the parent directory of the Julia package does not exist
   fail:
     msg: "The parent directory '{{ target_path }}' does not exist!"
-  when: not target_path_exists.stat.exists
+  when: gen_full == '1' and not target_path_exists.stat.exists
 
 - name: Check whether the Julia package directory already exists
   stat:
     path: '{{ target_package_path }}'
   register: package_directory_exists
+  when: gen_full == '1'
 
-- name: Generate Julia package using Pkg.generate if it does not exist
+- name: Generate Julia package using `Pkg.generate` if it does not exist
   command: >
     julia -e "using Pkg; Pkg.generate(\"{{ package_name }}\")"
   args:
     chdir: '{{ target_path }}'
-  when: package_directory_exists.stat.exists == false
+  when: gen_full == '1' and package_directory_exists.stat.exists == false
   register: generate_julia_package
 
-- name: Add LICENSE file to package
+- name: Add LICENSE
   copy:
     src: LICENSE
     dest: "{{ target_package_path }}/LICENSE"
     mode: '0644'
-  when: package_directory_exists.stat.exists == false
+  when: gen_full == '1'
 
-- name: Add .gitignore file to package
+- name: Add .gitignore
   copy:
     src: gitignore
     dest: "{{ target_package_path }}/.gitignore"
     mode: '0644'
+  when: gen_full == '1'
 
-- name: Add {{ package_name }}.jl file to package
+- name: Add src/{{ package_name }}.jl
   template:
     src: package.jl.j2
     dest: "{{ target_package_path }}/src/{{ package_name }}.jl"
     mode: '0644'
+  when: gen_full == '1'
 
-- name: Add Makefile to package
+- name: Add Makefile
   template:
     src: makefile.j2
     dest: "{{ target_package_path }}/makefile"
     mode: '0644'
+  when: gen_full == '1'
 
-- name: Add '.generate.sh' file to package
+- name: Add .generate.sh
   template:
     src: generate.j2
     dest: "{{ target_package_path }}/.generate.sh"
     mode: '0755'
+  when: gen_full == '1'
 
-- name: Extract the package authors
-  shell: gap -q -c '{{ display_authors_command }}'
-  register: package_authors
+- name: Extract the package subtitle and authors
+  shell: gap -q -c '{{ extract_authors_command }}'
+  register: package_subtitle_and_authors
   vars:
-    display_authors_command: |
-      Print(
+    extract_authors_command: |
+      subtitle := PackageInfo("{{ package_name }}")[1].Subtitle;
+      authors :=
         JoinStringsWithSeparator(
           List( PackageInfo("{{ package_name }}")[1].Persons,
-            person -> Concatenation( "  \"", person.FirstNames, " ", person.LastName, " <", person.Email, ">\"")), ",\n"), "\n");
-      QuitGap
-
-- name: Extract the package verion in GAP
-  shell: gap -q -c '{{ package_version_in_gap_command }}'
-  register: package_version_in_gap
-  vars:
-    package_version_in_gap_command: |
-      Print( PackageInfo("{{ package_name }}")[1].Version, "\n");
+            person -> Concatenation( "\t\"", person.FirstNames, " ", person.LastName, " <", person.Email, ">\"")), ",\n");
+      Print( subtitle, "\n&", authors, "\n");
       QuitGap();
+  when: gen_full == '1'
+  changed_when: false
 
-- name: Find the UUIDs of dependencies
+- name: Extract the GAP-package version
+  shell: |
+    grep '^Version := ' "PackageInfo.g" | cut -d '"' -f 2
+  args:
+    chdir: "{{ source_package_path }}"
+  when: gen_full == '1'
+  register: package_version_in_gap
+  changed_when: false
+
+- name: Extract UUIDs of dependencies, weak dependencies, and extras
   shell: |
     julia -e '
       using Pkg
-      packages = {{ dependencies_names }}
-      uuids = join(
+      deps = {{ dependencies_names }}
+      weak_deps = {{ weak_dependencies_names }}
+      extras = {{ extras_names }}
+      deps_uuids = join(
         [name * " = \"" * string(uuid) * "\"" 
-          for name in packages 
+          for name in deps 
           for (uuid, package) in Pkg.dependencies() 
           if package.name == name
         ], 
         "\n"
       )
-      println(uuids)
-    '
-  when: dependencies
-  register: dependencies_uuids
-  changed_when: false
-  vars:
-    dependencies_names: "{{ dependencies.keys() | list | to_json }}"
-
-- name: Find the UUIDs of weak_dependencies
-  shell: |
-    julia -e '
-      using Pkg
-      packages = {{ weak_dependencies_names }}
-      uuids = join(
+      weak_deps_uuids = join(
         [name * " = \"" * string(uuid) * "\"" 
-          for name in packages 
+          for name in weak_deps 
           for (uuid, package) in Pkg.dependencies() 
           if package.name == name
         ], 
         "\n"
       )
-      println(uuids)
-    '
-  when: weak_dependencies
-  register: weak_dependencies_uuids
-  changed_when: false
-  vars:
-    weak_dependencies_names: "{{ weak_dependencies.keys() | list | to_json }}"
-
-- name: Find the UUIDs of extras
-  shell: |
-    julia -e '
-      using Pkg
-      packages = {{ extras_names }}
-      uuids = join(
+      extras_uuids = join(
         [name * " = \"" * string(uuid) * "\"" 
-          for name in packages 
+          for name in extras 
           for (uuid, package) in Pkg.dependencies() 
           if package.name == name
         ], 
         "\n"
       )
+      uuids = deps_uuids * "&" * weak_deps_uuids * "&" * extras_uuids
       println(uuids)
+      flush(stdout)
     '
-  when: extras
-  register: extras_uuids
+  when: gen_full == '1' and dependencies
+  register: uuids
   changed_when: false
   vars:
+    dependencies_names: "{{ dependencies | to_json }}"
+    weak_dependencies_names: "{{ weak_dependencies | to_json }}"
     extras_names: "{{ extras | to_json }}"
 
-- name: Add Project.toml to package
+- name: Extract the UUID from Project.toml if it exists
+  shell: |
+    if [ -f Project.toml ]; then
+      grep '^uuid =' Project.toml | cut -d '"' -f 2
+    else
+      julia -e 'using UUIDs; println(string(UUIDs.uuid4())); flush(stdout)'
+    fi
+  args:
+    chdir: "{{ target_package_path }}"
+  when: gen_full == '1'
+  register: package_uuid
+  changed_when: false
+
+- name: Extract the current version from Project.toml if it exists
+  shell: |
+    if [ -f Project.toml ]; then
+      grep '^version =' Project.toml | cut -d '"' -f 2
+    else
+      echo "0.1.0"
+    fi
+  args:
+    chdir: "{{ target_package_path }}"
+  when: gen_full == '1'
+  register: current_version
+  changed_when: false
+
+- name: Extract compats from the existing Project.toml if it exists
+  shell: |
+    if [ -f Project.toml ]; then
+      awk '/^\[compat\]/ {flag=1; next} /^\[/{flag=0} flag {print}' Project.toml
+    else
+      echo "# Here you can specify the compatibility versions"
+    fi
+  args:
+    chdir: "{{ target_package_path }}"
+  when: gen_full == '1'
+  register: compat_section
+  changed_when: false
+
+- name: Add Project.toml
   template:
     src: Project.toml.j2
     dest: "{{ target_package_path }}/Project.toml"
     mode: '0644'
+  vars:
+    uuids_list: "{{ uuids.stdout.split('&') }}"
+    package_authors: "{{ package_subtitle_and_authors.stdout.split('&')[1] }}"
+  when: gen_full == '1'
 
-- name: Add README.md to package
+- name: Add README.md
   template:
     src: README.md.j2
     dest: "{{ target_package_path }}/README.md"
     mode: '0644'
+  vars:
+    package_subtitle: "{{ package_subtitle_and_authors.stdout.split('&')[0] }}"
+  when: gen_full == '1'
 
-- name: Make sure the directory test exists
-  file:
-    path: "{{ target_package_path }}/test"
-    state: directory
-    mode: '0755'
-
-- name: Make sure the directories src/gap, docs/src and test exist
+- name: Make sure /src/gap, /docs/src and /test exist
   file:
     path: "{{ item }}"
     state: directory
@@ -199,107 +236,91 @@
     - "{{ target_package_path }}/docs"
     - "{{ target_package_path }}/docs/src"
     - "{{ target_package_path }}/test"
+  when: gen_full == '1'
 
-- name: List the names of all subdirectories in {{ source_package_path }}/gap
+- name: List all subdirectories in /gap
   find:
     paths: '{{ source_package_path }}/gap'
     file_type: directory
   register: gap_subdirs
+  when: gen_full == '1'
 
-- name: Make sure these directories exist in the Julia package
+- name: Make sure subdirectories of {{ package_name }}/gap/ exist in the Julia package
   file:
     path: "{{ target_package_path }}/src/gap/{{ item.path | basename }}"
     state: directory
   loop: '{{ gap_subdirs.files }}'
+  when: gen_full == '1'
 
-- name: Add runtests.jl in test directory
+- name: Add test/runtests.jl
   template:
     src: runtests.jl.j2
     dest: "{{ target_package_path }}/test/runtests.jl"
     mode: '0644'
+  when: gen_full == '1'
 
-- name: Copy init.jl to src directory
+- name: Add src/init.jl
   copy:
     src: init.jl
     dest: "{{ target_package_path }}/src/init.jl"
     mode: '0644'
+  when: gen_full == '1'
 
-- name: Copy read.g and init.g files into julia src directory
+- name: Copy read.g and init.g to /src
   copy:
     src: '{{ source_package_path }}/{{ item }}'
-    dest: '{{ target_package_path }}/src/{{ item }}.autogen.jl'
+    dest: '{{ target_package_path }}/src/{{ item }}'
     mode: '0644'
   with_items:
     - read.g
     - init.g
+  when: gen_full == '1'
+  changed_when: false
 
-- name: Alter read- & init.g.autogen.jl files in-place
+- name: Modify read.g and init.g in-place and rename them to .autogen.jl
   shell: |
     sed -i \
+      -e 's/#% G2J:julia-only //g' \
       -e 's/ReadPackage/include/g' \
       -e 's/"{{ package_name }}"\s*,\s*//g' \
       -e 's/\.g\([di]\)"/.g\1.autogen.jl"/g' \
-      {{ target_package_path }}/src/{{ item }}
-  with_items:
-    - read.g.autogen.jl
-    - init.g.autogen.jl
+      {{ item }}
 
-- name: Transpile GAP code to Julia using the script transpile_gap_to_julia
-  shell: '{{ playbook_dir }}/files/transpile_gap_to_julia {{ package_name }}'
+    mv {{ item }} {{ item }}.autogen.jl
+  with_items:
+    - read.g
+    - init.g
+  args:
+    chdir: '{{ target_package_path }}/src'
+  when: gen_full == '1'
+  changed_when: false
+
+- name: Transpile the GAP-code to Julia-code
+  shell: 'PKG_NAME="{{ package_name }}" USING="{{ test_imports | join(", ") }}" {{ playbook_dir }}/files/transpile_gap_to_julia {{ package_name }}'
   args:
     executable: /bin/bash
   register: transpile_result
 
-- name: Find files in the docs/src
-  find:
-    paths: '{{ target_package_path }}/docs/src'
-    patterns: '*.md'
-  register: docs_src_files
-
-- name: Filter the test files by keyswords
+- name: Remove AutoDocTest fragments containing keywords
   shell: |
-    grep -l -e "{{ cleanup_test_files_by_keywords | join('" -e "') }}" "{{ item.path }}" || true
-  loop: '{{ docs_src_files.files }}'
+    rm -f $(grep -l "{{ item }}" {{ target_package_path }}/docs/src/*.tst.autogen.md)
+  loop: '{{ cleanup_test_files_by_keywords }}'
+  args:
+    chdir: '{{ target_package_path }}/docs/src'
   when: cleanup_test_files_by_keywords | length > 0
-  register: matched_files
   changed_when: false
 
-- name: Extract matching file paths
-  set_fact:
-    cleanup_test_files: '{{ matched_files.results | selectattr("stdout", "!=", "") | map(attribute="stdout") | list }}'
-
-- name: Remove files that contain the keyword
-  file:
-    path: "{{ item }}"
-    state: absent
-  loop: "{{ cleanup_test_files }}"
-  when: cleanup_test_files | length > 0
-  register: removed_files
-
-- name: Find AutoDocTest fragments
-  find:
-    paths: '{{ target_package_path }}/docs/src'
-    patterns: '{{ package_name | lower }}*.tst.autogen.md'
-  register: autodoctest_files
-
-- name: Merge AutoDocTest fragments
+- name: Merge AutoDocTest fragments into AutoDocTests.tst.autogen.md and remove fragments
   shell: |
-    cat {{ autodoctest_files.files | map(attribute='path') | join(' ') }} > {{ target_package_path }}/docs/src/AutoDocTests.tst.autogen.md
-  when: autodoctest_files.matched     
-- name: Remove AutoDocTest fragments
-  file:
-    path: '{{ item.path }}'
-    state: absent
-  loop: '{{ autodoctest_files.files }}'
-  when: autodoctest_files.matched > 0
-
-- name: Execute tests in the same session
-  shell: |
-    sed -i 's/```jldoctest/```jldoctest AutoDocTests/g' {{ target_package_path }}/docs/src/AutoDocTests.tst.autogen.md
-
-- name: debug
-  debug:
-    msg: "{{ autodoctest_files.files | map(attribute='path') | list }}"
+    if compgen -G "{{ package_name | lower }}*.tst.autogen.md" > /dev/null; then
+      # merge AutoDocTests into one big testfile to execute in the correct order
+      cat {{ target_package_path }}/docs/src/{{ package_name | lower }}*.tst.autogen.md > {{ target_package_path }}/docs/src/AutoDocTests.tst.autogen.md
+      rm -f {{ target_package_path }}/docs/src/{{ package_name | lower }}*.tst.autogen.md
+      # execute tests in the same session
+      sed -i 's/```jldoctest/```jldoctest AutoDocTests/g' {{ target_package_path }}/docs/src/AutoDocTests.tst.autogen.md
+    fi
+  args:
+    chdir: '{{ target_package_path }}/docs/src'
 
 - name: Display success message
   debug:

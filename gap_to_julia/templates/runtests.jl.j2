@@ -7,9 +7,11 @@ new_opts = Base.JLOptions(getindex.(Ref(opts_dict), Symbol.(fieldnames(Base.JLOp
 unsafe_store!(Base.cglobal(:jl_options, Base.JLOptions), new_opts)
 
 {% endif %}
-using Documenter, Test
-using {{ package_name }}
+{% if targets.test == 'default' %}
+using {{ extras | join(', ') }}, {{ package_name }}
+{% else %}
+using {{ targets.test | join(', ') }}, {{ package_name }}
+{% endif %}
 
-# use r"\s+" => "" to ignore whitespaces
-# fix=true to overwrite the output strings
-doctest({{ package_name }}; doctestfilters=[r"\s+" => ""], fix=false)
+# test upto whitespaces
+doctest({{ package_name }}; doctestfilters=[r"\s+" => ""])
