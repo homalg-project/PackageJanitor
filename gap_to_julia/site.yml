@@ -1,66 +1,495 @@
-julia_packages:
-  - package_name: ToolsForCategoricalTowers
-    project_name: CategoricalTowers.jl
-    package_description: Tools for CategoricalTowers
-    package_uuid: e2cf920d-0824-4cbb-97bb-0be40824f89f
-    package_version: 0.0.1
-    julia_version: 1.11
-    dependencies:
-      CAP: 0.6
-      MonoidalCategories:
-      CartesianCategories:
-    weak_dependencies:
-    extras:
-      - Documenter
-      - Test
-      - Toposes
-      - FinSetsForCAP
-      - MatricesForHomalg
-      - FreydCategoriesForCAP
-    targets:
-      test: default
-    disable_method_overwrite_warning: true
-    cleanup_test_files_by_keywords:
-      - drop_example_in_Julia
-  - package_name: QuotientCategories
-    project_name: CategoricalTowers.jl
-    package_description: Quotient categories for CAP
-    package_uuid: c103c924-3523-4680-a691-c88f3312ec70
-    package_version: 0.0.1
-    julia_version: 1.11
-    dependencies:
-      CAP: 0.6
-      ToolsForCategoricalTowers:
-      MatricesForHomalg:
-    weak_dependencies:
-    extras:
-      - Documenter
-      - Test
-      - FreydCategoriesForCAP
-    targets:
-      test: default
-    disable_method_overwrite_warning: true
-    cleanup_test_files_by_keywords:
-      - drop_example_in_Julia
-  - package_name: FpCategories
-    project_name: CategoricalTowers.jl
-    package_description: Finitely presented categories by generating quivers and relations
-    package_uuid: b9f20f1b-1226-4811-b6a0-b2e47a225553
-    package_version: 0.0.1
-    julia_version: 1.11
-    dependencies:
-      CAP: 0.6
-      CartesianCategories:
-      ToolsForCategoricalTowers:
-      QuotientCategories:
-      FinSetsForCAP:
-    weak_dependencies:
-    extras:
-      - Documenter
-      - Test
-    targets:
-      test: default
-    disable_method_overwrite_warning: true
-    cleanup_test_files_by_keywords:
-      - drop_example_in_Julia
-      - Algebroids
+---
+- name: AdditiveClosuresForCAP
+  hosts: AdditiveClosuresForCAP
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: AdditiveClosuresForCAP
+          source: CAP_project
+          target: CAP_project.jl
+          dependencies:
+            - CAP
+            - MatricesForHomalg
+            - LinearAlgebraForCAP
+            - MonoidalCategories
+          weak_dependencies:
+          extras:
+            - Test
+            - Documenter
+          targets:
+            test: default
+          test_imports:
+            - MatricesForHomalg
+            - CAP
+            - MonoidalCategories
+            - LinearAlgebraForCAP
+            - AdditiveClosuresForCAP
+          disable_method_overwrite_warning: true
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
+            - RandomObject
+            - Random
+            - HomalgFieldOfRationalsInSingular
+            - SimplifySourceAndRange
+
+- name: CAP
+  hosts: CAP
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: CAP
+          source: CAP_project
+          target: CAP_project.jl
+          dependencies:
+            - AbstractAlgebra
+            - Nemo
+            - Base64
+          weak_dependencies:
+            - JSON3
+          extras:
+            - Test
+            - Documenter
+          targets:
+            test: default
+          test_imports:
+            - CAP
+          extensions:
+            CAPJSONExtension:
+              - JSON3
+          import_dependencies: false
+          pre_init_file_exists: true
+          post_init_file_exists: true
+          cleanup_test_files_by_keywords:
+            - DummyRing
+            - CapFunctor
+            - InputSignature
+            - InstallFunctor
+            - ApplyFunctor
+
+- name: CartesianCategories
+  hosts: CartesianCategories
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: CartesianCategories
+          source: CAP_project
+          target: CAP_project.jl
+          dependencies:
+            - CAP
+            - MonoidalCategories
+          weak_dependencies:
+          extras:
+            - Test
+            - Documenter
+          targets:
+            test: default
+          test_imports:
+            - CAP
+            - CartesianCategories
+          extensions:
+          import_dependencies: true
+          pre_init_file_exists: false
+          post_init_file_exists: false
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
+
+- name: FinSetsForCAP
+  hosts: FinSetsForCAP
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: FinSetsForCAP
+          source: ''
+          target: CAP_project.jl
+          dependencies:
+            - CAP
+            - CartesianCategories
+            - Toposes
+          weak_dependencies:
+          extras:
+            - Test
+            - Documenter
+          targets:
+            test: default
+          test_imports:
+            - CAP
+            - CartesianCategories
+            - Toposes
+            - FinSetsForCAP
+          import_dependencies: true
+          pre_init_file_exists: false
+          post_init_file_exists: true
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
+            - CapJit*
+
+- name: FpCategories
+  hosts: FpCategories
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: FpCategories
+          source: CategoricalTowers
+          target: CategoricalTowers.jl
+          dependencies:
+            - CAP
+            - CartesianCategories
+            - ToolsForCategoricalTowers
+            - QuotientCategories
+            - FinSetsForCAP
+          weak_dependencies:
+          extras:
+            - Test
+            - Documenter
+          targets:
+            test: default
+          test_imports:
+            - CAP
+            - QuotientCategories
+            - FpCategories
+          disable_method_overwrite_warning: true
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
+            - Algebroids
+
+- name: FreydCategoriesForCAP
+  hosts: FreydCategoriesForCAP
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: FreydCategoriesForCAP
+          source: CAP_project
+          target: CAP_project.jl
+          dependencies:
+            - MatricesForHomalg
+            - CAP
+            - MonoidalCategories
+            - LinearAlgebraForCAP
+            - AdditiveClosuresForCAP
+            - LinearClosuresForCAP
+          weak_dependencies:
+            - CartesianCategories
+            - Toposes
+            - FinSetsForCAP
+          extras:
+            - Test
+            - Documenter
+            - CartesianCategories
+            - Toposes
+            - FinSetsForCAP
+          targets:
+            test: default
+          test_imports:
+            - MatricesForHomalg
+            - CAP
+            - MonoidalCategories
+            - LinearAlgebraForCAP
+            - AdditiveClosuresForCAP
+            - LinearClosuresForCAP
+            - CartesianCategories
+            - Toposes
+            - FinSetsForCAP
+            - FreydCategoriesForCAP
+          extensions:
+            FreydCategoriesForCAPFinSetsForCAPExtension:
+              - CartesianCategories
+              - Toposes
+              - FinSetsForCAP
+          disable_method_overwrite_warning: true
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
+            - Random
+            - HomalgFieldOfRationalsInSingular
+            - HomalgFieldOfRationalsInDefaultCAS
+            - M_tor = M/Adel;
+            - mu1 = GradeFiltrationNthMonomorphism( M, 1 )
+            - g = FreydCategoryMorphism( obj_gamma,
+            - a = GradedRowOrColumnMorphism( obj1
+            - Z2 = FreydCategoryObject( a )
+            - id = IdentityMorphism( Z2 )
+            - id = IdentityMorphism( ZFree )
+            - R2 = DirectSum( T, T );
+            - M = FreydCategoryObject( alpha );
+            - IsBijectiveObject( obj ) # ReducedSyzygiesOfRows/Columns is not available yet
+            - mu1 = GradeFiltrationNthMonomorphism( Mrows, 1 ) # SimplifyHomalgMatrix* are not available yet
+            - SimplifyObject_IsoFromInputObject( Mcols, infinity ) # Same as above
+            - EmbeddingFunctorIntoFreydCategory # functors are not available yet
+            - co_freyd = CoFreydCategory( rows ) # CoFreyd: FreydCategory tries to compute a distinguished object of the underlying opposite category, which causes problems with world age
+
+- name: LinearAlgebraForCAP
+  hosts: LinearAlgebraForCAP
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: LinearAlgebraForCAP
+          source: CAP_project
+          target: CAP_project.jl
+          dependencies:
+            - MatricesForHomalg
+            - CAP
+            - MonoidalCategories
+          weak_dependencies:
+          extras:
+            - Test
+            - Documenter
+          targets:
+            test: default
+          test_imports:
+            - MatricesForHomalg
+            - CAP
+            - MonoidalCategories
+            - LinearAlgebraForCAP
+          extensions:
+          import_dependencies: true
+          pre_init_file_exists: true
+          post_init_file_exists: true
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
+            - mc = MatrixCategory
+
+- name: LinearClosuresForCAP
+  hosts: LinearClosuresForCAP
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: LinearClosuresForCAP
+          source: CAP_project
+          target: CAP_project.jl
+          dependencies:
+            - CAP
+            - LinearAlgebraForCAP
+            - AdditiveClosuresForCAP
+            - FinSetsForCAP
+          weak_dependencies:
+          extras:
+            - Test
+            - Documenter
+            - MatricesForHomalg
+          targets:
+            test: default
+          test_imports:
+            - MatricesForHomalg
+            - CAP
+            - LinearAlgebraForCAP
+            - FinSetsForCAP
+            - LinearClosuresForCAP
+          extensions:
+          import_dependencies: true
+          disable_method_overwrite_warning: true
+          cleanup_test_files_by_keywords:
+            - ZCG
+
+- name: ModulePresentationsForCAP
+  hosts: ModulePresentationsForCAP
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: ModulePresentationsForCAP
+          source: CAP_project
+          target: CAP_project.jl
+          dependencies:
+            - MatricesForHomalg
+            - CAP
+            - MonoidalCategories
+            - LinearAlgebraForCAP
+          weak_dependencies:
+          extras:
+            - Test
+            - Documenter
+          targets:
+            test: default
+          test_imports:
+            - MatricesForHomalg
+            - CAP
+            - MonoidalCategories
+            - LinearAlgebraForCAP
+            - ModulePresentationsForCAP
+          extensions:
+          import_dependencies: true
+          pre_init_file_exists: false
+          post_init_file_exists: false
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
+            - HomalgRingOfIntegersInSingular
+            - HomalgFieldOfRationalsInSingular
+            - T = TensorProductOnObjects( M, N )
+            - Tl = TensorProductOnObjects( Ml, Nl )
+
+- name: MonoidalCategories
+  hosts: MonoidalCategories
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: MonoidalCategories
+          source: CAP_project
+          target: CAP_project.jl
+          dependencies:
+            - CAP
+          weak_dependencies:
+          extras:
+            - Test
+            - Documenter
+          targets:
+            test: default
+          test_imports:
+            - CAP
+            - MonoidalCategories
+          extensions:
+          import_dependencies: true
+          pre_init_file_exists: false
+          post_init_file_exists: false
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
+
+- name: QuotientCategories
+  hosts: QuotientCategories
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: QuotientCategories
+          source: CategoricalTowers
+          target: CategoricalTowers.jl
+          dependencies:
+            - CAP
+            - ToolsForCategoricalTowers
+            - MatricesForHomalg
+          weak_dependencies:
+          extras:
+            - Test
+            - Documenter
+            - AdditiveClosuresForCAP
+            - FreydCategoriesForCAP
+          targets:
+            test: default
+          test_imports:
+            - CAP
+            - ToolsForCategoricalTowers
+            - MatricesForHomalg
+            - AdditiveClosuresForCAP
+            - FreydCategoriesForCAP
+            - QuotientCategories
+          disable_method_overwrite_warning: true
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
+
+- name: ToolsForCategoricalTowers
+  hosts: ToolsForCategoricalTowers
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: ToolsForCategoricalTowers
+          source: CategoricalTowers
+          target: CategoricalTowers.jl
+          dependencies:
+            - CAP
+            - MonoidalCategories
+            - CartesianCategories
+          weak_dependencies:
+          extras:
+            - Test
+            - Documenter
+            - Toposes
+            - FinSetsForCAP
+            - MatricesForHomalg
+            - FreydCategoriesForCAP
+          targets:
+            test: default
+          test_imports:
+            - CAP
+            - MonoidalCategories
+            - CartesianCategories
+            - Toposes
+            - FinSetsForCAP
+            - MatricesForHomalg
+            - FreydCategoriesForCAP
+            - ToolsForCategoricalTowers
+          disable_method_overwrite_warning: true
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
+
+- name: Toposes
+  hosts: Toposes
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: Toposes
+          source: CategoricalTowers
+          target: CAP_project.jl
+          dependencies:
+            - CAP
+            - CartesianCategories
+          weak_dependencies:
+          extras:
+            - Test
+            - Documenter
+            - FinSetsForCAP
+          targets:
+            test: default
+          test_imports:
+            - CAP
+            - CartesianCategories
+            - FinSetsForCAP
+            - Toposes
+          disable_method_overwrite_warning: false
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
+            - LazyCategory
+
+- name: ZXCalculusForCAP
+  hosts: ZXCalculusForCAP
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: ZXCalculusForCAP
+          source: ''
+          target: CAP_project.jl
+          dependencies:
+            - CAP
+            - MonoidalCategories
+            - CartesianCategories
+            - Toposes
+            - FinSetsForCAP
+            - JSON3
+          weak_dependencies:
+          extras:
+            - Test
+            - Documenter
+          targets:
+            test: default
+          test_imports:
+            - CAP
+            - MonoidalCategories
+            - ZXCalculusForCAP
+          disable_method_overwrite_warning: false
+          post_init_file_exists: true
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
+            - CapJitPrecompileCategoryAndCompareResult(

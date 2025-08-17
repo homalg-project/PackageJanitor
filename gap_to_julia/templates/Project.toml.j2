@@ -1,44 +1,35 @@
 name = "{{ package_name }}"
-uuid = "{{ package_uuid }}"
+uuid = "{{ package_uuid.stdout | replace('\r', '') }}"
 authors = [
-{{ package_authors.stdout | replace('\r', '') }}
+{{ package_authors | replace('\r', '') }}
 ]
 
 # Transpiled from GAP's {{ package_name }} v{{ package_version_in_gap.stdout | replace('\r', '') }}
-version = "{{ package_version }}"
+version = "{{ current_version.stdout | replace('\r', '') }}"
 
 [deps]
 {% if dependencies %}
-{{ dependencies_uuids.stdout }}
+{{ uuids_list[0] }}
 {% endif %}
 
 [weakdeps]
 {% if weak_dependencies %}
-{{ weak_dependencies_uuids.stdout }}
+{{ uuids_list[1] }}
+{% endif %}
+
+[extensions]
+{% if extensions %}
+{% for ext, ext_dependencies in extensions.items() %}
+{{ ext }} = {{ ext_dependencies | to_json }}
+{% endfor %}
 {% endif %}
 
 [compat]
-{% if julia_version %}
-julia = "{{ julia_version }}"
-{% endif %}
-{% if dependencies %}
-{% for dep, ver in dependencies.items() %}
-{% if ver is not none %}
-{{ dep }} = "{{ ver }}"
-{% endif %}
-{% endfor %}
-{% endif %}
-{% if weak_dependencies %}
-{% for dep, ver in weak_dependencies.items() %}
-{% if ver is not none %}
-{{ dep }} = "{{ ver }}"
-{% endif %}
-{% endfor %}
-{% endif %}
+{{ compat_section.stdout | replace('\r', '') }}
 
 [extras]
 {% if extras %}
-{{ extras_uuids.stdout }}
+{{ uuids_list[2] }}
 {% endif %}
 
 [targets]

@@ -1,7 +1,7 @@
 <!-- BEGIN HEADER -->
 # {{ package_name }}
 
-### {{ package_description }}
+### {{ package_subtitle | replace('\n', '') }}
 
 | Documentation |
 | ------------- |
@@ -16,8 +16,8 @@ This is the Julia version of the [CAP-based][CAP_based] package [{{ package_name
 
 <!-- BEGIN FOOTER -->
 [html-img]: https://img.shields.io/badge/🔗%20HTML-stable-blue.svg
-[html-url]: https://homalg-project.github.io/{{ project_name | regex_replace('\.jl$', '') }}/{{ package_name }}/doc/chap0_mj.html
+[html-url]: https://homalg-project.github.io/{{ package_url }}/doc/chap0_mj.html
 
 [pdf-img]: https://img.shields.io/badge/🔗%20PDF-stable-blue.svg
-[pdf-url]: https://homalg-project.github.io/{{ project_name | regex_replace('\.jl$', '') }}/{{ package_name }}/download_pdf.html
+[pdf-url]: https://homalg-project.github.io/{{ package_url }}/download_pdf.html
 <!-- END FOOTER -->
