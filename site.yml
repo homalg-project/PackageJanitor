@@ -691,7 +691,7 @@
             description: Actions and Coactions for CAP
             tests_only_basic: true
           - name: AdditiveClosuresForCAP
-            description: Additive closures for pre-abelian categories
+            description: Additive closures for pre-additive categories
             has_HOMALG_IO: true
             doc_additional_scan_dirs:
               - gap/CategoryOfGradedRowsAndColumns
