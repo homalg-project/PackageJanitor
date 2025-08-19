@@ -26,12 +26,11 @@
   stat:
     path: "{{ source_package_path }}"
   register: gap_package_directory_exists
-  when: gen_full == '1'
 
-- name: Fail if the GAP package {{ package_name }} does not exist
-  fail:
-    msg: "Could not find the GAP package '{{ source_package_path }}'. Please ensure it exists."
-  when: gen_full == '1' and not gap_package_directory_exists.stat.exists
+- name: Package not found at {{ source_package_path }}, fallback to ~/.gap/pkg/{{ package_name }}
+  set_fact:
+    source_package_path: "{{ lookup('env', 'HOME') }}/.gap/pkg/{{ package_name }}"
+  when: not gap_package_directory_exists.stat.exists
 
 - name: Run `make doc` in {{ source_package_path }} to update documentation
   command: make doc
