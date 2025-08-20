@@ -311,12 +311,13 @@
 
 - name: Merge AutoDocTest fragments into AutoDocTests.tst.autogen.md and remove fragments
   shell: |
-    if compgen -G "{{ package_name | lower }}*.tst.autogen.md" > /dev/null; then
+    set -- {{ package_name | lower }}*.tst.autogen.md
+    if [ -e "$1" ]; then
       # merge AutoDocTests into one big testfile to execute in the correct order
-      cat {{ target_package_path }}/docs/src/{{ package_name | lower }}*.tst.autogen.md > {{ target_package_path }}/docs/src/AutoDocTests.tst.autogen.md
-      rm -f {{ target_package_path }}/docs/src/{{ package_name | lower }}*.tst.autogen.md
+      cat {{ package_name | lower }}*.tst.autogen.md > AutoDocTests.tst.autogen.md
+      rm -f {{ package_name | lower }}*.tst.autogen.md
       # execute tests in the same session
-      sed -i 's/```jldoctest/```jldoctest AutoDocTests/g' {{ target_package_path }}/docs/src/AutoDocTests.tst.autogen.md
+      sed -i 's/```jldoctest/```jldoctest AutoDocTests/g' AutoDocTests.tst.autogen.md
     fi
   args:
     chdir: '{{ target_package_path }}/docs/src'
