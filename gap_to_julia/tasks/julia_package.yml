@@ -26,12 +26,11 @@
   stat:
     path: "{{ source_package_path }}"
   register: gap_package_directory_exists
-  when: gen_full == '1'
 
-- name: Fail if the GAP package {{ package_name }} does not exist
-  fail:
-    msg: "Could not find the GAP package '{{ source_package_path }}'. Please ensure it exists."
-  when: gen_full == '1' and not gap_package_directory_exists.stat.exists
+- name: Package not found at {{ source_package_path }}, fallback to ~/.gap/pkg/{{ package_name }}
+  set_fact:
+    source_package_path: "{{ lookup('env', 'HOME') }}/.gap/pkg/{{ package_name }}"
+  when: not gap_package_directory_exists.stat.exists
 
 - name: Run `make doc` in {{ source_package_path }} to update documentation
   command: make doc
@@ -126,46 +125,51 @@
 
 - name: Extract UUIDs of dependencies, weak dependencies, and extras
   shell: |
-    julia -e '
-      using Pkg
-      deps = {{ dependencies_names }}
-      weak_deps = {{ weak_dependencies_names }}
-      extras = {{ extras_names }}
-      deps_uuids = join(
-        [name * " = \"" * string(uuid) * "\"" 
-          for name in deps 
-          for (uuid, package) in Pkg.dependencies() 
-          if package.name == name
-        ], 
-        "\n"
-      )
-      weak_deps_uuids = join(
-        [name * " = \"" * string(uuid) * "\"" 
-          for name in weak_deps 
-          for (uuid, package) in Pkg.dependencies() 
-          if package.name == name
-        ], 
-        "\n"
-      )
-      extras_uuids = join(
-        [name * " = \"" * string(uuid) * "\"" 
-          for name in extras 
-          for (uuid, package) in Pkg.dependencies() 
-          if package.name == name
-        ], 
-        "\n"
-      )
-      uuids = deps_uuids * "&" * weak_deps_uuids * "&" * extras_uuids
-      println(uuids)
-      flush(stdout)
-    '
-  when: gen_full == '1' and dependencies
+    deps="{{ dependencies_names | join(" ") }}"
+    weak="{{ weak_dependencies_names | join(" ") }}"
+    extras="{{ extras_names | join(" ") }}"
+
+    # helper: extract a group of names
+    extract_group() {
+      group="$1"
+      out=""
+      for pkg in $group; do
+        line=$(grep "^$pkg " ./files/UUIDs || true)
+        if [ -n "$line" ]; then
+          # package found in UUIDs file → extract UUID
+          if [ -n "$out" ]; then
+            out="$out\n$line"
+          else
+            out="$line"
+          fi
+        else
+          # package not found → add warning line
+          missing="$pkg = \"Please run 'using Pkg; only(keys(filter(p -> p.second.name == \"$pkg\", Pkg.dependencies())))' and add it to 'PackageJanitor/gap_to_julia/files/UUIDs'\""
+          if [ -n "$out" ]; then
+            out="$out\n$missing"
+          else
+            out="$missing"
+          fi
+        fi
+      done
+      printf "$out"
+    }
+
+    deps_out=$(extract_group "$deps")
+    weak_out=$(extract_group "$weak")
+    extras_out=$(extract_group "$extras")
+
+    # concatenate groups with &
+    printf "%b&%b&%b\n" "$deps_out" "$weak_out" "$extras_out"
+  args:
+    chdir: "{{ playbook_dir }}"
   register: uuids
   changed_when: false
   vars:
-    dependencies_names: "{{ dependencies | to_json }}"
-    weak_dependencies_names: "{{ weak_dependencies | to_json }}"
-    extras_names: "{{ extras | to_json }}"
+    dependencies_names: "{{ dependencies }}"
+    weak_dependencies_names: "{{ weak_dependencies }}"
+    extras_names: "{{ extras }}"
+  when: gen_full == '1'
 
 - name: Extract the UUID from Project.toml if it exists
   shell: |
@@ -312,12 +316,13 @@
 
 - name: Merge AutoDocTest fragments into AutoDocTests.tst.autogen.md and remove fragments
   shell: |
-    if compgen -G "{{ package_name | lower }}*.tst.autogen.md" > /dev/null; then
+    set -- {{ package_name | lower }}*.tst.autogen.md
+    if [ -e "$1" ]; then
       # merge AutoDocTests into one big testfile to execute in the correct order
-      cat {{ target_package_path }}/docs/src/{{ package_name | lower }}*.tst.autogen.md > {{ target_package_path }}/docs/src/AutoDocTests.tst.autogen.md
-      rm -f {{ target_package_path }}/docs/src/{{ package_name | lower }}*.tst.autogen.md
+      cat {{ package_name | lower }}*.tst.autogen.md > AutoDocTests.tst.autogen.md
+      rm -f {{ package_name | lower }}*.tst.autogen.md
       # execute tests in the same session
-      sed -i 's/```jldoctest/```jldoctest AutoDocTests/g' {{ target_package_path }}/docs/src/AutoDocTests.tst.autogen.md
+      sed -i 's/```jldoctest/```jldoctest AutoDocTests/g' AutoDocTests.tst.autogen.md
     fi
   args:
     chdir: '{{ target_package_path }}/docs/src'
