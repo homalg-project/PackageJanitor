@@ -372,25 +372,25 @@
           source: CategoricalTowers
           target: CategoricalTowers.jl
           dependencies:
+            - MatricesForHomalg
             - CAP
             - ToolsForCategoricalTowers
-            - MatricesForHomalg
+            - LinearAlgebraForCAP
           weak_dependencies:
           extras:
             - Test
             - Documenter
-            - AdditiveClosuresForCAP
-            - FreydCategoriesForCAP
+            - ModulePresentationsForCAP
           targets:
             test: default
           test_imports:
+            - MatricesForHomalg
             - CAP
             - ToolsForCategoricalTowers
-            - MatricesForHomalg
-            - AdditiveClosuresForCAP
-            - FreydCategoriesForCAP
+            - LinearAlgebraForCAP
+            - ModulePresentationsForCAP
             - QuotientCategories
-          disable_method_overwrite_warning: true
+          disable_method_overwrite_warning: false
           cleanup_test_files_by_keywords:
             - drop_example_in_Julia
 
