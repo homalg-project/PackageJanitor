@@ -99,6 +99,20 @@
     mode: '0755'
   when: gen_full == '1'
 
+- name: Add .github/workflows
+  file:
+    path: "{{ target_package_path }}/.github/workflows"
+    state: directory
+    mode: '0775'
+  when: gen_full == '1'
+
+- name: Add .github/workflows/TagBot.yml
+  copy:
+    src: TagBot.yml
+    dest: "{{ target_package_path }}/.github/workflows/TagBot.yml"
+    mode: '0644'
+  when: gen_full == '1'
+
 - name: Extract the package subtitle and authors
   shell: gap -q -c '{{ extract_authors_command }}'
   register: package_subtitle_and_authors
