@@ -1131,7 +1131,6 @@
               - path:              CAP_project/LinearClosuresForCAP
               - path:        CategoricalTowers/Locales
               - path:                          MachineLearningForCAP
-              - path:                          MatroidsForCAP
               - path:              CAP_project/ModulePresentationsForCAP
               - path:              CAP_project/ModulesOverLocalRingsForCAP
               - path:              CAP_project/MonoidalCategories
