@@ -111,6 +111,7 @@
           target: CAP_project.jl
           dependencies:
             - CAP
+            - MonoidalCategories
             - CartesianCategories
             - Toposes
           weak_dependencies:
@@ -121,6 +122,7 @@
             test: default
           test_imports:
             - CAP
+            - MonoidalCategories
             - CartesianCategories
             - Toposes
             - FinSetsForCAP
