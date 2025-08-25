@@ -159,6 +159,7 @@
             - CAP
             - QuotientCategories
             - FpCategories
+          test_upto_whitespaces: true
           disable_method_overwrite_warning: true
           cleanup_test_files_by_keywords:
             - drop_example_in_Julia
@@ -385,6 +386,7 @@
             - ModulePresentationsForCAP
           targets:
             test: default
+          test_upto_whitespaces: true
           test_imports:
             - MatricesForHomalg
             - CAP
@@ -420,6 +422,7 @@
             - FreydCategoriesForCAP
           targets:
             test: default
+          test_upto_whitespaces: true
           test_imports:
             - CAP
             - MonoidalCategories
