@@ -1,7 +1,7 @@
 name = "{{ package_name }}"
 uuid = "{{ package_uuid.stdout | replace('\r', '') }}"
 authors = [
-{{ package_authors | replace('\r', '') }}
+{{ package_authors | join(",\n") }}
 ]
 
 # Transpiled from GAP's {{ package_name }} v{{ package_version_in_gap.stdout | replace('\r', '') }}
