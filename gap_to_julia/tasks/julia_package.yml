@@ -13,6 +13,7 @@
     extras: "{{ package.extras | default([], true) }}"
     targets: "{{ package.targets | default({'test': 'default'}) }}"
     test_imports: "{{ package.test_imports | default([], true) }}"
+    test_upto_whitespaces: "{{ package.test_upto_whitespaces | default(false) }}"
     extensions: "{{ package.extensions | default({}) }}"
     import_dependencies: "{{ package.import_dependencies | default(true) }}"
     pre_init_file_exists: "{{ package.pre_init_file_exists | default(false) }}"
