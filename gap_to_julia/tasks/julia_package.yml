@@ -13,6 +13,7 @@
     extras: "{{ package.extras | default([], true) }}"
     targets: "{{ package.targets | default({'test': 'default'}) }}"
     test_imports: "{{ package.test_imports | default([], true) }}"
+    test_upto_whitespaces: "{{ package.test_upto_whitespaces | default(false) }}"
     extensions: "{{ package.extensions | default({}) }}"
     import_dependencies: "{{ package.import_dependencies | default(true) }}"
     pre_init_file_exists: "{{ package.pre_init_file_exists | default(false) }}"
@@ -64,20 +65,6 @@
   when: gen_full == '1' and package_directory_exists.stat.exists == false
   register: generate_julia_package
 
-- name: Add LICENSE
-  copy:
-    src: LICENSE
-    dest: "{{ target_package_path }}/LICENSE"
-    mode: '0644'
-  when: gen_full == '1'
-
-- name: Add .gitignore
-  copy:
-    src: gitignore
-    dest: "{{ target_package_path }}/.gitignore"
-    mode: '0644'
-  when: gen_full == '1'
-
 - name: Add src/{{ package_name }}.jl
   template:
     src: package.jl.j2
@@ -99,18 +86,25 @@
     mode: '0755'
   when: gen_full == '1'
 
-- name: Extract the package subtitle and authors
-  shell: gap -q -c '{{ extract_authors_command }}'
-  register: package_subtitle_and_authors
-  vars:
-    extract_authors_command: |
-      subtitle := PackageInfo("{{ package_name }}")[1].Subtitle;
-      authors :=
-        JoinStringsWithSeparator(
-          List( PackageInfo("{{ package_name }}")[1].Persons,
-            person -> Concatenation( "\t\"", person.FirstNames, " ", person.LastName, " <", person.Email, ">\"")), ",\n");
-      Print( subtitle, "\n&", authors, "\n");
-      QuitGap();
+- name: Extract package authors
+  shell: |
+    paste \
+      <(grep -RI FirstNames PackageInfo.g | cut -d '"' -f 2) \
+      <(grep -RI LastName PackageInfo.g | cut -d '"' -f 2) \
+      <(grep -RI Email PackageInfo.g | cut -d '"' -f 2) \
+    | awk '{print "\t\""$1" "$2" <"$3">\""}'
+  args:
+    chdir: '{{ source_package_path }}'
+  register: authors
+  when: gen_full == '1'
+  changed_when: false
+
+- name: Extract the package subtitle
+  shell: |
+    grep '^Subtitle := ' "PackageInfo.g" | cut -d '"' -f 2
+  args:
+    chdir: '{{ source_package_path }}'
+  register: subtitle
   when: gen_full == '1'
   changed_when: false
 
@@ -217,7 +211,7 @@
     mode: '0644'
   vars:
     uuids_list: "{{ uuids.stdout.split('&') }}"
-    package_authors: "{{ package_subtitle_and_authors.stdout.split('&')[1] }}"
+    package_authors: "{{ authors.stdout_lines }}"
   when: gen_full == '1'
 
 - name: Add README.md
@@ -226,7 +220,7 @@
     dest: "{{ target_package_path }}/README.md"
     mode: '0644'
   vars:
-    package_subtitle: "{{ package_subtitle_and_authors.stdout.split('&')[0] }}"
+    package_subtitle: "{{ subtitle.stdout }}"
   when: gen_full == '1'
 
 - name: Make sure /src/gap, /docs/src and /test exist
@@ -263,12 +257,24 @@
     mode: '0644'
   when: gen_full == '1'
 
-- name: Add src/init.jl
+- name: Make sure .github/workflows exist in the Julia package
+  file:
+    path: "{{ target_package_path }}/.github/workflows"
+    state: directory
+    mode: '0775'
+  when: gen_full == '1'
+
+- name: Add LICENSE, .gitignore, TagBot.yml, and src/init.jl
   copy:
-    src: init.jl
-    dest: "{{ target_package_path }}/src/init.jl"
+    src: "{{ item.src }}"
+    dest: "{{ target_package_path }}/{{ item.dest }}"
     mode: '0644'
   when: gen_full == '1'
+  loop:
+    - { src: LICENSE, dest: LICENSE }
+    - { src: gitignore, dest: .gitignore }
+    - { src: TagBot.yml, dest: .github/workflows/TagBot.yml }
+    - { src: init.jl, dest: src/init.jl }
 
 - name: Copy read.g and init.g to /src
   copy:
@@ -283,17 +289,15 @@
 
 - name: Modify read.g and init.g in-place and rename them to .autogen.jl
   shell: |
-    sed -i \
-      -e 's/#% G2J:julia-only //g' \
-      -e 's/ReadPackage/include/g' \
-      -e 's/"{{ package_name }}"\s*,\s*//g' \
-      -e 's/\.g\([di]\)"/.g\1.autogen.jl"/g' \
-      {{ item }}
-
-    mv {{ item }} {{ item }}.autogen.jl
-  with_items:
-    - read.g
-    - init.g
+    for f in read.g init.g; do
+      sed -i \
+        -e 's/#% G2J:julia-only //g' \
+        -e 's/ReadPackage/include/g' \
+        -e 's/"{{ package_name }}"\s*,\s*//g' \
+        -e 's/\.g\([di]\)"/.g\1.autogen.jl"/g' \
+        "$f"
+      mv "$f" "$f.autogen.jl"
+    done
   args:
     chdir: '{{ target_package_path }}/src'
   when: gen_full == '1'
@@ -305,10 +309,11 @@
     executable: /bin/bash
   register: transpile_result
 
-- name: Remove AutoDocTest fragments containing keywords
+- name: Remove AutoDocTest fragments containing keywords safely
   shell: |
-    rm -f $(grep -l "{{ item }}" {{ target_package_path }}/docs/src/*.tst.autogen.md)
-  loop: '{{ cleanup_test_files_by_keywords }}'
+    printf "%s\n" {{ cleanup_test_files_by_keywords | map('quote') | join(' ') }} | while IFS= read -r kw; do
+      grep -l -- "$kw" *.tst.autogen.md 2>/dev/null | xargs -r rm -f
+    done
   args:
     chdir: '{{ target_package_path }}/docs/src'
   when: cleanup_test_files_by_keywords | length > 0

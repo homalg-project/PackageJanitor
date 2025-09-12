@@ -13,5 +13,9 @@ using {{ extras | join(', ') }}, {{ package_name }}
 using {{ targets.test | join(', ') }}, {{ package_name }}
 {% endif %}
 
+{% if test_upto_whitespaces  %}
 # test upto whitespaces
 doctest({{ package_name }}; doctestfilters=[r"\s+" => ""])
+{% else %}
+doctest({{ package_name }})
+{% endif %}
