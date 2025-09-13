@@ -95,6 +95,7 @@
     | awk '{print "\t\""$1" "$2" <"$3">\""}'
   args:
     chdir: '{{ source_package_path }}'
+    executable: /bin/bash
   register: authors
   when: gen_full == '1'
   changed_when: false
