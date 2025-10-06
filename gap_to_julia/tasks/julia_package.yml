@@ -20,6 +20,7 @@
     post_init_file_exists: "{{ package.post_init_file_exists | default(false) }}"
     disable_method_overwrite_warning: "{{ package.disable_method_overwrite_warning | default(false) }}"
     cleanup_test_files_by_keywords: "{{ package.cleanup_test_files_by_keywords | default([], true) }}"
+    extra_bash_commands: "{{ package.extra_bash_commands | default([], true) }}"
     playbook_dir_relative_to_home: "{{ playbook_dir | relpath(ansible_env.HOME) }}"
     gen_full: "{{ gen_full | default('1') }}"
 
@@ -332,6 +333,16 @@
     fi
   args:
     chdir: '{{ target_package_path }}/docs/src'
+
+- name: Execute extra bash commands
+  shell: |
+    {{ item }}
+  args:
+    chdir: '{{ target_package_path }}'
+    executable: /bin/bash
+  loop: '{{ extra_bash_commands }}'
+  when: extra_bash_commands | length > 0
+  changed_when: false
 
 - name: Display success message
   debug:
