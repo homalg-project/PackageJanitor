@@ -160,6 +160,7 @@
             - QuotientCategories
             - FpCategories
           test_upto_whitespaces: true
+          post_init_file_exists: true
           disable_method_overwrite_warning: true
           cleanup_test_files_by_keywords:
             - drop_example_in_Julia
