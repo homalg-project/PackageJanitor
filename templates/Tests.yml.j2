@@ -54,7 +54,6 @@ jobs:
       - name: Prepare environment
         run: |
           cp ./{{ package.name }}/dev/ci_gaprc /home/gap/.gap/gaprc
-          git clone --depth 1 -vv https://github.com/gap-packages/AutoDoc.git
         {%- for additional_repo in ci_additional_repositories_enriched %}
           git clone --depth 1 -vv https://github.com/{% if "/" not in additional_repo %}homalg-project/{% endif %}{{ additional_repo }}.git
         {%- endfor %}
