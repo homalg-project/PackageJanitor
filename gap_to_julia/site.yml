@@ -166,6 +166,60 @@
             - drop_example_in_Julia
             - Algebroids
 
+- name: FpLinearCategories
+  hosts: FpLinearCategories
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: FpLinearCategories
+          source: CategoricalTowers
+          target: CategoricalTowers.jl
+          dependencies:
+            - MatricesForHomalg
+            - CAP
+            - MonoidalCategories
+            - CartesianCategories
+            - ToolsForCategoricalTowers
+            - Toposes
+            - FinSetsForCAP
+            - QuotientCategories
+            - FpCategories
+            - LinearClosuresForCAP
+            - AdditiveClosuresForCAP
+            - LinearAlgebraForCAP
+            - FreydCategoriesForCAP
+          weak_dependencies:
+          extras:
+            - Test
+            - Documenter
+          targets:
+            test: default
+          test_upto_whitespaces: true
+          test_imports:
+            - MatricesForHomalg
+            - CAP
+            - MonoidalCategories
+            - CartesianCategories
+            - ToolsForCategoricalTowers
+            - Toposes
+            - FinSetsForCAP
+            - QuotientCategories
+            - FpCategories
+            - LinearClosuresForCAP
+            - AdditiveClosuresForCAP
+            - LinearAlgebraForCAP
+            - FreydCategoriesForCAP
+            - FpLinearCategories
+          disable_method_overwrite_warning: true
+          pre_init_file_exists: true
+          post_init_file_exists: true
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
+          extra_bash_commands:
+            - sed -i -E "s/=\s*\[\s*([^\.]+)\s*\.\.\s*([^\.]+)\s*\];/= (\1):(\2);/g" src/gap/precompiled_categories/AdditiveClosureOfAlgebroidFromDataTablesPrecompiled.gi.autogen.jl
+
 - name: FreydCategoriesForCAP
   hosts: FreydCategoriesForCAP
   connection: local

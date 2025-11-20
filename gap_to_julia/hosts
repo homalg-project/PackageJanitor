@@ -3,6 +3,7 @@ CAP
 CartesianCategories
 FinSetsForCAP
 FpCategories
+FpLinearCategories
 FreydCategoriesForCAP
 LinearAlgebraForCAP
 LinearClosuresForCAP
