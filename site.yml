@@ -994,10 +994,6 @@
           has_HOMALG_IO: false
           doc_additional_latex_preamble: |
             \usepackage{mathtools}
-          needed_other_repositories:
-            - homalg_project
-            - CddInterface
-            - NormalizInterface
           tests_only_basic: true
 
 - name: homalg_project
