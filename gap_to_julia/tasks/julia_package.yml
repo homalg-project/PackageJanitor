@@ -206,6 +206,33 @@
   register: compat_section
   changed_when: false
 
+- name: Determine missing compat entries
+  shell: |
+    missing=""
+
+    # check julia
+    if ! grep -q '^julia ' <<< "{{ compat_section.stdout }}"; then
+      missing="julia = \"Please set the compatibility version\""
+    fi
+
+    # check dependencies
+    for dep in {{ dependencies | union(weak_dependencies) | unique | join(' ') }}; do
+      if ! grep -q "^$dep " <<< "{{ compat_section.stdout }}"; then
+        line="$dep = \"Please set the compatibility version\""
+        if [ -n "$missing" ]; then
+          missing="$missing\n$line"
+        else
+          missing="$line"
+        fi
+      fi
+    done
+
+    printf "%s\n" "$missing"
+  args:
+    executable: /bin/bash
+  when: gen_full == '1'
+  register: missing_compat_entries
+
 - name: Add Project.toml
   template:
     src: Project.toml.j2
