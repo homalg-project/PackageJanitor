@@ -266,7 +266,7 @@
     mode: '0775'
   when: gen_full == '1'
 
-- name: Add LICENSE, .gitignore, TagBot.yml, and src/init.jl
+- name: Add LICENSE, TagBot.yml, and src/init.jl
   copy:
     src: "{{ item.src }}"
     dest: "{{ target_package_path }}/{{ item.dest }}"
@@ -274,7 +274,6 @@
   when: gen_full == '1'
   loop:
     - { src: LICENSE, dest: LICENSE }
-    - { src: gitignore, dest: .gitignore }
     - { src: TagBot.yml, dest: .github/workflows/TagBot.yml }
     - { src: init.jl, dest: src/init.jl }
 
