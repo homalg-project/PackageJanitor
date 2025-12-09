@@ -26,8 +26,10 @@ version = "{{ current_version.stdout | replace('\r', '') }}"
 
 [compat]
 {{ compat_section.stdout | replace('\r', '') }}
-{% if missing_compat_entries.stdout %}
-{{ missing_compat_entries.stdout | replace('\n', '\n') }}
+{% if missing_compat_entries %}
+{% for entry in missing_compat_entries %}
+{{ entry }} = "Please set the compatibility version"
+{% endfor %}
 {% endif %}
 
 [extras]
