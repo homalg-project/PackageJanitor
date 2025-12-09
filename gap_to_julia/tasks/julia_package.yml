@@ -21,7 +21,7 @@
     disable_method_overwrite_warning: "{{ package.disable_method_overwrite_warning | default(false) }}"
     cleanup_test_files_by_keywords: "{{ package.cleanup_test_files_by_keywords | default([], true) }}"
     extra_bash_commands: "{{ package.extra_bash_commands | default([], true) }}"
-    playbook_dir_relative_to_home: "{{ playbook_dir | relpath(ansible_env.HOME) }}"
+    playbook_dir_relative_to_home: "{{ playbook_dir | relpath(ansible_facts.env.HOME) }}"
     gen_full: "{{ gen_full | default('1') }}"
 
 - name: Verify the GAP package {{ package_name }} exists
