@@ -273,7 +273,7 @@
   file:
     path: "{{ target_package_path }}/.github/workflows"
     state: directory
-    mode: '0775'
+    mode: '0755'
   when: gen_full == '1'
 
 - name: Add LICENSE, TagBot.yml, and src/init.jl
