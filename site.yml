@@ -681,6 +681,7 @@
           - FinSetsForCAP
           - QPA2
           - FpCategories
+          - FpLinearCategories
           - Algebroids
           - PreSheaves
           - QuotientCategories
