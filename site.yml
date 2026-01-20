@@ -1134,6 +1134,35 @@
             \usepackage{mathtools}
           tests_only_basic: true
 
+- name: GradientBasedLearningForCAP
+  hosts: GradientBasedLearningForCAP
+  connection: local
+  vars:
+    pkg_dir: "~/.gap/pkg"
+  tasks:
+    - import_tasks: tasks/package.yml
+      vars:
+        package:
+          name: GradientBasedLearningForCAP
+          description: "Gradient Based Learning via Category Theory"
+          ci_ubuntu_additional_apt_packages: python3-pip
+          has_HOMALG_IO: false
+          doc_additional_latex_preamble: |
+            \usepackage{tikz}
+            \usetikzlibrary{positioning}
+            \usepackage{mathtools}
+            \usepackage{stmaryrd}
+            \usepackage{fancyvrb}
+            \usepackage{fvextra}
+            \fvset{breaklines=true}
+            \DeclareUnicodeCharacter{211D}{\ensuremath{\mathbb{R}}}
+            \DeclareUnicodeCharacter{2023}{\ensuremath{\blacktriangleright}}
+          needed_other_repositories:
+            - homalg_project
+            - CAP_project
+            - CategoricalTowers
+          tests_only_basic: true
+
 - name: homalg_project
   hosts: homalg_project
   connection: local
@@ -1275,6 +1304,7 @@
               - path:              CAP_project/GeneralizedMorphismsForCAP
               - path:        CategoricalTowers/GradedCategories
               - path:              CAP_project/GradedModulePresentationsForCAP
+              - path:                          GradientBasedLearningForCAP
               - path:              CAP_project/GroupRepresentationsForCAP
               - path:              CAP_project/GroupsAsCategoriesForCAP
               - path:                          HeckeCategories
@@ -1289,7 +1319,6 @@
               - path:              CAP_project/LinearAlgebraForCAP
               - path:              CAP_project/LinearClosuresForCAP
               - path:        CategoricalTowers/Locales
-              - path:                          MachineLearningForCAP
               - path:              CAP_project/ModulePresentationsForCAP
               - path:              CAP_project/ModulesOverLocalRingsForCAP
               - path:              CAP_project/MonoidalCategories
