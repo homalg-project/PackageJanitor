@@ -65,6 +65,7 @@
           post_init_file_exists: true
           cleanup_test_files_by_keywords:
             - DummyRing
+            - DummyCommutativeSemiring
             - CapFunctor
             - InputSignature
             - InstallFunctor
