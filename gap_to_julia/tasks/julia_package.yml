@@ -301,12 +301,12 @@
 - name: Modify read.g and init.g in-place and rename them to .autogen.jl
   shell: |
     for f in read.g init.g; do
-      sed \
+      sed -i \
         -e 's/#% G2J:julia-only //g' \
         -e 's/ReadPackage/include/g' \
         -e 's/"{{ package_name }}"\s*,\s*//g' \
-        -e 's/\.g\([di]\)"/\.g\1\.autogen\.jl"/g' \
-        "$f" > "$f.tmp" && mv "$f.tmp" "$f"
+        -e 's/\.g\([di]\)"/.g\1.autogen.jl"/g' \
+        "$f"
       mv "$f" "$f.autogen.jl"
     done
   args:
@@ -338,7 +338,7 @@
       cat {{ package_name | lower }}*.tst.autogen.md > AutoDocTests.tst.autogen.md
       rm -f {{ package_name | lower }}*.tst.autogen.md
       # execute tests in the same session
-      sed 's/```jldoctest/```jldoctest AutoDocTests/g' AutoDocTests.tst.autogen.md > AutoDocTests.tst.autogen.md.tmp && mv AutoDocTests.tst.autogen.md.tmp AutoDocTests.tst.autogen.md
+      sed -i 's/```jldoctest/```jldoctest AutoDocTests/g' AutoDocTests.tst.autogen.md
     fi
   args:
     chdir: '{{ target_package_path }}/docs/src'

@@ -218,7 +218,7 @@
           cleanup_test_files_by_keywords:
             - drop_example_in_Julia
           extra_bash_commands:
-            - f=src/gap/precompiled_categories/AdditiveClosureOfAlgebroidFromDataTablesPrecompiled.gi.autogen.jl && sed -E "s/=\s*\[\s*([^\.]+)\s*\.\.\s*([^\.]+)\s*\];/= (\1):(\2);/g" "$f" > "$f.tmp" && mv "$f.tmp" "$f"
+            - sed -i -E "s/=\s*\[\s*([^\.]+)\s*\.\.\s*([^\.]+)\s*\];/= (\1):(\2);/g" src/gap/precompiled_categories/AdditiveClosureOfAlgebroidFromDataTablesPrecompiled.gi.autogen.jl
 
 - name: FreydCategoriesForCAP
   hosts: FreydCategoriesForCAP
