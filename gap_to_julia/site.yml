@@ -354,6 +354,49 @@
           cleanup_test_files_by_keywords:
             - ZCG
 
+- name: Locales
+  hosts: Locales
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: Locales
+          source: CategoricalTowers
+          target: CategoricalTowers.jl
+          dependencies:
+            - CAP
+            - MonoidalCategories
+            - CartesianCategories
+            - ToolsForCategoricalTowers
+            - Toposes
+            - FpCategories
+          weak_dependencies:
+          extras:
+            - Test
+            - Documenter
+          targets:
+            test: default
+          test_imports:
+            - CAP
+            - MonoidalCategories
+            - CartesianCategories
+            - ToolsForCategoricalTowers
+            - Toposes
+            - FpCategories
+            - Locales
+          extensions:
+          import_dependencies: true
+          pre_init_file_exists: true
+          post_init_file_exists: true
+          test_upto_whitespaces: true
+          disable_method_overwrite_warning: false
+          cleanup_test_files_by_keywords:
+            - drop_in_Julia
+            - HomalgFieldOfRationalsInSingular
+            - PreSheaves
+            - CapJitPrecompileCategoryAndCompareResult
+
 - name: ModulePresentationsForCAP
   hosts: ModulePresentationsForCAP
   connection: local
