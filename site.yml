@@ -104,6 +104,7 @@
               - IO_ForHomalg
             tests_only_basic: true
             tests_without_precompiled_code: true
+            has_split_tests: true
             has_subsplit: true
           - name: CategoriesWithAmbientObjects
             description: "Categories with objects having ambient objects"
@@ -245,6 +246,7 @@
               - FreydCategoriesForCAP
               - IO_ForHomalg
             tests_only_basic: true
+            has_split_tests: true
             has_subsplit: true
           - name: GradedCategories
             description: "Graded closures of categories"
@@ -477,6 +479,38 @@
           - MatroidGeneration
         ci_additional_packages_to_test:
           - MatroidGeneration
+        ci_test_groups:
+          - package: FunctorCategories
+            split_targets:
+              - [PreSheavesOfCategoryPrecompiled]
+              - [FinQuiversPrecompiled, FinBouquetsPrecompiled, FinReflexiveQuiversPrecompiled]
+              - [PreSheavesOfAlgebroidPrecompiled, PreSheavesOfAlgebroidFromDataTablesPrecompiled, PreSheavesOfFpCategoryInSkeletalFinSetsPrecompiled]
+          - package: Algebroids
+            split_targets:
+              - [AdelmanCategoryVsQuiverRows, SnakeLemmaProof, SnakeLemmaProof2]
+              - [CategoryOfFpAlgebras, CategoryOfFpMatrixAlgebras]
+          - packages:
+              - FpCategories
+              - FpLinearCategories
+              - FiniteCocompletions
+              - IntrinsicCategories
+              - IntrinsicModules
+              - IntrinsicGradedModules
+              - GradedCategories
+              - ExteriorPowersCategories
+              - InternalModules
+          - packages:
+              - ToolsForCategoricalTowers
+              - PreSheaves
+              - QuotientCategories
+              - LazyCategories
+              - Toposes
+              - Locales
+              - SliceCategories
+              - SubcategoriesForCAP
+              - ZariskiFrames
+              - CategoriesWithAmbientObjects
+              - CatReps
 
 - name: FinSetsForCAP
   hosts: FinSetsForCAP
@@ -702,6 +736,19 @@
               - AdditiveClosuresForCAP
               - DerivedCategories
             tests_only_basic: true
+        ci_test_groups:
+          - packages:
+              - ComplexesCategories
+          - packages:
+              - Bicomplexes
+          - packages:
+              - HomotopyCategories
+          - packages:
+              - DerivedCategories
+          - packages:
+              - StableCategories
+              - ToolsForHigherHomologicalAlgebra
+              - TriangulatedCategories
         ci_additional_repositories:
           - homalg_project
           - CAP_project
@@ -872,6 +919,33 @@
         ci_additional_repositories:
           - homalg_project
           - ToricVarieties
+        ci_test_groups:
+          - packages:
+              - CAP
+              - ActionsForCAP
+              - AttributeCategoryForCAP
+              - GroupRepresentationsForCAP
+              - GroupsAsCategoriesForCAP
+          - packages:
+              - CartesianCategories
+              - MonoidalCategories
+          - packages:
+              - ComplexesAndFilteredObjectsForCAP
+              - InternalExteriorAlgebraForCAP
+              - HomologicalAlgebraForCAP
+              - GeneralizedMorphismsForCAP
+              - ToricSheaves
+          - packages:
+              - CompilerForCAP
+          - packages:
+              - LinearAlgebraForCAP
+              - LinearClosuresForCAP
+              - AdditiveClosuresForCAP
+              - FreydCategoriesForCAP
+          - packages:
+              - ModulesOverLocalRingsForCAP
+              - ModulePresentationsForCAP
+              - GradedModulePresentationsForCAP
 
 - name: ArangoDBInterface
   hosts: ArangoDBInterface

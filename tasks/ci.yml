@@ -12,6 +12,12 @@
   vars:
     ci_packages_to_test: "{{ ci_additional_packages_to_test | default([]) }}"
 
+- name: Codecov.yml
+  template:
+    src: Codecov.yml.j2
+    dest: "{{ pkg_dir }}/{{ package.name }}/.github/workflows/Codecov.yml"
+    trim_blocks: false
+
 - name: "Ensure {{ pkg_dir }}/{{ package.name }}/dev/ exists"
   file:
     path: "{{ pkg_dir }}/{{ package.name }}/dev/"

@@ -1,3 +1,5 @@
+{%- set packages_with_doc = ["CAP_project/CAP", "CAP_project/CompilerForCAP", "CAP_project/MonoidalCategories", "CAP_project/CartesianCategories", "CAP_project/AdditiveClosuresForCAP", "CAP_project/FreydCategoriesForCAP", "HigherHomologicalAlgebra/ToolsForHigherHomologicalAlgebra", "homalg_project/homalg", "homalg_project/Modules", "CategoricalTowers/ToolsForCategoricalTowers", "CategoricalTowers/Toposes"] -%}
+{%- set subpkg_docs = packages_with_doc | select('match', package.name ~ '/') | list -%}
 name: Tests
 
 on:
@@ -17,6 +19,247 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+{%- if ci_test_groups is defined %}
+  # ── Clone packages and build reference documentation once per image ─────────────────────
+  prepare-deps:
+    strategy:
+      matrix:
+        image: ["ghcr.io/homalg-project/gap-docker:latest", "ghcr.io/homalg-project/gap-docker-master:latest"]
+      fail-fast: false
+    name: Build docs ({% raw %}${{ matrix.image == 'ghcr.io/homalg-project/gap-docker:latest' && 'stable' || 'master' }}{% endraw %})
+    runs-on: ubuntu-latest
+    container:
+      image: {% raw %}${{ matrix.image }}{% endraw %}
+    defaults:
+      run:
+        working-directory: /home/gap/.gap/pkg/
+    env:
+      HOME: /home/gap
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Move checked out repo to GAP user root dir
+        run: |
+          cp -a $GITHUB_WORKSPACE /home/gap/.gap/pkg/
+    {%- if ci_ubuntu_additional_apt_packages is defined %}
+      - name: Install additional apt packages
+        run: |
+          sudo apt update
+          sudo apt install -y{% for apt_package in ci_ubuntu_additional_apt_packages %} {{ apt_package }}{% endfor %}
+    {%- endif %}
+      - name: Clone dependencies
+        run: |
+          cp ./{{ package.name }}/dev/ci_gaprc /home/gap/.gap/gaprc
+        {%- for additional_repo in ci_additional_repositories_enriched %}
+          git clone --depth 1 -vv https://github.com/{% if "/" not in additional_repo %}homalg-project/{% endif %}{{ additional_repo }}.git
+        {%- endfor %}
+      - name: Build documentation of packages which we might want to reference
+        run: |
+          # keep this in sync with `dev/.release`
+        {%- for package_with_doc in packages_with_doc %}
+          if [ -d "{{ package_with_doc }}" ]; then make -C "{{ package_with_doc }}" doc; fi
+        {%- endfor %}
+      - name: Package dependencies
+        run: |
+          tar cf /tmp/deps.tar --exclude='.git' \
+        {%- for repo in ci_additional_repositories_enriched %}
+            {{ repo }}/{% if not loop.last or subpkg_docs | length > 0 %} \{% endif %}
+        {%- endfor %}
+        {%- for doc_path in subpkg_docs %}
+            {{ doc_path }}/doc/{% if not loop.last %} \{% endif %}
+        {%- endfor %}
+      - name: Upload deps artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deps-{% raw %}${{ matrix.image == 'ghcr.io/homalg-project/gap-docker:latest' && 'stable' || 'master' }}{% endraw %}
+          path: /tmp/deps.tar
+          retention-days: 1
+
+  # ── Per-package test jobs (run in parallel) ──────────────────────────
+  test:
+    needs: prepare-deps
+    strategy:
+      matrix:
+        image: ["ghcr.io/homalg-project/gap-docker:latest", "ghcr.io/homalg-project/gap-docker-master:latest"]
+        config:
+        {%- for group in ci_test_groups %}
+        {%- if group.split_targets is defined %}
+        {%- for target_set in group.split_targets %}
+          - { package: {{ group.package }}, targets: [{{ target_set | join(', ') }}] }
+        {%- endfor %}
+          - { package: {{ group.package }}, targets: [base] }
+        {%- elif group.packages is defined %}
+          - { packages: [{{ group.packages | join(', ') }}] }
+        {%- endif %}
+        {%- endfor %}
+      fail-fast: false
+    name: {% raw %}${{ matrix.config.targets && format('{0}_{1}', matrix.config.package, join(matrix.config.targets, '_')) || matrix.config.package || join(matrix.config.packages, '_') }} (${{ matrix.image == 'ghcr.io/homalg-project/gap-docker:latest' && 'stable' || 'master' }}){% endraw %}
+    runs-on: ubuntu-latest
+    container:
+      image: {% raw %}${{ matrix.image }}{% endraw %}
+    defaults:
+      run:
+        working-directory: /home/gap/.gap/pkg/
+    env:
+      HOME: /home/gap
+    steps:
+      - name: Keep workflow active even if repository has no activity for 60 days
+        if: github.event_name != 'pull_request'
+        run: |
+          curl --fail -X PUT -H "Accept: application/vnd.github.v3+json" -H "Authorization: token {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}" "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/workflows/Tests.yml/enable"
+      - name: Check out repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Move checked out repo to GAP user root dir
+        run: |
+          cp -a $GITHUB_WORKSPACE /home/gap/.gap/pkg/
+      - name: Download pre-built dependencies
+        uses: actions/download-artifact@v4
+        with:
+          name: deps-{% raw %}${{ matrix.image == 'ghcr.io/homalg-project/gap-docker:latest' && 'stable' || 'master' }}{% endraw %}
+          path: /tmp/
+      - name: Extract dependencies
+        run: |
+          tar xf /tmp/deps.tar
+          cp ./{{ package.name }}/dev/ci_gaprc /home/gap/.gap/gaprc
+      - name: Test {% raw %}${{ matrix.config.targets && format('{0}_{1}', matrix.config.package, join(matrix.config.targets, '_')) || matrix.config.package || join(matrix.config.packages, '_') }}{% endraw %}
+        run: |
+          PACKAGES="{% raw %}${{ matrix.config.package || join(matrix.config.packages, ' ') }}{% endraw %}"
+          TARGETS="{% raw %}${{ join(matrix.config.targets, ' ') }}{% endraw %}"
+          for pkg in $PACKAGES; do
+            if [ -z "$TARGETS" ]; then
+              make -C "{{ package.name }}/$pkg" --trace ci-test
+            else
+              for tgt in $TARGETS; do
+                if [ "$tgt" = "base" ]; then
+                  make -C "{{ package.name }}/$pkg" --trace ci-test-base
+                else
+                  make -C "{{ package.name }}/$pkg" --trace ci-test-single "TST_ID=$tgt"
+                fi
+              done
+            fi
+          done
+      - name: Process coverage files
+        if: always() && matrix.image == 'ghcr.io/homalg-project/gap-docker:latest'
+        run: |
+          cd {{ package.name }}
+          python3 dev/process_coverage.py
+      - name: Collect coverage files
+        if: always() && github.event_name != 'schedule' && matrix.image == 'ghcr.io/homalg-project/gap-docker:latest'
+        run: |
+          mkdir -p /tmp/coverage-collect
+          for pkg in {% raw %}${{ matrix.config.package || join(matrix.config.packages, ' ') }}{% endraw %}; do
+            mkdir -p "/tmp/coverage-collect/$pkg"
+            cp "{{ package.name }}/$pkg"/coverage*.json "/tmp/coverage-collect/$pkg/" 2>/dev/null || true
+          done
+      - name: Upload coverage artifact
+        if: always() && github.event_name != 'schedule' && matrix.image == 'ghcr.io/homalg-project/gap-docker:latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-{% raw %}${{ matrix.config.targets && format('{0}_{1}', matrix.config.package, join(matrix.config.targets, '_')) || matrix.config.package || join(matrix.config.packages, '_') }}{% endraw %}
+          path: /tmp/coverage-collect/
+          if-no-files-found: ignore
+          retention-days: 1
+  {%- if ci_packages_to_test | length > 0 %}
+
+  # ── {{ ci_packages_to_test | join(', ') }} (tested separately) ──
+  test-additional:
+    needs: prepare-deps
+    strategy:
+      matrix:
+        image: ["ghcr.io/homalg-project/gap-docker:latest", "ghcr.io/homalg-project/gap-docker-master:latest"]
+      fail-fast: false
+    name: {{ ci_packages_to_test | join(', ') }} ({% raw %}${{ matrix.image == 'ghcr.io/homalg-project/gap-docker:latest' && 'stable' || 'master' }}{% endraw %})
+    runs-on: ubuntu-latest
+    container:
+      image: {% raw %}${{ matrix.image }}{% endraw %}
+    defaults:
+      run:
+        working-directory: /home/gap/.gap/pkg/
+    env:
+      HOME: /home/gap
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Move checked out repo to GAP user root dir
+        run: |
+          cp -a $GITHUB_WORKSPACE /home/gap/.gap/pkg/
+      - name: Download pre-built dependencies
+        uses: actions/download-artifact@v4
+        with:
+          name: deps-{% raw %}${{ matrix.image == 'ghcr.io/homalg-project/gap-docker:latest' && 'stable' || 'master' }}{% endraw %}
+          path: /tmp/
+      - name: Extract dependencies
+        run: |
+          tar xf /tmp/deps.tar
+          cp ./{{ package.name }}/dev/ci_gaprc /home/gap/.gap/gaprc
+    {%- for package_to_test in ci_packages_to_test %}
+      - name: Test {{ package_to_test }}
+        run: |
+          make -C {{ package_to_test }} --trace -j $(nproc) --output-sync ci-test
+    {%- endfor %}
+  {%- endif %}
+
+  # ── Release / simulate release ───────────────────────────────────────
+  release:
+    needs: [prepare-deps, test]
+    if: always() && !cancelled()
+    strategy:
+      matrix:
+        image: ["ghcr.io/homalg-project/gap-docker:latest", "ghcr.io/homalg-project/gap-docker-master:latest"]
+      fail-fast: false
+    name: Release ({% raw %}${{ matrix.image == 'ghcr.io/homalg-project/gap-docker:latest' && 'stable' || 'master' }}{% endraw %})
+    runs-on: ubuntu-latest
+    container:
+      image: {% raw %}${{ matrix.image }}{% endraw %}
+    defaults:
+      run:
+        working-directory: /home/gap/.gap/pkg/
+    env:
+      HOME: /home/gap
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Move checked out repo to GAP user root dir
+        run: |
+          cp -a $GITHUB_WORKSPACE /home/gap/.gap/pkg/
+      - name: Download pre-built dependencies
+        uses: actions/download-artifact@v4
+        with:
+          name: deps-{% raw %}${{ matrix.image == 'ghcr.io/homalg-project/gap-docker:latest' && 'stable' || 'master' }}{% endraw %}
+          path: /tmp/
+      - name: Extract dependencies
+        run: |
+          tar xf /tmp/deps.tar
+          cp ./{{ package.name }}/dev/ci_gaprc /home/gap/.gap/gaprc
+      - name: Release package or simulate release
+        run: |
+          cd {{ package.name }}
+          git config --global user.name "Bot"
+          git config --global user.email "empty"
+          CUR_SHA=$(git rev-parse --verify HEAD)
+          git fetch origin gh-pages
+          git worktree add gh-pages/ gh-pages || (echo "There was an error. Make sure there is a branch named 'gh-pages'. See https://github.com/homalg-project/PackageJanitor#error-there-was-an-error-make-sure-there-is-a-branch-named-gh-pages"; exit 1)
+        {%- if ci_automated_release is not defined or ci_automated_release %}
+          if [ "{% raw %}${{ matrix.image }}{% endraw %}" = "ghcr.io/homalg-project/gap-docker:latest" ] && [ "$CUR_SHA" = "$(git rev-parse origin/master)" ] && [ $(dirname "$GITHUB_REPOSITORY") = "homalg-project" ]; then \
+            git checkout master; \
+            TOKEN="{% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}" SUBSPLIT_PUSH_SECRET="{% raw %}${{ secrets.SUBSPLIT_PUSH_SECRET }}{% endraw %}" ./dev/make_dist.sh; \
+          else \
+            TOKEN="{% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}" ./dev/simulate_dist.sh; \
+          fi
+        {%- endif %}
+{%- else %}
   test:
     strategy:
       matrix:
@@ -39,7 +282,6 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v4
         with:
-          # the persisted token interferes with the subsplit token used below
           persist-credentials: false
           fetch-depth: 0
       - name: Move checked out repo to GAP user root dir
@@ -77,12 +319,29 @@ jobs:
         run: |
           make -C {{ package_to_test }} --trace -j $(nproc) --output-sync ci-test
     {%- endfor %}
+    {%- if ci_do_not_run_tests is not defined or not ci_do_not_run_tests %}
+      - name: Process coverage files
+        if: always() && matrix.image == 'ghcr.io/homalg-project/gap-docker:latest'
+        run: |
+          cd {{ package.name }}
+          python3 dev/process_coverage.py
+      - name: Collect coverage files
+        if: always() && github.event_name != 'schedule' && matrix.image == 'ghcr.io/homalg-project/gap-docker:latest'
+        run: |
+          mkdir -p /tmp/coverage-collect
+          cp {{ package.name }}/coverage*.json /tmp/coverage-collect/ 2>/dev/null || true
+      - name: Upload coverage artifact
+        if: always() && github.event_name != 'schedule' && matrix.image == 'ghcr.io/homalg-project/gap-docker:latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: /tmp/coverage-collect/
+          if-no-files-found: ignore
+          retention-days: 1
+    {%- endif %}
       - name: Release package or simulate release
         run: |
           cd {{ package.name }}
-        {%- if ci_do_not_run_tests is not defined or not ci_do_not_run_tests %}
-          python3 dev/process_coverage.py
-        {%- endif %}
           git config --global user.name "Bot"
           git config --global user.email "empty"
           CUR_SHA=$(git rev-parse --verify HEAD)
@@ -96,12 +355,4 @@ jobs:
             TOKEN="{% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}" ./dev/simulate_dist.sh; \
           fi
         {%- endif %}
-    {%- if ci_do_not_run_tests is not defined or not ci_do_not_run_tests %}
-      - name: Upload code coverage
-        if: github.event_name != 'schedule' && matrix.image == 'ghcr.io/homalg-project/gap-docker:latest'
-        env:
-          CODECOV_TOKEN: ${{'{{ secrets.CODECOV_TOKEN }}'}}
-        run: |
-          cd {{ package.name }}
-          ./dev/upload_codecov.sh
-    {%- endif %}
+{%- endif %}
