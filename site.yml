@@ -1207,6 +1207,7 @@
               - path:        CategoricalTowers/PreSheaves
               - path:                          QPA2
               - path:        CategoricalTowers/QuotientCategories
+              - path:        CategoricalTowers/SliceCategories
               - path: HigherHomologicalAlgebra/StableCategories
               - path:        CategoricalTowers/SubcategoriesForCAP
               - path:        CategoricalTowers/ToolsForCategoricalTowers
