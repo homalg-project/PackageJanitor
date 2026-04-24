@@ -37,7 +37,7 @@ jobs:
         run: |
           curl --fail -X PUT -H "Accept: application/vnd.github.v3+json" -H "Authorization: token {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}" "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/workflows/Tests.yml/enable"
       - name: Check out repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           # the persisted token interferes with the subsplit token used below
           persist-credentials: false
