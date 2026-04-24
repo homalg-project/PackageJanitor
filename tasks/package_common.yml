@@ -232,11 +232,35 @@
     dest: "{{ pkg_dir }}/{{ package.path }}/tst/testall.g"
   when: not package.docu_only
 
+- name: testall_base.g
+  template:
+    src: testall_base.g.j2
+    dest: "{{ pkg_dir }}/{{ package.path }}/tst/testall_base.g"
+  when: package.has_split_tests | default(false)
+
+- name: testall_single.g
+  template:
+    src: testall_single.g.j2
+    dest: "{{ pkg_dir }}/{{ package.path }}/tst/testall_single.g"
+  when: package.has_split_tests | default(false)
+
 - name: testall_no_precompiled_code.g.j2
   template:
     src: testall_no_precompiled_code.g.j2
     dest: "{{ pkg_dir }}/{{ package.path }}/tst/testall_no_precompiled_code.g"
   when: package.tests_without_precompiled_code
+
+- name: testall_no_precompiled_code_base.g
+  template:
+    src: testall_no_precompiled_code_base.g.j2
+    dest: "{{ pkg_dir }}/{{ package.path }}/tst/testall_no_precompiled_code_base.g"
+  when: (package.has_split_tests | default(false)) and package.tests_without_precompiled_code
+
+- name: testall_single_no_precompiled_code.g
+  template:
+    src: testall_single_no_precompiled_code.g.j2
+    dest: "{{ pkg_dir }}/{{ package.path }}/tst/testall_single_no_precompiled_code.g"
+  when: (package.has_split_tests | default(false)) and package.tests_without_precompiled_code
 
 - name: Remove testall_no_precompiled_code.g.j2
   file:

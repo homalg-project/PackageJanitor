@@ -1,0 +1,64 @@
+name: Codecov
+
+on:
+  workflow_run:
+    workflows: ["Tests"]
+    types:
+      - completed
+
+jobs:
+  upload:
+    if: >-
+      {% raw %}github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event != 'schedule'{% endraw %}
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+      - name: Download coverage artifacts
+        uses: actions/download-artifact@v4
+        with:
+{%- if ci_test_groups is defined %}
+          pattern: coverage-*
+{%- else %}
+          pattern: coverage
+{%- endif %}
+          path: /tmp/coverage-artifacts
+          merge-multiple: true
+          run-id: {% raw %}${{ github.event.workflow_run.id }}{% endraw %}
+          github-token: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+      - name: Restore coverage files
+        run: |
+{%- if ci_test_groups is defined %}
+          for pkg_dir in /tmp/coverage-artifacts/*/; do
+            pkg=$(basename "$pkg_dir")
+            if [ -d "$pkg" ]; then
+              cp -v "$pkg_dir"*.json "$pkg/" 2>/dev/null || true
+            fi
+          done
+{%- else %}
+          cp -v /tmp/coverage-artifacts/*.json . 2>/dev/null || true
+{%- endif %}
+      - name: Resolve PR number on PR events
+        id: resolve_pr
+        env:
+          GH_TOKEN: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+        run: |
+          PR_NUMBER=""
+          if [ "{% raw %}${{ github.event.workflow_run.event }}{% endraw %}" = "pull_request" ]; then
+            HEAD="{% raw %}${{ github.event.workflow_run.head_repository.owner.login }}:${{ github.event.workflow_run.head_branch }}{% endraw %}"
+            PR_NUMBER=$(gh api "repos/{% raw %}${{ github.repository }}{% endraw %}/pulls?state=all&head=${HEAD}" --jq ".[0].number // empty")
+          fi
+          echo "pr_number=${PR_NUMBER}" >> "$GITHUB_OUTPUT"
+          echo "Resolved PR: ${PR_NUMBER:-(none)}"
+      - name: Upload to Codecov
+        env:
+          CODECOV_TOKEN: {% raw %}${{ secrets.CODECOV_TOKEN }}{% endraw %}
+          CODECOV_COMMIT_SHA: {% raw %}${{ github.event.workflow_run.head_sha }}{% endraw %}
+          CODECOV_BRANCH: {% raw %}${{ github.event.workflow_run.head_branch }}{% endraw %}
+          CODECOV_PR: {% raw %}${{ steps.resolve_pr.outputs.pr_number }}{% endraw %}
+        run: ./dev/upload_codecov.sh
