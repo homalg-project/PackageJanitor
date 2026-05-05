@@ -354,7 +354,7 @@
             tests_only_basic: true
             tests_without_precompiled_code: true
             has_subsplit: true
-          - name: PreSheaves
+          - name: PresheafCategories
             description: Categories of (co)presheaves
             doc_additional_latex_preamble: |
               \usepackage{mathtools}
@@ -501,7 +501,7 @@
               - InternalModules
           - packages:
               - ToolsForCategoricalTowers
-              - PreSheaves
+              - PresheafCategories
               - QuotientCategories
               - LazyCategories
               - Toposes
@@ -758,7 +758,7 @@
           - FpCategories
           - FpLinearCategories
           - Algebroids
-          - PreSheaves
+          - PresheafCategories
           - QuotientCategories
           - FiniteCocompletions
           - FunctorCategories
@@ -1278,7 +1278,7 @@
               - path:              CAP_project/ModulePresentationsForCAP
               - path:              CAP_project/ModulesOverLocalRingsForCAP
               - path:              CAP_project/MonoidalCategories
-              - path:        CategoricalTowers/PreSheaves
+              - path:        CategoricalTowers/PresheafCategories
               - path:                          QPA2
               - path:        CategoricalTowers/QuotientCategories
               - path:        CategoricalTowers/SliceCategories
