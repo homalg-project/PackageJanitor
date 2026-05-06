@@ -462,7 +462,47 @@
           post_init_file_exists: false
           cleanup_test_files_by_keywords:
             - drop_example_in_Julia
-
+- name: PresheafCategories
+  hosts: PresheafCategories
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: PresheafCategories
+          source: CategoricalTowers
+          target: CategoricalTowers.jl
+          dependencies:
+            - CAP
+            - MatricesForHomalg
+            - MonoidalCategories
+            - CartesianCategories
+            - ToolsForCategoricalTowers
+            - Toposes
+          weak_dependencies:
+          extras:
+            - Test
+            - Documenter
+            - FinSetsForCAP
+          targets:
+            test: default
+          test_imports:
+            - CAP
+            - MatricesForHomalg
+            - MonoidalCategories
+            - CartesianCategories
+            - ToolsForCategoricalTowers
+            - Toposes
+            - FinSetsForCAP
+            - PresheafCategories
+          extensions:
+          import_dependencies: true
+          pre_init_file_exists: false
+          post_init_file_exists: true
+          test_upto_whitespaces: true
+          disable_method_overwrite_warning: false
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
 - name: QuotientCategories
   hosts: QuotientCategories
   connection: local
@@ -494,6 +534,41 @@
             - ModulePresentationsForCAP
             - QuotientCategories
           disable_method_overwrite_warning: false
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
+
+- name: SubcategoriesForCAP
+  hosts: SubcategoriesForCAP
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: SubcategoriesForCAP
+          source: CategoricalTowers
+          target: CategoricalTowers.jl
+          dependencies:
+            - CAP
+            - ToolsForCategoricalTowers
+            - Locales
+          weak_dependencies:
+          extras:
+            - Test
+            - Documenter
+            - MatricesForHomalg
+            - AdditiveClosuresForCAP
+            - FreydCategoriesForCAP
+          targets:
+            test: default
+          test_imports:
+            - CAP
+            - ToolsForCategoricalTowers
+            - Locales
+            - MatricesForHomalg
+            - AdditiveClosuresForCAP
+            - FreydCategoriesForCAP
+            - SubcategoriesForCAP
+          disable_method_overwrite_warning: true
           cleanup_test_files_by_keywords:
             - drop_example_in_Julia
 
