@@ -762,6 +762,7 @@
           - QuotientCategories
           - FiniteCocompletions
           - FunctorCategories
+          - SliceCategories
           - SubcategoriesForCAP
           - ToolsForCategoricalTowers
           - Locales
