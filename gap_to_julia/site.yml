@@ -516,6 +516,8 @@
           dependencies:
             - MatricesForHomalg
             - CAP
+            - MonoidalCategories
+            - CartesianCategories
             - ToolsForCategoricalTowers
             - LinearAlgebraForCAP
           weak_dependencies:
