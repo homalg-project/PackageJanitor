@@ -97,7 +97,6 @@
             needed_other_repositories:
               - homalg_project
               - CAP_project
-              - HigherHomologicalAlgebra
               - QPA2
               - FinSetsForCAP
             tests_additional_packages_to_load:
@@ -129,7 +128,6 @@
             needed_other_repositories:
               - homalg_project
               - CAP_project
-              - HigherHomologicalAlgebra
               - QPA2
               - FinSetsForCAP
             tests_additional_packages_to_load:
@@ -187,7 +185,6 @@
             needed_other_repositories:
               - homalg_project
               - CAP_project
-              - HigherHomologicalAlgebra
               - QPA2
               - FinSetsForCAP
             tests_additional_packages_to_load:
@@ -224,7 +221,6 @@
             needed_other_repositories:
               - homalg_project
               - CAP_project
-              - HigherHomologicalAlgebra
               - QPA2
               - FinSetsForCAP
             doc_additional_latex_preamble: |
@@ -623,7 +619,6 @@
             - homalg_project
             - CAP_project
             - FinSetsForCAP
-            - HigherHomologicalAlgebra
             - QPA2
             - CategoricalTowers
           tests_without_precompiled_code: true
