@@ -331,6 +331,7 @@
           source: CAP_project
           target: CAP_project.jl
           dependencies:
+            - MatricesForHomalg
             - CAP
             - LinearAlgebraForCAP
             - AdditiveClosuresForCAP
