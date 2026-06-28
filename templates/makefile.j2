@@ -110,3 +110,6 @@ ci-test-base: test-basic-spacing{% if not (package.tests_only_basic | default(fa
 ci-test-single: test-with-coverage-single{% if package.tests_without_precompiled_code %} test-with-coverage-single-without-precompiled-code{% endif %}
 
 {% endif %}
+
+match_tests_to_examples:
+	python3 $$([ -f ../dev/match_tst_to_examples.py ] && echo ../dev/match_tst_to_examples.py || echo dev/match_tst_to_examples.py) .
