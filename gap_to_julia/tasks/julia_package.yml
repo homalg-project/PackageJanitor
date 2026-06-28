@@ -41,6 +41,13 @@
   register: makedoc_result
   changed_when: false
 
+- name: Run `make match_tests_to_examples` in {{ source_package_path }} to update documentation
+  command: make match_tests_to_examples
+  args:
+    chdir: '{{ source_package_path }}'
+  register: match_tests_to_examples_result
+  changed_when: false
+
 - name: Verify the Julia package target path exists
   stat:
     path: "{{ target_path }}"
