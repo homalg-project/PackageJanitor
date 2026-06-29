@@ -49,6 +49,12 @@
     dest: "{{ pkg_dir }}/{{ package.name }}/dev/process_coverage.py"
     mode: a+x
 
+- name: match_tst_to_examples.py
+  copy:
+    src: match_tst_to_examples.py
+    dest: "{{ pkg_dir }}/{{ package.name }}/dev/match_tst_to_examples.py"
+    mode: a+x
+
 - name: Remove old process_coverage.py
   file:
     path: "{{ pkg_dir }}/{{ package.name }}/process_coverage.py"
