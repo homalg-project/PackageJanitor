@@ -532,6 +532,15 @@
             - CAP_project
             - Toposes
           tests_without_precompiled_code: true
+          gap_to_julia:
+            julia_repositories:
+              - repository: CAP_project.jl
+                packages:
+                  - CAP
+                  - MonoidalCategories
+                  - CartesianCategories
+                  - Toposes
+                  - FinSetsForCAP
 
 - name: FinGSetsForCAP
   hosts: FinGSetsForCAP
@@ -622,6 +631,16 @@
             - QPA2
             - CategoricalTowers
           tests_without_precompiled_code: true
+          gap_to_julia:
+            julia_repositories:
+              - repository: CAP_project.jl
+                packages:
+                  - CAP
+                  - MonoidalCategories
+                  - CartesianCategories
+                  - Toposes
+                  - FinSetsForCAP
+                  - ZXCalculusForCAP
 
 - name: HigherHomologicalAlgebra
   hosts: HigherHomologicalAlgebra
