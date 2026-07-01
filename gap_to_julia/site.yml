@@ -344,6 +344,68 @@
             - EmbeddingFunctorIntoFreydCategory # functors are not available yet
             - co_freyd = CoFreydCategory( rows ) # CoFreyd: FreydCategory tries to compute a distinguished object of the underlying opposite category, which causes problems with world age
 
+- name: FunctorCategories
+  hosts: FunctorCategories
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: FunctorCategories
+          source: CategoricalTowers
+          target: CategoricalTowers.jl
+          dependencies:
+            - MatricesForHomalg
+            - CAP
+            - MonoidalCategories
+            - CartesianCategories
+            - LinearAlgebraForCAP
+            - FreydCategoriesForCAP
+            - ToolsForCategoricalTowers
+            - Toposes
+            - FinSetsForCAP
+            - FpCategories
+            - FpLinearCategories
+            - Locales
+            - PresheafCategories
+            - SubcategoriesForCAP
+          weak_dependencies:
+          extras:
+            - Test
+            - Documenter
+          targets:
+            test: default
+          test_imports:
+            - CAP
+            - MonoidalCategories
+            - CartesianCategories
+            - LinearAlgebraForCAP
+            - FreydCategoriesForCAP
+            - ToolsForCategoricalTowers
+            - Toposes
+            - FinSetsForCAP
+            - FpCategories
+            - FpLinearCategories
+            - Locales
+            - PresheafCategories
+            - SubcategoriesForCAP
+            - FunctorCategories
+          extensions:
+          import_dependencies: true
+          pre_init_file_exists: true
+          post_init_file_exists: true
+          test_upto_whitespaces: true
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
+            - RightQuiver
+            - FreeCategory
+            - counit
+            - comult
+            - RelationsOfAlgebroid
+            - Bialgebroid
+            - Comultiplication
+            - antipode
+
 - name: LinearAlgebraForCAP
   hosts: LinearAlgebraForCAP
   connection: local
