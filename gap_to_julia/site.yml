@@ -134,6 +134,63 @@
             - drop_example_in_Julia
             - CapJit*
 
+- name: FiniteCocompletions
+  hosts: FiniteCocompletions
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: FiniteCocompletions
+          source: CategoricalTowers
+          target: CategoricalTowers.jl
+          dependencies:
+            - MatricesForHomalg
+            - CAP
+            - MonoidalCategories
+            - CartesianCategories
+            - ToolsForCategoricalTowers
+            - Toposes
+            - FinSetsForCAP
+            - QuotientCategories
+            - Locales
+            - FpCategories
+            - FpLinearCategories
+            - LinearClosuresForCAP
+            - AdditiveClosuresForCAP
+            - FreydCategoriesForCAP
+            - PresheafCategories
+          weak_dependencies:
+          extras:
+            - Test
+            - Documenter
+          targets:
+            test: default
+          test_imports:
+            - MatricesForHomalg
+            - CAP
+            - MonoidalCategories
+            - CartesianCategories
+            - ToolsForCategoricalTowers
+            - Toposes
+            - FinSetsForCAP
+            - QuotientCategories
+            - Locales
+            - FpCategories
+            - FpLinearCategories
+            - LinearClosuresForCAP
+            - AdditiveClosuresForCAP
+            - FreydCategoriesForCAP
+            - PresheafCategories
+            - FiniteCocompletions
+          import_dependencies: true
+          pre_init_file_exists: true
+          post_init_file_exists: true
+          test_upto_whitespaces: true
+          disable_method_overwrite_warning: false
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
+
 - name: FpCategories
   hosts: FpCategories
   connection: local
