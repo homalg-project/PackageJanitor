@@ -583,6 +583,7 @@
           post_init_file_exists: false
           cleanup_test_files_by_keywords:
             - drop_example_in_Julia
+
 - name: PresheafCategories
   hosts: PresheafCategories
   connection: local
@@ -596,6 +597,7 @@
           dependencies:
             - CAP
             - MatricesForHomalg
+            - LinearAlgebraForCAP
             - MonoidalCategories
             - CartesianCategories
             - ToolsForCategoricalTowers
@@ -610,6 +612,7 @@
           test_imports:
             - CAP
             - MatricesForHomalg
+            - LinearAlgebraForCAP
             - MonoidalCategories
             - CartesianCategories
             - ToolsForCategoricalTowers
@@ -624,6 +627,7 @@
           disable_method_overwrite_warning: false
           cleanup_test_files_by_keywords:
             - drop_example_in_Julia
+
 - name: QuotientCategories
   hosts: QuotientCategories
   connection: local
