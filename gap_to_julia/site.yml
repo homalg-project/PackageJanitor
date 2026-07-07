@@ -376,6 +376,7 @@
           targets:
             test: default
           test_imports:
+            - MatricesForHomalg
             - CAP
             - MonoidalCategories
             - CartesianCategories
