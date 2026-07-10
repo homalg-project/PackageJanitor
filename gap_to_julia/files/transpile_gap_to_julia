@@ -5,6 +5,7 @@ set -e
 GAP_PKG_DIR=~/.gap/pkg/
 JULIA_CAP_PROJECT_DIR=~/.julia/dev/CAP_project.jl/
 JULIA_CATEGORICAL_TOWERS_DIR=~/.julia/dev/CategoricalTowers.jl/
+JULIA_HIGHER_HOMOLOGICAL_ALGEBRA_DIR=~/.julia/dev/HigherHomologicalAlgebra.jl/
 LOGS=1
 
 PKG_NAME_LOWERCASE=$(echo "$PKG_NAME" | tr '[:upper:]' '[:lower:]')
@@ -16,6 +17,8 @@ elif [ -d "$GAP_PKG_DIR/CAP_project/$PKG_NAME" ]; then
 	PKG_FULL_NAME="CAP_project/$PKG_NAME"
 elif [ -d "$GAP_PKG_DIR/CategoricalTowers/$PKG_NAME" ]; then
 	PKG_FULL_NAME="CategoricalTowers/$PKG_NAME"
+elif [ -d "$GAP_PKG_DIR/HigherHomologicalAlgebra/$PKG_NAME" ]; then
+	PKG_FULL_NAME="HigherHomologicalAlgebra/$PKG_NAME"
 else
 	echo "Could not find GAP package $PKG_NAME"
 	exit 1
@@ -27,6 +30,8 @@ if [ -d "$JULIA_CAP_PROJECT_DIR$PKG_NAME" ]; then
 	JULIA_PKG_DIR=$JULIA_CAP_PROJECT_DIR
 elif [ -d "$JULIA_CATEGORICAL_TOWERS_DIR$PKG_NAME" ]; then
 	JULIA_PKG_DIR=$JULIA_CATEGORICAL_TOWERS_DIR
+elif [ -d "$JULIA_HIGHER_HOMOLOGICAL_ALGEBRA_DIR$PKG_NAME" ]; then
+	JULIA_PKG_DIR=$JULIA_HIGHER_HOMOLOGICAL_ALGEBRA_DIR
 else
 	echo "Could not find Julia package $PKG_NAME"
 	exit 1
