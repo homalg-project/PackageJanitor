@@ -361,6 +361,7 @@
             - CAP
             - MonoidalCategories
             - CartesianCategories
+            - QuotientCategories
             - LinearAlgebraForCAP
             - FreydCategoriesForCAP
             - ToolsForCategoricalTowers
@@ -382,6 +383,7 @@
             - CAP
             - MonoidalCategories
             - CartesianCategories
+            - QuotientCategories
             - LinearAlgebraForCAP
             - FreydCategoriesForCAP
             - ToolsForCategoricalTowers
@@ -398,6 +400,7 @@
           pre_init_file_exists: true
           post_init_file_exists: true
           test_upto_whitespaces: true
+          disable_method_overwrite_warning: true
           cleanup_test_files_by_keywords:
             - drop_example_in_Julia
             - RightQuiver
