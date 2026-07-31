@@ -7,6 +7,8 @@ JULIA_CAP_PROJECT_DIR=~/.julia/dev/CAP_project.jl/
 JULIA_CATEGORICAL_TOWERS_DIR=~/.julia/dev/CategoricalTowers.jl/
 JULIA_HIGHER_HOMOLOGICAL_ALGEBRA_DIR=~/.julia/dev/HigherHomologicalAlgebra.jl/
 LOGS=1
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+export SCRIPT_DIR
 
 PKG_NAME_LOWERCASE=$(echo "$PKG_NAME" | tr '[:upper:]' '[:lower:]')
 [ "$LOGS" = "0" ] || echo "PKG_NAME_LOWERCASE: $PKG_NAME_LOWERCASE"
@@ -90,10 +92,7 @@ syntax_replacements() {
 	| sed 's/⦇\([^⦇⦈]*\)⦈/"\1"/g' `# replace special brackets by quotation marks again` \
 	| sed 's/\.( \([^)]*\) )/[\1]/g' \
 	| sed 's/\.(\([^)]*\))/[\1]/g' \
-	| sed 's/\[ \([^].[]*\) \.\. \([^][]*\) \]\[/((\1):(\2))[/g' `# [ a .. b ][ -> ((a):(b))[ where a and b do not contain square brackets` \
-	| sed 's/\[ \([^].[]*\) \.\. \([^][]*\) \]/(\1):(\2)/g' `# [ a .. b ] -> (a):(b) where a and b do not contain square brackets` \
-	| sed 's/\[ \([^].[]*\) \.\. \([^][]*\)\[\([^].[]*\)\]\([^][]*\) \]/(\1):(\2[\3]\4)/g' `# [ a .. b ] -> (a):(b) where b contains a pair of square brackets` \
-	| sed 's/\[ \([^].[]*\) \.\. \([^][]*\)\[\([^].[]*\)\]\[\([^].[]*\)\]\([^].[]*\)\]/(\1):(\2[\3][\4]\5)/g' `# [ a .. b ] -> (a):(b) where b contains two pairs of square brackets` \
+	| perl "$SCRIPT_DIR/convert_gap_ranges" \
 	| sed 's/{ arg } ->/( arg... ) ->/g' \
 	| sed 's/{\([^}]*\)} ->/(\1) ->/g' \
 	| sed 's/{/[/g' \

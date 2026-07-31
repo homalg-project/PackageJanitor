@@ -1,0 +1,170 @@
+use strict;
+use warnings;
+
+# Convert GAP ranges such as `[ a .. b ]` to Julia ranges `(a):(b)`.
+# The program is a stream filter: it reads all text from stdin and writes the
+# converted text to stdout. It uses a character-by-character scanner rather
+# than a regular expression because bounds may span multiple lines, be nested,
+# or appear in generated-source strings.
+
+sub skip_string {
+    # Return the position immediately after a double-quoted string. Triple
+    # quotes delimit generated source, whose contents must still be scanned.
+    my ( $text, $position ) = @_;
+    my $length = length $text;
+
+    if ( substr( $text, $position, 3 ) eq '"""' ) {
+        return $position + 3;
+    }
+
+    $position++;
+    while ( $position < $length ) {
+        # Skip escaped characters so an escaped quote does not end the string.
+        if ( substr( $text, $position, 1 ) eq "\\" ) {
+            $position += 2;
+        } elsif ( substr( $text, $position, 1 ) eq '"' ) {
+            return $position + 1;
+        } else {
+            $position++;
+        }
+    }
+
+    return $length;
+}
+
+sub skip_comment {
+    # Return the position immediately after a '#' comment, including its
+    # trailing newline when one is present.
+    my ( $text, $position ) = @_;
+    my $newline = index( $text, "\n", $position );
+    return $newline == -1 ? length $text : $newline + 1;
+}
+
+sub matching_square_bracket {
+    # Return the position of the ']' matching the '[' at $position, or -1 when
+    # no matching bracket exists. Brackets in strings and comments are ignored.
+    my ( $text, $position ) = @_;
+    my $length = length $text;
+    my $depth = 1;
+
+    # Track nested square brackets until the outermost one is closed.
+    for ( $position++; $position < $length; $position++ ) {
+        my $character = substr( $text, $position, 1 );
+
+        if ( $character eq '"' ) {
+            $position = skip_string( $text, $position ) - 1;
+        } elsif ( $character eq '#' ) {
+            $position = skip_comment( $text, $position ) - 1;
+        } elsif ( $character eq '[' ) {
+            $depth++;
+        } elsif ( $character eq ']' && --$depth == 0 ) {
+            return $position;
+        }
+    }
+
+    return -1;
+}
+
+sub range_operator {
+    # Return the position of the top-level '..' range operator, or -1 if this
+    # text does not describe a GAP range.
+    my ($text) = @_;
+    my @closing_delimiter;
+    my %matching_delimiter = ( '(' => ')', '[' => ']', '{' => '}' );
+    my $length = length $text;
+
+    # A range operator must be outside nested (), [], and {}. Whitespace on
+    # both sides distinguishes GAP's ` .. ` operator from ellipses.
+    for ( my $position = 0; $position < $length; $position++ ) {
+        my $character = substr( $text, $position, 1 );
+
+        if ( $character eq "\\" ) {
+            $position++;
+        } elsif ( $character eq '"' ) {
+            $position = skip_string( $text, $position ) - 1;
+        } elsif ( $character eq '#' ) {
+            $position = skip_comment( $text, $position ) - 1;
+        } elsif ( exists $matching_delimiter{$character} ) {
+            push @closing_delimiter, $matching_delimiter{$character};
+        } elsif ( @closing_delimiter && $character eq $closing_delimiter[-1] ) {
+            pop @closing_delimiter;
+        } elsif ( !@closing_delimiter
+            && $position > 0
+            && $position + 2 < $length
+            && substr( $text, $position - 1, 1 ) =~ /\s/
+            && substr( $text, $position, 2 ) eq '..'
+            && substr( $text, $position + 2, 1 ) =~ /\s/ ) {
+            return $position;
+        }
+    }
+
+    return -1;
+}
+
+sub trim {
+    # Return $text with leading and trailing whitespace removed.
+    my ($text) = @_;
+    $text =~ s/^\s+//;
+    $text =~ s/\s+$//;
+    return $text;
+}
+
+sub convert_ranges {
+    # Convert every GAP range in $text from `[ lower .. upper ]` to
+    # `(lower):(upper)`, while preserving ordinary lists.
+    my ($text) = @_;
+    my $result = '';
+    my $length = length $text;
+
+    for ( my $position = 0; $position < $length; $position++ ) {
+        my $character = substr( $text, $position, 1 );
+
+        if ( $character eq "\\" ) {
+            $result .= substr( $text, $position, 2 );
+            $position++;
+        } elsif ( $character eq '"' ) {
+            my $end = skip_string( $text, $position );
+            if ( substr( $text, $position, 3 ) eq '"""' ) {
+                $result .= '"""';
+            } else {
+                my $content = substr( $text, $position + 1, $end - $position - 2 );
+                $result .= '"' . convert_ranges($content) . '"';
+            }
+            $position = $end - 1;
+        } elsif ( $character eq '#' ) {
+            my $end = skip_comment( $text, $position );
+            $result .= substr( $text, $position, $end - $position );
+            $position = $end - 1;
+        } elsif ( $character eq '[' ) {
+            my $end = matching_square_bracket( $text, $position );
+            if ( $end == -1 ) {
+                $result .= substr( $text, $position );
+                last;
+            }
+
+            my $content = substr( $text, $position + 1, $end - $position - 1 );
+            my $operator = range_operator($content);
+            if ( $operator == -1 ) {
+                # Preserve ordinary lists, while converting any ranges nested in them.
+                $result .= '[' . convert_ranges($content) . ']';
+            } else {
+                my $lower = convert_ranges( trim( substr( $content, 0, $operator ) ) );
+                my $upper = convert_ranges( trim( substr( $content, $operator + 2 ) ) );
+                my $range = "($lower):($upper)";
+                # Parenthesize before indexing so `[ a .. b ][i]` becomes
+                # `((a):(b))[i]`, which is valid Julia syntax.
+                $result .= $end + 1 < $length && substr( $text, $end + 1, 1 ) eq '['
+                    ? "($range)"
+                    : $range;
+            }
+            $position = $end;
+        } else {
+            $result .= $character;
+        }
+    }
+
+    return $result;
+}
+
+local $/;
+print convert_ranges( <> );
