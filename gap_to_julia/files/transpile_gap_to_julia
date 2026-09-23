@@ -162,7 +162,8 @@ export -f syntax_replacements
 
 test_replacements() {
 	# first, revert some code changes also affecting output lines
-	sed '/^[>g]/! s/(\([0-9]*\)):(\([0-9]*\))/[ \1 .. \2 ]/g' \
+	# the leading group requires start-of-line or a non-word character, so e.g. "id(3):(3)" is not mistaken for a converted range
+	sed '/^[>g]/! s/\(^\|[^A-Za-z0-9_]\)(\([0-9]*\)):(\([0-9]*\))/\1[ \2 .. \3 ]/g' \
 	| sed '/^[>g]/! s/&&/and/g' \
 	| sed 's/^<A[n ].*object in /<An object in /g' \
 	| sed 's/^A[n ].*object in /An object in /g' \
