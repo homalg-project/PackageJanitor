@@ -7,6 +7,16 @@ authors = [
 # Transpiled from GAP's {{ package_name }} v{{ package_version_in_gap.stdout | replace('\r', '') }}
 version = "{{ current_version.stdout | replace('\r', '') }}"
 
+# Current dependencies of GAP's {{ package_name }} v{{ package_version_in_gap.stdout | replace('\r', '') }}
+# NeededOtherPackages:
+{% for dep in gap_needed_dependencies %}
+#   {{ dep }}
+{% endfor %}
+# SuggestedOtherPackages:
+{% for dep in gap_suggested_dependencies %}
+#   {{ dep }}
+{% endfor %}
+
 [deps]
 {% if dependencies %}
 {{ uuids_list[0] }}

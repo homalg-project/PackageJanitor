@@ -119,6 +119,32 @@
   register: package_version_in_gap
   changed_when: false
 
+- name: Extract NeededOtherPackages and SuggestedOtherPackages from PackageInfo.g
+  shell: |
+    gap --quitonbreak --norepl -q -c '
+    Read("PackageInfo.g");
+    deps := GAPInfo.PackageInfoCurrent.Dependencies;
+    if IsBound(deps.NeededOtherPackages) then
+      for p in deps.NeededOtherPackages do Print(p[1], " ", p[2], "\n"); od;
+    fi;
+    Print("---\n");
+    if IsBound(deps.SuggestedOtherPackages) then
+      for p in deps.SuggestedOtherPackages do Print(p[1], " ", p[2], "\n"); od;
+    fi;
+    ' 2>/dev/null
+  args:
+    chdir: "{{ source_package_path }}"
+    executable: /bin/bash
+  register: gap_package_dependencies
+  when: gen_full == '1'
+  changed_when: false
+
+- name: Split the extracted GAP dependencies into needed and suggested
+  set_fact:
+    gap_needed_dependencies: "{{ (gap_package_dependencies.stdout.split('---')[0]).splitlines() | select() | list }}"
+    gap_suggested_dependencies: "{{ (gap_package_dependencies.stdout.split('---')[1]).splitlines() | select() | list }}"
+  when: gen_full == '1'
+
 - name: Extract UUIDs of dependencies, weak dependencies, and extras
   shell: |
     deps="{{ dependencies_names | join(" ") }}"
