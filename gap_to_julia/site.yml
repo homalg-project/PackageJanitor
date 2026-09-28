@@ -726,6 +726,48 @@
           cleanup_test_files_by_keywords:
             - drop_example_in_Julia
 
+- name: LazyCategories
+  hosts: LazyCategories
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: LazyCategories
+          source: CategoricalTowers
+          target: CategoricalTowers.jl
+          dependencies:
+            - CAP
+            - CartesianCategories
+            - MonoidalCategories
+            - AdditiveClosuresForCAP
+            - ToolsForCategoricalTowers
+            - Toposes
+          weak_dependencies:
+          extras:
+            - Test
+            - Documenter
+          targets:
+            test: default
+          test_imports:
+            - CAP
+            - CartesianCategories
+            - MonoidalCategories
+            - AdditiveClosuresForCAP
+            - ToolsForCategoricalTowers
+            - Toposes
+            - LazyCategories
+          extensions:
+          import_dependencies: true
+          pre_init_file_exists: false
+          post_init_file_exists: false
+          test_upto_whitespaces: true
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
+            - Digraph
+            - Visualize
+            - GeneralizedMorphism
+
 - name: LinearAlgebraForCAP
   hosts: LinearAlgebraForCAP
   connection: local
