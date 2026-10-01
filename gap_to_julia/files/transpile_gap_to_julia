@@ -52,6 +52,7 @@ chmod -f u+w "$JULIA_PKG_DIR$PKG_NAME"/src/gap/*.autogen.jl || true
 syntax_replacements() {
 	sed "s/ReadPackage( \"$1\", \"gap\/\\(.*\\)\" );$/include( \"\\1.autogen.jl\" );/g" \
 	| sed 's/#% G2J:julia-only //g' \
+	| sed 's/# G2J:julia-only //g' \
 	| sed 's/ = / == /g' \
 	| sed 's/ <> / != /g' \
 	| sed 's/ :=/ =/g' \

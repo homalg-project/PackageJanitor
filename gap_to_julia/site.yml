@@ -508,6 +508,8 @@
             - CartesianCategories
             - QuotientCategories
             - LinearAlgebraForCAP
+            - LinearClosuresForCAP
+            - AdditiveClosuresForCAP
             - FreydCategoriesForCAP
             - ToolsForCategoricalTowers
             - Toposes
@@ -515,6 +517,7 @@
             - FpCategories
             - FpLinearCategories
             - Locales
+            - FiniteCocompletions
             - PresheafCategories
             - SubcategoriesForCAP
           weak_dependencies:
@@ -530,6 +533,8 @@
             - CartesianCategories
             - QuotientCategories
             - LinearAlgebraForCAP
+            - LinearClosuresForCAP
+            - AdditiveClosuresForCAP
             - FreydCategoriesForCAP
             - ToolsForCategoricalTowers
             - Toposes
@@ -537,6 +542,7 @@
             - FpCategories
             - FpLinearCategories
             - Locales
+            - FiniteCocompletions
             - PresheafCategories
             - SubcategoriesForCAP
             - FunctorCategories
