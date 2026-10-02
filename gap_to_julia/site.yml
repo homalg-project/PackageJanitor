@@ -34,6 +34,105 @@
             - HomalgFieldOfRationalsInSingular
             - SimplifySourceAndRange
 
+- name: CAP_project root metadata
+  hosts: CAP_project_root
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_monorepo.yml
+      vars:
+        monorepo:
+          name: CAP_project
+          target: CAP_project.jl
+          title: CAP_project
+          tagline: Categories, Algorithms, Programming
+          description: This repository contains several Julia packages transpiled from the corresponding GAP packages in the [CAP project][CAP_project].
+          references:
+            - name: CAP_project
+              url: https://homalg-project.github.io/docs/CAP_project-based/
+          packages:
+            - CAP
+            - MonoidalCategories
+            - CartesianCategories
+            - Toposes
+            - FinSetsForCAP
+            - ZXCalculusForCAP
+            - LinearAlgebraForCAP
+            - AdditiveClosuresForCAP
+            - LinearClosuresForCAP
+            - FreydCategoriesForCAP
+            - ModulePresentationsForCAP
+          release_status: true
+          plain_subsplit_output: true
+          workflow_dispatch: true
+
+- name: CategoricalTowers root metadata
+  hosts: CategoricalTowers_root
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_monorepo.yml
+      vars:
+        monorepo:
+          name: CategoricalTowers
+          target: CategoricalTowers.jl
+          title: CategoricalTowers.jl
+          description: This repository contains transpiled Julia versions of several packages from [CategoricalTowers][CategoricalTowers].
+          references:
+            - name: CategoricalTowers
+              url: https://github.com/homalg-project/CategoricalTowers
+          packages:
+            - ToolsForCategoricalTowers
+            - QuotientCategories
+            - FpCategories
+            - FpLinearCategories
+            - Locales
+            - SubcategoriesForCAP
+            - PresheafCategories
+            - FiniteCocompletions
+            - FunctorCategories
+          release_status: true
+          workflow_dispatch: true
+
+- name: HigherHomologicalAlgebra root metadata
+  hosts: HigherHomologicalAlgebra_root
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_monorepo.yml
+      vars:
+        monorepo:
+          name: HigherHomologicalAlgebra
+          target: HigherHomologicalAlgebra.jl
+          title: HigherHomologicalAlgebra
+          tagline: Higher Homological Algebra
+          description: This repository contains several Julia packages transpiled from the corresponding [CAP-based][CAP_based] packages in the [Higher Homological Algebra Project][HigherHomologicalAlgebra].
+          references:
+            - name: CAP_based
+              url: https://homalg-project.github.io/docs/CAP_project-based/
+            - name: HigherHomologicalAlgebra
+              url: https://homalg-project.github.io/pkg/HigherHomologicalAlgebra
+          packages:
+            - TriangulatedCategories
+            - ComplexesCategories
+            - Bicomplexes
+            - HomotopyCategories
+            - DerivedCategories
+          notebook_targets: true
+          release_status: true
+          workflow_dispatch: true
+          ci_dependencies:
+            - name: Clone and install MatricesForHomalg.jl
+              run: |
+                git clone https://github.com/homalg-project/MatricesForHomalg.jl.git ../MatricesForHomalg.jl
+                julia -e 'using Pkg; Pkg.develop(path="../MatricesForHomalg.jl")'
+            - name: Clone and install CAP_project.jl
+              run: |
+                git clone https://github.com/homalg-project/CAP_project.jl.git ../CAP_project.jl
+                make -C ../CAP_project.jl install
+            - name: Clone and install CategoricalTowers.jl
+              run: |
+                git clone https://github.com/homalg-project/CategoricalTowers.jl.git ../CategoricalTowers.jl
+                make -C ../CategoricalTowers.jl install
+          disable_subsplit_updates: true
+
 - name: Bicomplexes
   hosts: Bicomplexes
   connection: local

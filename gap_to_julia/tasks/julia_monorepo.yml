@@ -1,0 +1,40 @@
+- name: Set monorepo variables for {{ monorepo.name }}
+  set_fact:
+    monorepo_target_path: "{{ lookup('env', 'HOME') }}/.julia/dev/{{ monorepo.target }}"
+    monorepo_packages: "{{ monorepo.packages }}"
+
+- name: Add root README.md
+  template:
+    src: monorepo_README.md.j2
+    dest: "{{ monorepo_target_path }}/README.md"
+    mode: '0644'
+
+- name: Add root makefile
+  template:
+    src: monorepo_makefile.j2
+    dest: "{{ monorepo_target_path }}/makefile"
+    mode: '0644'
+
+- name: Make sure root development and workflow directories exist
+  file:
+    path: "{{ monorepo_target_path }}/{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - dev
+    - .github/workflows
+
+- name: Add root subsplit scripts
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ monorepo_target_path }}/dev/{{ item }}"
+    mode: '0755'
+  loop:
+    - manually_update_subsplits.sh
+    - update_subsplits.sh
+
+- name: Add root test workflow
+  template:
+    src: Test.yml.j2
+    dest: "{{ monorepo_target_path }}/.github/workflows/Test.yml"
+    mode: '0644'

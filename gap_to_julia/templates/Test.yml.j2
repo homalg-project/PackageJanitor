@@ -1,0 +1,94 @@
+name: Run Julia Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  schedule:
+    - cron: "0 0 * * *"  # Run every day at midnight
+{% if monorepo.workflow_dispatch | default(false) %}
+  workflow_dispatch:
+{% endif %}
+permissions:
+  contents: write
+
+# cancel runs for pull requests on force push
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-using-a-fallback-value
+concurrency:
+  group: ${{ '{{' }} github.workflow }}-${{ '{{' }} github.event.pull_request.number || github.run_id }}-${{ '{{' }} github.run_attempt }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: ${{ '{{' }} matrix.package }} - Julia ${{ '{{' }} matrix.julia-version }} on ${{ '{{' }} matrix.os }}
+    runs-on: ${{ '{{' }} matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+{% for package in monorepo.packages %}
+          - {{ package }}
+{% endfor %}
+        julia-version:
+          - '1.12'
+          - 'nightly'
+        os:
+          - ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Julia
+        uses: julia-actions/setup-julia@v3
+        with:
+          version: ${{ '{{' }} matrix.julia-version }}
+{% for dependency in monorepo.ci_dependencies | default([]) %}
+      - name: {{ dependency.name }}
+        run: |
+{{ dependency.run | indent(10, true) }}
+{% endfor %}
+      - name: Install all packages
+        run: make install
+{% if monorepo.notebook_targets | default(false) %}
+      - name: Set up Jupyter
+        run: pip install jupyter nbconvert --quiet
+{% endif %}
+      - name: Run tests
+        run: make -C ${{ '{{' }} matrix.package }} test
+{% if monorepo.notebook_targets | default(false) %}
+      - name: Test notebooks
+        run: |
+          julia -e 'using Pkg; Pkg.add("Singular"); Pkg.add("IJulia"); using IJulia; installkernel("Julia")'
+          sed -i '/"--project=@\\."/d' ~/.local/share/jupyter/kernels/julia-*/kernel.json
+          make -C ${{ '{{' }} matrix.package }} test-notebooks
+{% endif %}
+  update_subsplits:
+    name: Update subsplits
+    needs: test
+    runs-on: ubuntu-latest
+{% if monorepo.disable_subsplit_updates | default(false) %}
+    if: false  # enable this job when you move the repository to homalg-project
+{% else %}
+    if: github.event_name == 'push'
+{% endif %}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Julia
+        uses: julia-actions/setup-julia@v3
+        with:
+          version: '1.12'
+      - name: Install all packages
+        run: make install
+      - name: Run update_subsplits script
+        env:
+          JULIA_SUBSPLIT_TOKEN: ${{ '{{' }} secrets.SUBSPLIT_PUSH_SECRET }}
+        run: |
+          ./dev/update_subsplits.sh

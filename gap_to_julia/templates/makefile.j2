@@ -9,13 +9,13 @@ uninstall:
 test:
 	julia -e 'using Pkg; Pkg.test("{{ package_name }}");'
 
-gen:
+gen-basic:
 	rm -f ./src/gap/*.autogen.jl
 	rm -f ./src/gap/*/*.autogen.jl
 	rm -f ./docs/src/*.autogen.md
 	./.generate.sh -e gen_full=0
 
-gen-full:
+gen:
 	rm -f ./src/gap/*.autogen.jl
 	rm -f ./src/gap/*/*.autogen.jl
 	rm -f ./docs/src/*.autogen.md
