@@ -1,0 +1,37 @@
+<!-- BEGIN HEADER -->
+# {{ monorepo.title }}
+{% if monorepo.tagline | default('') %}
+
+### {{ monorepo.tagline }}
+{% endif %}
+<!-- END HEADER -->
+
+{{ monorepo.description }}
+{% if monorepo.release_status | default(false) %}
+
+## Release status
+
+The table below shows each split package's release status relative to the [General registry][General].
+Its badge compares the version in this repository with the latest registered version, making it
+clear when [@JuliaRegistrator][JuliaRegistrator] must be triggered after a version bump.
+
+| Package | Release status |
+| --- | --- |
+{% for package in monorepo.packages %}
+| [{{ package }}](https://github.com/homalg-project/{{ package }}.jl) | ![{{ package }} release status](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhomalg-project%2FReleaseStatusForJuliaPackages%2Fmain%2F{{ monorepo.target }}%2Fbadges%2F{{ package }}.json) |
+{% endfor %}
+
+The badge data is refreshed after every push and every 1 hour. To update the badges immediately, click the badge below, select "Run workflow", and run it on `master`.
+
+[![Update Release Status Badges](https://github.com/homalg-project/{{ monorepo.target }}/actions/workflows/release-status.yml/badge.svg)](https://github.com/homalg-project/{{ monorepo.target }}/actions/workflows/release-status.yml)
+
+[General]: https://github.com/JuliaRegistries/General
+[JuliaRegistrator]: https://github.com/JuliaRegistries/Registrator.jl
+{% endif %}
+{% for reference in monorepo.references %}
+
+[{{ reference.name }}]: {{ reference.url }}
+{% endfor %}
+
+<!-- BEGIN FOOTER -->
+<!-- END FOOTER -->

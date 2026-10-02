@@ -1,0 +1,53 @@
+install:
+	julia -e 'using Pkg; \
+{% for package in monorepo.packages %}
+		Pkg.develop(path = "{{ package }}"); \
+{% endfor %}
+	'
+
+{% if monorepo.include_uninstall | default(false) %}
+uninstall:
+{% for package in monorepo.packages %}
+	$(MAKE) -C {{ package }} uninstall
+{% endfor %}
+
+{% endif %}
+gen:
+{% for package in monorepo.packages %}
+	$(MAKE) -C {{ package }} gen
+{% endfor %}
+	$(MAKE) generate-root
+
+gen-full:
+{% for package in monorepo.packages %}
+	$(MAKE) -C {{ package }} gen-full
+{% endfor %}
+	$(MAKE) generate-root
+
+generate-root:
+	ansible-playbook -i $$HOME/.gap/PackageJanitor/gap_to_julia/hosts $$HOME/.gap/PackageJanitor/gap_to_julia/site.yml -l {{ monorepo.name }}_root --diff
+
+test:
+{% for package in monorepo.packages %}
+	$(MAKE) -C {{ package }} test
+{% endfor %}
+
+{% if monorepo.notebook_targets | default(false) %}
+execute-notebooks:
+{% for package in monorepo.packages %}
+	$(MAKE) -C {{ package }} execute-notebooks
+{% endfor %}
+
+test-notebooks:
+{% for package in monorepo.packages %}
+	$(MAKE) -C {{ package }} test-notebooks
+{% endfor %}
+
+{% endif %}
+git-commit:
+{% for package in monorepo.packages %}
+	$(MAKE) -C {{ package }} git-commit
+{% endfor %}
+
+update-subsplits:
+	./dev/manually_update_subsplits.sh
