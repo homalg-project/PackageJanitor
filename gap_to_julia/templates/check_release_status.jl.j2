@@ -1,0 +1,87 @@
+#!/usr/bin/env julia
+#
+# For each package in this monorepo, compares the version in its Project.toml
+# against the latest version registered in the Julia General registry, and
+# writes a shields.io endpoint badge JSON file to dev/badges/<PackageName>.json.
+#
+# The workflow publishes these files to ReleaseStatusForJuliaPackages for use
+# in the README badges.
+
+import Pkg
+using TOML
+
+const PACKAGES = [
+{% for package in monorepo.packages %}
+    "{{ package }}",
+{% endfor %}
+]
+
+const BADGES_DIR = joinpath(@__DIR__, "badges")
+
+function local_version(pkg::AbstractString)
+    project = TOML.parsefile(joinpath(@__DIR__, "..", pkg, "Project.toml"))
+    return VersionNumber(project["version"])
+end
+
+function registered_version_info(registry, package_entry)
+    registry_info = Pkg.Registry.registry_info
+    return applicable(registry_info, package_entry) ?
+        registry_info(package_entry).version_info : registry_info(registry, package_entry).version_info
+end
+
+function latest_registered_version(pkg::AbstractString)
+    general = only(filter(r -> r.name == "General", Pkg.Registry.reachable_registries()))
+
+    package_entry = nothing
+    for entry in values(general.pkgs)
+        if entry.name == pkg
+            package_entry = entry
+            break
+        end
+    end
+    package_entry === nothing && return nothing
+
+    version_info = registered_version_info(general, package_entry)
+    non_yanked = [v for (v, info) in version_info if !info.yanked]
+    isempty(non_yanked) && return nothing
+
+    return maximum(non_yanked)
+end
+
+function badge_json(; label::AbstractString, message::AbstractString, color::AbstractString)
+    escape(s) = replace(s, "\"" => "\\\"")
+    return """
+    {"schemaVersion":1,"label":"$(escape(label))","message":"$(escape(message))","color":"$(escape(color))"}
+    """
+end
+
+function status_badge(pkg::AbstractString)
+    local_v = local_version(pkg)
+    latest_v = latest_registered_version(pkg)
+
+    if latest_v === nothing
+        return badge_json(label = "release", message = "v$(local_v) never registered", color = "lightgrey")
+    elseif local_v == latest_v
+        return badge_json(label = "release", message = "v$(local_v) released", color = "brightgreen")
+    elseif local_v > latest_v
+        return badge_json(label = "release", message = "v$(local_v) NOT released (latest: v$(latest_v))", color = "orange")
+    else
+        return badge_json(label = "release", message = "v$(local_v) (registry has v$(latest_v))", color = "red")
+    end
+end
+
+function main()
+    isempty(Pkg.Registry.reachable_registries()) && Pkg.Registry.add("General")
+    Pkg.Registry.update()
+
+    mkpath(BADGES_DIR)
+
+    for pkg in PACKAGES
+        json = status_badge(pkg)
+        path = joinpath(BADGES_DIR, "$(pkg).json")
+        write(path, json)
+        println("Wrote $(path):\n$(json)")
+    end
+end
+
+main()

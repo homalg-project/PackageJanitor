@@ -1,0 +1,55 @@
+name: Update Release Status Badges
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: "0 */1 * * *"  # Run every 1 hour
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ '{{' }} github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  release-status:
+    if: github.repository == 'homalg-project/{{ monorepo.target }}'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: true
+
+      - name: Set up Julia
+        uses: julia-actions/setup-julia@v3
+        with:
+          version: '1.12'
+
+      - name: Compare Project.toml versions against the General registry
+        run: julia --startup-file=no dev/check_release_status.jl
+
+      - name: Checkout release status repository
+        uses: actions/checkout@v7
+        with:
+          repository: homalg-project/ReleaseStatusForJuliaPackages
+          ref: main
+          path: release-status
+          token: ${{ '{{' }} secrets.RELEASE_STATUS_PUSH_TOKEN }}
+
+      - name: Publish changed badges
+        run: |
+          target=release-status/{{ monorepo.target }}/badges
+          mkdir -p "$target"
+          rsync -a --delete dev/badges/ "$target/"
+          cd release-status
+          git add {{ monorepo.target }}/badges
+          git diff --cached --quiet && exit 0
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git commit -m "chore: update {{ monorepo.target }} release status badges ($GITHUB_SHA)"
+          git push
