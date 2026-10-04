@@ -93,7 +93,7 @@ syntax_replacements() {
 	| sed 's/⦇\([^⦇⦈]*\)⦈/"\1"/g' `# replace special brackets by quotation marks again` \
 	| sed 's/\.( \([^)]*\) )/[\1]/g' \
 	| sed 's/\.(\([^)]*\))/[\1]/g' \
-	| perl "$SCRIPT_DIR/convert_gap_ranges" \
+	| if [ "$2" = "--test-input-only" ]; then perl "$SCRIPT_DIR/convert_gap_ranges" --test-input-only; else perl "$SCRIPT_DIR/convert_gap_ranges"; fi \
 	| sed 's/{ arg } ->/( arg... ) ->/g' \
 	| sed 's/{\([^}]*\)} ->/(\1) ->/g' \
 	| sed 's/{/[/g' \
@@ -204,7 +204,7 @@ chmod -f u+w "$JULIA_PKG_DIR$PKG_NAME"/docs/src/*.autogen.md || true
 [ "$LOGS" = "0" ] || echo "Made files in $JULIA_PKG_DIR$PKG_NAME/docs/src writable"
 
 # use perl to handle line continuation and empty lines starting comments
-find . \( -type d -name .git -prune \) -o \( -type f -name '*.tst' \) -exec bash -c "cat '{}' | perl -p -e 's/\\\\\\n//' | perl -0 -p -e 's/\\n\\n#.*\\n/\\n/g' | syntax_replacements $PKG_NAME | test_replacements $PKG_NAME > \"$JULIA_PKG_DIR$PKG_NAME\"/docs/src/'{}'.autogen.md" \;
+find . \( -type d -name .git -prune \) -o \( -type f -name '*.tst' \) -exec bash -c "cat '{}' | perl -p -e 's/\\\\\\n//' | perl -0 -p -e 's/\\n\\n#.*\\n/\\n/g' | syntax_replacements $PKG_NAME --test-input-only | test_replacements $PKG_NAME > \"$JULIA_PKG_DIR$PKG_NAME\"/docs/src/'{}'.autogen.md" \;
 [ "$LOGS" = "0" ] || echo "Alter & Copy $GAP_PKG_DIR$PKG_FULL_NAME/gap/tst/*.tst to $JULIA_PKG_DIR$PKG_NAME/docs/src/*.autogen.md"
 
 rm "$JULIA_PKG_DIR$PKG_NAME"/docs/src/100_LoadPackage.tst.autogen.md
