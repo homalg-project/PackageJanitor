@@ -166,5 +166,30 @@ sub convert_ranges {
     return $result;
 }
 
+sub convert_test_input_ranges {
+    # Test files interleave GAP input with literal expected output. Convert
+    # complete prompt blocks so multiline ranges still work, while preserving
+    # display output such as `[ 0 .. 6 ]` verbatim.
+    my ($text) = @_;
+    my @lines = split /(?<=\n)/, $text;
+    my $result = '';
+    my $input = '';
+
+    for my $line (@lines) {
+        if ( $line =~ /^(?:gap> |> )/ ) {
+            $input .= $line;
+        } else {
+            $result .= convert_ranges($input) if $input ne '';
+            $input = '';
+            $result .= $line;
+        }
+    }
+
+    return $result . convert_ranges($input);
+}
+
 local $/;
-print convert_ranges( <> );
+my $test_input_only = @ARGV && $ARGV[0] eq '--test-input-only';
+shift @ARGV if $test_input_only;
+my $text = <>;
+print $test_input_only ? convert_test_input_ranges($text) : convert_ranges($text);
