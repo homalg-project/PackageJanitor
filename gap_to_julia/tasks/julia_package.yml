@@ -302,6 +302,13 @@
     mode: '0755'
   when: gen_full == '1'
 
+- name: Add package test workflow
+  template:
+    src: package_Test.yml.j2
+    dest: "{{ target_package_path }}/.github/workflows/Test.yml"
+    mode: '0644'
+  when: gen_full == '1'
+
 - name: Add LICENSE, TagBot.yml, and src/init.jl
   copy:
     src: "{{ item.src }}"
