@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -e
+
+# Define GitHub username
+if [ -z "$1" ]; then
+  GITHUB_USER="homalg-project"
+else
+  GITHUB_USER="$1"
+fi
+
+# update git index
+git status > /dev/null
+
+if ! git diff-index --quiet HEAD; then
+{% if monorepo.plain_subsplit_output | default(false) %}
+	echo "WARNING: Dirty working tree."
+{% else %}
+	echo -e "\033[33mWARNING: Dirty working tree.\033[0m"
+{% endif %}
+fi
+
+if [[ "$(git rev-parse --abbrev-ref HEAD)" != "master" ]]; then
+{% if monorepo.plain_subsplit_output | default(false) %}
+	echo "ERROR: Not on branch master"
+{% else %}
+	echo -e "\033[31mERROR: Not on branch master\033[0m"
+{% endif %}
+	exit 1
+fi
+{% for package in monorepo.packages %}
+
+# {{ package }}
+git subtree split --prefix={{ package }} -b {{ package }}-split
+git push git@github.com:${GITHUB_USER}/{{ package }}.jl.git {{ package }}-split:master
+{% if monorepo.plain_subsplit_output | default(false) %}
+echo ""
+{% else %}
+echo "Pushed to {{ package }}.jl"
+{% endif %}
+{% endfor %}

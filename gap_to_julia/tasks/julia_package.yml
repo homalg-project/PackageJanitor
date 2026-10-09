@@ -266,6 +266,7 @@
     mode: '0644'
   vars:
     package_subtitle: "{{ subtitle.stdout }}"
+    package_release_status_target: "{{ package.target }}"
   when: gen_basic == '0'
 
 - name: Make sure /src/gap, /docs/src and /test exist
