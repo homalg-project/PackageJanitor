@@ -9,17 +9,17 @@ uninstall:
 test:
 	julia -e 'using Pkg; Pkg.test("{{ package_name }}");'
 
+gen-basic:
+	rm -f ./src/gap/*.autogen.jl
+	rm -f ./src/gap/*/*.autogen.jl
+	rm -f ./docs/src/*.autogen.md
+	./.generate.sh -e gen_basic=1
+
 gen:
 	rm -f ./src/gap/*.autogen.jl
 	rm -f ./src/gap/*/*.autogen.jl
 	rm -f ./docs/src/*.autogen.md
-	./.generate.sh -e gen_full=0
-
-gen-full:
-	rm -f ./src/gap/*.autogen.jl
-	rm -f ./src/gap/*/*.autogen.jl
-	rm -f ./docs/src/*.autogen.md
-	./.generate.sh -e gen_full=1
+	./.generate.sh -e gen_basic=0
 
 convert-to-notebook:
 	@test -n "$(FILE)" || (echo "Usage: make convert-to-notebook FILE=docs/src/file_name.md"; exit 1)
