@@ -732,12 +732,6 @@
               \newcommand{\Ho}[1]{\mathrm{K}^b(#1)}
             has_HOMALG_IO: false
             tests_only_basic: true
-          - name: ToolsForHigherHomologicalAlgebra
-            description: Tools for the Higher Homological Algebra project
-            tests_additional_packages_to_load:
-              - FinSetsForCAP
-              - FreydCategoriesForCAP
-            tests_only_basic: true
           - name: TriangulatedCategories
             description: Framework for triangulated categories
             doc_additional_latex_preamble: |
@@ -761,7 +755,6 @@
               - DerivedCategories
           - packages:
               - StableCategories
-              - ToolsForHigherHomologicalAlgebra
               - TriangulatedCategories
         ci_additional_repositories:
           - homalg_project
