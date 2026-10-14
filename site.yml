@@ -679,7 +679,7 @@
               - IO_ForHomalg
               - FinSetsForCAP
               - FreydCategoriesForCAP
-              - Algebroids
+              - FpLinearCategories
             tests_only_basic: true
           - name: DerivedCategories
             description: Derived categories of Abelian categories
@@ -689,7 +689,7 @@
               - IO_ForHomalg
               - FinSetsForCAP
               - FreydCategoriesForCAP
-              - Algebroids
+              - FpLinearCategories
               - FunctorCategories
               - SubcategoriesForCAP
           - name: HomotopyCategories
