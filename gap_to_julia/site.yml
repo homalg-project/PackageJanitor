@@ -149,6 +149,7 @@
             - MatricesForHomalg
             - CAP
             - ComplexesCategories
+            - TriangulatedCategories
           weak_dependencies:
             - FpCategories
             - FpLinearCategories
@@ -263,6 +264,7 @@
             - AdditiveClosuresForCAP
             - FreydCategoriesForCAP
             - PresheafCategories
+            - TriangulatedCategories
           weak_dependencies:
             - FpCategories
             - FpLinearCategories
