@@ -88,6 +88,7 @@
             - SubcategoriesForCAP
             - PresheafCategories
             - FiniteCocompletions
+            - SliceCategories
             - FunctorCategories
           release_status: true
           workflow_dispatch: true
@@ -620,6 +621,7 @@
             - FiniteCocompletions
             - PresheafCategories
             - SubcategoriesForCAP
+            - SliceCategories
           weak_dependencies:
           extras:
             - Test
@@ -645,6 +647,7 @@
             - FiniteCocompletions
             - PresheafCategories
             - SubcategoriesForCAP
+            - SliceCategories
             - FunctorCategories
           extensions:
           import_dependencies: true
@@ -1012,6 +1015,58 @@
           disable_method_overwrite_warning: true
           cleanup_test_files_by_keywords:
             - drop_example_in_Julia
+
+- name: SliceCategories
+  hosts: SliceCategories
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: SliceCategories
+          source: CategoricalTowers
+          target: CategoricalTowers.jl
+          dependencies:
+            - CAP
+            - MonoidalCategories
+            - CartesianCategories
+            - ToolsForCategoricalTowers
+            - Toposes
+            - Locales
+            - FpCategories
+            - FreydCategoriesForCAP
+          weak_dependencies:
+          extras:
+            - Test
+            - Documenter
+            - FinSetsForCAP
+            - Singular
+            - MatricesForHomalg
+            - AdditiveClosuresForCAP
+          targets:
+            test: default
+          test_imports:
+            - CAP
+            - MonoidalCategories
+            - CartesianCategories
+            - ToolsForCategoricalTowers
+            - Toposes
+            - Locales
+            - FpCategories
+            - FreydCategoriesForCAP
+            - FinSetsForCAP
+            - Singular
+            - MatricesForHomalg
+            - AdditiveClosuresForCAP
+            - SliceCategories
+          extensions:
+          import_dependencies: true
+          pre_init_file_exists: false
+          post_init_file_exists: false
+          test_upto_whitespaces: true
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
+            - CapJit*
 
 - name: ToolsForCategoricalTowers
   hosts: ToolsForCategoricalTowers
