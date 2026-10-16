@@ -621,6 +621,7 @@
             - FiniteCocompletions
             - PresheafCategories
             - SubcategoriesForCAP
+            - SliceCategories
           weak_dependencies:
           extras:
             - Test
@@ -646,6 +647,7 @@
             - FiniteCocompletions
             - PresheafCategories
             - SubcategoriesForCAP
+            - SliceCategories
             - FunctorCategories
           extensions:
           import_dependencies: true
