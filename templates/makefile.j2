@@ -122,7 +122,7 @@ test-gap_to_julia:
 {% endfor %}
 {% for repo in package.gap_to_julia.julia_repositories %}
 		for pkg in {{ repo.packages | join(" ") }}; do \
-			make -C "$$HOME/.julia/dev/{{ repo.repository }}/$${pkg}" gen-full; \
+			make -C "$$HOME/.julia/dev/{{ repo.repository }}/$${pkg}" gen; \
 		done; \
 {% endfor %}
 {% for repo in package.gap_to_julia.julia_repositories %}
