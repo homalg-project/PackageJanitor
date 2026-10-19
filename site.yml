@@ -225,6 +225,7 @@
               - FinSetsForCAP
             doc_additional_latex_preamble: |
               \usepackage{mathtools}
+              \usepackage{tikz-cd}
               \DeclareUnicodeCharacter{2205}{\ensuremath{\emptyset}}
               \DeclareUnicodeCharacter{2C76}{\ensuremath{\vdash}\!\!}
               \DeclareUnicodeCharacter{2192}{\ensuremath{\!\!\rightarrow\!}}
@@ -234,6 +235,7 @@
               \DeclareUnicodeCharacter{21A6}{\ensuremath{\mapsto}}
               \DeclareUnicodeCharacter{227B}{\ensuremath{\succ}}
               \DeclareUnicodeCharacter{22C5}{\ensuremath{\cdot}}
+              \DeclareUnicodeCharacter{2297}{\ensuremath{\otimes}}
             tests_additional_packages_to_load:
               - Digraphs
               - ToolsForCategoricalTowers ## load before FinSetsForCAP
