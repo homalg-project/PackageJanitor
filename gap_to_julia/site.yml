@@ -89,6 +89,7 @@
             - PresheafCategories
             - FiniteCocompletions
             - SliceCategories
+            - LazyCategories
             - FunctorCategories
           release_status: true
           workflow_dispatch: true
