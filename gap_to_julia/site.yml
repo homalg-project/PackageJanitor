@@ -61,6 +61,7 @@
             - LinearClosuresForCAP
             - FreydCategoriesForCAP
             - ModulePresentationsForCAP
+            - GeneralizedMorphismsForCAP
           release_status: true
           plain_subsplit_output: true
           workflow_dispatch: true
@@ -594,6 +595,45 @@
             - SimplifyObject_IsoFromInputObject( Mcols, infinity ) # Same as above
             - EmbeddingFunctorIntoFreydCategory # functors are not available yet
             - co_freyd = CoFreydCategory( rows ) # CoFreyd: FreydCategory tries to compute a distinguished object of the underlying opposite category, which causes problems with world age
+
+- name: GeneralizedMorphismsForCAP
+  hosts: GeneralizedMorphismsForCAP
+  connection: local
+  tasks:
+    - import_tasks: tasks/julia_package.yml
+      vars:
+        package:
+          name: GeneralizedMorphismsForCAP
+          source: CAP_project
+          target: CAP_project.jl
+          dependencies:
+            - CAP
+            - MonoidalCategories
+          weak_dependencies:
+            - MatricesForHomalg
+            - LinearAlgebraForCAP
+          extras:
+            - Test
+            - Documenter
+          targets:
+            test:
+              - Test
+              - Documenter
+              - MatricesForHomalg
+              - LinearAlgebraForCAP
+          test_imports:
+            - MatricesForHomalg
+            - CAP
+            - MonoidalCategories
+            - LinearAlgebraForCAP
+            - GeneralizedMorphismsForCAP
+          extensions:
+          import_dependencies: true
+          test_upto_whitespaces: true
+          pre_init_file_exists: false
+          post_init_file_exists: false
+          cleanup_test_files_by_keywords:
+            - drop_example_in_Julia
 
 - name: FunctorCategories
   hosts: FunctorCategories
