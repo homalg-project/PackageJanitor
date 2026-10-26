@@ -665,6 +665,7 @@
             - PresheafCategories
             - SubcategoriesForCAP
             - SliceCategories
+            - GeneralizedMorphismsForCAP
           weak_dependencies:
           extras:
             - Test
@@ -691,6 +692,7 @@
             - PresheafCategories
             - SubcategoriesForCAP
             - SliceCategories
+            - GeneralizedMorphismsForCAP
             - FunctorCategories
           extensions:
           import_dependencies: true
