@@ -59,6 +59,7 @@
             - LinearAlgebraForCAP
             - AdditiveClosuresForCAP
             - LinearClosuresForCAP
+            - Locales
             - FreydCategoriesForCAP
             - ModulePresentationsForCAP
             - GeneralizedMorphismsForCAP
@@ -85,7 +86,6 @@
             - QuotientCategories
             - FpCategories
             - FpLinearCategories
-            - Locales
             - SubcategoriesForCAP
             - PresheafCategories
             - FiniteCocompletions
@@ -888,7 +888,7 @@
         package:
           name: Locales
           source: CategoricalTowers
-          target: CategoricalTowers.jl
+          target: CAP_project.jl
           dependencies:
             - CAP
             - MonoidalCategories
