@@ -240,7 +240,7 @@
               - Digraphs
               - ToolsForCategoricalTowers ## load before FinSetsForCAP
               - FinSetsForCAP       ## load before FreydCategoriesForCAP
-              - Locales
+              - LocalesForCAP
               - FreydCategoriesForCAP
               - IO_ForHomalg
             tests_only_basic: true
@@ -324,11 +324,11 @@
               - Algebroids
               - GRAPE
               - Digraphs
-              - Locales
+              - LocalesForCAP
               - SubcategoriesForCAP
             tests_only_basic: true
             has_subsplit: true
-          - name: Locales
+          - name: LocalesForCAP
             description: "Locales, frames, coframes, meet semi-lattices of locally closed subsets, and Boolean algebras of constructible sets"
             has_HOMALG_IO: true
             doc_additional_latex_preamble: |
@@ -393,7 +393,7 @@
               - IO_ForHomalg
               - FreydCategoriesForCAP
               - FinSetsForCAP
-              - Locales
+              - LocalesForCAP
             tests_only_basic: true
             tests_without_precompiled_code: true
             has_subsplit: true
@@ -503,7 +503,7 @@
               - QuotientCategories
               - LazyCategories
               - Toposes
-              - Locales
+              - LocalesForCAP
               - SliceCategories
               - SubcategoriesForCAP
               - ZariskiFrames
@@ -600,7 +600,7 @@
             \endgroup
           tests_additional_packages_to_load:
             - Digraphs
-            - Locales
+            - LocalesForCAP
           needed_other_repositories:
             - homalg_project
             - CAP_project
@@ -774,7 +774,7 @@
           - SliceCategories
           - SubcategoriesForCAP
           - ToolsForCategoricalTowers
-          - Locales
+          - LocalesForCAP
 
 - name: CAP_project
   hosts: CAP_project
@@ -1030,7 +1030,7 @@
           - QuotientCategories
           - FinSetsForCAP
           - FpCategories
-          - Locales
+          - LocalesForCAP
           - ZariskiFrames
 
 - name: LoopIntegrals
@@ -1313,7 +1313,7 @@
               - path:        CategoricalTowers/LazyCategories
               - path:              CAP_project/LinearAlgebraForCAP
               - path:              CAP_project/LinearClosuresForCAP
-              - path:        CategoricalTowers/Locales
+              - path:        CategoricalTowers/LocalesForCAP
               - path:              CAP_project/ModulePresentationsForCAP
               - path:              CAP_project/ModulesOverLocalRingsForCAP
               - path:              CAP_project/MonoidalCategories
