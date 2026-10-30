@@ -59,7 +59,7 @@
             - LinearAlgebraForCAP
             - AdditiveClosuresForCAP
             - LinearClosuresForCAP
-            - Locales
+            - LocalesForCAP
             - FreydCategoriesForCAP
             - ModulePresentationsForCAP
             - GeneralizedMorphismsForCAP
@@ -402,7 +402,7 @@
             - Toposes
             - FinSetsForCAP
             - QuotientCategories
-            - Locales
+            - LocalesForCAP
             - FpCategories
             - FpLinearCategories
             - LinearClosuresForCAP
@@ -424,7 +424,7 @@
             - Toposes
             - FinSetsForCAP
             - QuotientCategories
-            - Locales
+            - LocalesForCAP
             - FpCategories
             - FpLinearCategories
             - LinearClosuresForCAP
@@ -660,7 +660,7 @@
             - FinSetsForCAP
             - FpCategories
             - FpLinearCategories
-            - Locales
+            - LocalesForCAP
             - FiniteCocompletions
             - PresheafCategories
             - SubcategoriesForCAP
@@ -687,7 +687,7 @@
             - FinSetsForCAP
             - FpCategories
             - FpLinearCategories
-            - Locales
+            - LocalesForCAP
             - FiniteCocompletions
             - PresheafCategories
             - SubcategoriesForCAP
@@ -879,14 +879,14 @@
           cleanup_test_files_by_keywords:
             - ZCG
 
-- name: Locales
-  hosts: Locales
+- name: LocalesForCAP
+  hosts: LocalesForCAP
   connection: local
   tasks:
     - import_tasks: tasks/julia_package.yml
       vars:
         package:
-          name: Locales
+          name: LocalesForCAP
           source: CategoricalTowers
           target: CAP_project.jl
           dependencies:
@@ -909,7 +909,7 @@
             - ToolsForCategoricalTowers
             - Toposes
             - FpCategories
-            - Locales
+            - LocalesForCAP
           extensions:
           import_dependencies: true
           pre_init_file_exists: true
@@ -1081,7 +1081,7 @@
           dependencies:
             - CAP
             - ToolsForCategoricalTowers
-            - Locales
+            - LocalesForCAP
           weak_dependencies:
           extras:
             - Test
@@ -1094,7 +1094,7 @@
           test_imports:
             - CAP
             - ToolsForCategoricalTowers
-            - Locales
+            - LocalesForCAP
             - MatricesForHomalg
             - AdditiveClosuresForCAP
             - FreydCategoriesForCAP
@@ -1119,7 +1119,7 @@
             - CartesianCategories
             - ToolsForCategoricalTowers
             - Toposes
-            - Locales
+            - LocalesForCAP
             - FpCategories
             - FreydCategoriesForCAP
           weak_dependencies:
@@ -1138,7 +1138,7 @@
             - CartesianCategories
             - ToolsForCategoricalTowers
             - Toposes
-            - Locales
+            - LocalesForCAP
             - FpCategories
             - FreydCategoriesForCAP
             - FinSetsForCAP
