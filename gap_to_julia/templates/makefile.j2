@@ -4,7 +4,7 @@ install:
 	julia -e 'using Pkg; Pkg.develop(path=".");'
 
 uninstall:
-	julia -e 'using Pkg; Pkg.rm("{{ package_name }}");'
+	julia -e 'using Pkg; haskey(Pkg.project().dependencies, "{{ package_name }}") ? Pkg.rm("{{ package_name }}") : println("\033[94m{{ package_name }} is not installed or already removed, skipping.\033[0m");'
 
 test:
 	julia -e 'using Pkg; Pkg.test("{{ package_name }}");'
