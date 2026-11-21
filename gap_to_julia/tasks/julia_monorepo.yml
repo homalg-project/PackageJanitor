@@ -38,3 +38,9 @@
     src: md_to_notebook.jl
     dest: "{{ monorepo_target_path }}/dev/md_to_notebook.jl"
     mode: '0755'
+
+- name: Add root test workflow
+  template:
+    src: Test.yml.j2
+    dest: "{{ monorepo_target_path }}/.github/workflows/Test.yml"
+    mode: '0644'
