@@ -80,6 +80,45 @@ Dependencies in `site.yml` are maintained manually. Compare them with the
 commented GAP dependencies generated in the package's `Project.toml`, and add
 any missing package UUIDs to [files/UUIDs](files/UUIDs).
 
+## Split the tests of a package into several CI jobs
+
+Every package has a `.github/ci_test_groups.yml` which determines the CI jobs
+of the package's own `.github/workflows/Test.yml`. If the file does not exist,
+`make gen` creates a default one with a single group listing all `.md` files
+in `docs/src`. To test certain files in dedicated jobs, edit the file in the
+package:
+
+```yaml
+ci_test_groups:
+  - group: StreamVortexSystem
+    files:
+      - StreamVortexSystem.g.md
+      - StreamVortexSystemLinear.g.md
+  - group: AutoDocTests
+    files:
+      - AutoDocTests.tst.autogen.md
+```
+
+Every group becomes one CI job per Julia version testing only the listed
+files. `make gen` never overwrites the file; it reads it and regenerates
+`.github/workflows/Test.yml` accordingly.
+
+The monorepo workflow collects the groups of all its packages when it runs, so
+it tests the same groups in the same jobs, named `<package> (<group>)`. Changes
+to a package's `.github/ci_test_groups.yml` take effect there without
+regenerating anything. A package without this file is not tested by the
+monorepo workflow; run `make gen` in the package to create the default one.
+
+Both `make gen` and `make gen-basic` fail at the very end if the groups do not
+list exactly the `.md` files in `docs/src`, e.g. after a new test file has been
+transpiled. Add the file to a group (or delete `.github/ci_test_groups.yml` to
+get a new default) and run `make gen` again. To test the files of a group
+locally, run:
+
+```sh
+DOCTEST_FILES=StreamVortexSystem.g.md,StreamVortexSystemLinear.g.md make test
+```
+
 ## Generated files
 
 The playbook regenerates Julia source files under `src/gap/*.autogen.jl` and

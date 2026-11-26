@@ -1,0 +1,131 @@
+name: Run Julia Tests
+
+on:
+  push:
+    branches:
+      - "master"
+      - "*-ci"
+  pull_request:
+  schedule:
+    - cron: "0 0 * * *"  # Run every day at midnight
+{% if monorepo.workflow_dispatch | default(false) %}
+  workflow_dispatch:
+{% endif %}
+permissions:
+  contents: write
+
+# cancel runs for pull requests on force push
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-using-a-fallback-value
+concurrency:
+  group: ${{ '{{' }} github.workflow }}-${{ '{{' }} github.event.pull_request.number || github.run_id }}-${{ '{{' }} github.run_attempt }}
+  cancel-in-progress: true
+
+jobs:
+  prepare_matrix:
+    name: Collect the CI test groups of all packages
+    runs-on: ubuntu-latest
+    outputs:
+      groups: ${{ '{{' }} steps.collect.outputs.groups }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Collect the CI test groups of all packages
+        id: collect
+        run: |
+          set -o pipefail
+
+          # every group in <package>/.github/ci_test_groups.yml becomes one job testing
+          # only the listed files of <package>/docs/src
+          groups=$(
+            yq --output-format=json '.ci_test_groups[] | . + {"package": (filename | split("/") | .[0]), "index": key}' */.github/ci_test_groups.yml | jq -cs '.'
+          )
+
+          echo "groups=$groups" >> "$GITHUB_OUTPUT"
+          echo "$groups" | jq '.'
+
+  test:
+    needs: prepare_matrix
+    name: ${{ '{{' }} matrix.group.package }} (${{ '{{' }} matrix.group.group }}) - Julia ${{ '{{' }} matrix.julia-version }} on ${{ '{{' }} matrix.os }}
+    runs-on: ${{ '{{' }} matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        # one entry per package and group, collected by prepare_matrix
+        group: ${{ '{{' }} fromJson(needs.prepare_matrix.outputs.groups) }}
+        julia-version:
+          - '1.12'
+          - '1.13'
+          - 'nightly'
+        os:
+          - ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Julia
+        uses: julia-actions/setup-julia@v3
+        with:
+          version: ${{ '{{' }} matrix.julia-version }}
+{% for dependency in monorepo.ci_dependencies | default([]) %}
+      - name: {{ dependency.name }}
+        run: |
+{{ dependency.run | indent(10, true) }}
+{% endfor %}
+      - name: Install all packages
+        run: make install
+{% if monorepo.notebook_targets | default(false) %}
+      # notebooks are tested once per package, i.e., only in the job of its first group
+      - name: Set up Jupyter
+        if: matrix.group.index == 0
+        run: pip install jupyter nbconvert --quiet
+{% endif %}
+      - name: Run tests
+        env:
+          PACKAGE: ${{ '{{' }} matrix.group.package }}
+          DOCTEST_FILES: ${{ '{{' }} join(matrix.group.files, ',') }}
+        run: |
+          make -C "$PACKAGE" test
+{% if monorepo.notebook_targets | default(false) %}
+      - name: Test notebooks
+        if: matrix.group.index == 0
+        env:
+          PACKAGE: ${{ '{{' }} matrix.group.package }}
+        run: |
+          julia -e 'using Pkg; Pkg.add("IJulia"); using IJulia; installkernel("Julia")'
+          sed -i '/"--project=@\\."/d' ~/.local/share/jupyter/kernels/julia-*/kernel.json
+          if make -C "$PACKAGE" -n test-notebooks >/dev/null 2>&1; then
+            make -C "$PACKAGE" test-notebooks
+          fi
+{% endif %}
+  
+  update_subsplits:
+    name: Update subsplits
+    needs: test
+    runs-on: ubuntu-latest
+{% if monorepo.disable_subsplit_updates | default(false) %}
+    if: false  # enable this job when you move the repository to homalg-project
+{% else %}
+    if: github.event_name == 'push' && github.repository == 'homalg-project/CategoricalTowers.jl'
+{% endif %}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Julia
+        uses: julia-actions/setup-julia@v3
+        with:
+          version: '1.12'
+      - name: Install all packages
+        run: make install
+      - name: Run update_subsplits script
+        env:
+          JULIA_SUBSPLIT_TOKEN: ${{ '{{' }} secrets.SUBSPLIT_PUSH_SECRET }}
+        run: |
+          ./dev/update_subsplits.sh

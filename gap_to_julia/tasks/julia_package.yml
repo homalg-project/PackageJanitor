@@ -310,13 +310,6 @@
     mode: '0755'
   when: gen_basic == '0'
 
-- name: Add package test workflow
-  template:
-    src: package_Test.yml.j2
-    dest: "{{ target_package_path }}/.github/workflows/Test.yml"
-    mode: '0644'
-  when: gen_basic == '0'
-
 - name: Add LICENSE, TagBot.yml, and src/init.jl
   copy:
     src: "{{ item.src }}"
@@ -393,6 +386,67 @@
   loop: '{{ extra_bash_commands }}'
   when: extra_bash_commands | length > 0
   changed_when: false
+
+- name: List all .md files in docs/src
+  find:
+    paths: '{{ target_package_path }}/docs/src'
+    patterns: '*.md'
+  register: docs_src_md_files
+
+# case-sensitive like `sort` in test/runtests.jl
+- name: Set the names of all .md files in docs/src
+  set_fact:
+    docs_src_md_file_names: "{{ docs_src_md_files.files | map(attribute='path') | map('basename') | sort(case_sensitive=true) }}"
+
+- name: Add default .github/ci_test_groups.yml (all .md files in docs/src in one group) if it does not exist yet
+  template:
+    src: ci_test_groups.yml.j2
+    dest: "{{ target_package_path }}/.github/ci_test_groups.yml"
+    mode: '0644'
+    force: false
+  when: gen_basic == '0'
+
+- name: Check whether .github/ci_test_groups.yml exists
+  stat:
+    path: "{{ target_package_path }}/.github/ci_test_groups.yml"
+  register: ci_test_groups_file
+
+- name: Read the CI test groups from .github/ci_test_groups.yml
+  set_fact:
+    ci_test_groups: "{{ (lookup('file', target_package_path ~ '/.github/ci_test_groups.yml') | from_yaml).ci_test_groups }}"
+  when: ci_test_groups_file.stat.exists
+
+- name: Verify that the CI test groups have unique names
+  assert:
+    that:
+      - ci_test_groups | length > 0
+      - ci_test_groups | map(attribute='group') | unique | length == ci_test_groups | length
+    fail_msg: "'{{ target_package_path }}/.github/ci_test_groups.yml' must contain at least one group and the group names must be unique"
+    quiet: true
+  when: ci_test_groups_file.stat.exists
+
+- name: Verify that the CI test groups list exactly the .md files in docs/src
+  assert:
+    that:
+      - missing_files | length == 0
+      - unlisted_files | length == 0
+    fail_msg: >-
+      Please update '{{ target_package_path }}/.github/ci_test_groups.yml'.
+      Listed there but missing in docs/src: {{ missing_files }}.
+      In docs/src but not listed in any group, i.e., not tested by the CI: {{ unlisted_files }}.
+    quiet: true
+  vars:
+    listed_files: "{{ ci_test_groups | map(attribute='files') | flatten }}"
+    missing_files: "{{ listed_files | difference(docs_src_md_file_names) }}"
+    unlisted_files: "{{ docs_src_md_file_names | difference(listed_files) }}"
+  when: ci_test_groups_file.stat.exists
+
+- name: Add package test workflow
+  template:
+    src: package_Test.yml.j2
+    dest: "{{ target_package_path }}/.github/workflows/Test.yml"
+    mode: '0644'
+  when: gen_basic == '0'
 
 - name: Display success message
   debug:
