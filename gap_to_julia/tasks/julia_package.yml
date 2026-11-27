@@ -349,7 +349,7 @@
   changed_when: false
 
 - name: Transpile the GAP-code to Julia-code
-  shell: 'PKG_NAME="{{ package_name }}" USING="{{ test_imports | join(", ") }}" {{ playbook_dir }}/files/transpile_gap_to_julia {{ package_name }}'
+  shell: 'PKG_NAME="{{ package_name }}" GAP_PKG_PATH="{{ source_package_path }}" JULIA_PKG_PATH="{{ target_package_path }}" USING="{{ test_imports | join(", ") }}" {{ playbook_dir }}/files/transpile_gap_to_julia {{ package_name }}'
   args:
     executable: /bin/bash
   register: transpile_result
