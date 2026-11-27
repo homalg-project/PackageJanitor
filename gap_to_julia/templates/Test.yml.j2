@@ -110,7 +110,7 @@ jobs:
 {% if monorepo.disable_subsplit_updates | default(false) %}
     if: false  # enable this job when you move the repository to homalg-project
 {% else %}
-    if: github.event_name == 'push' && github.repository == 'homalg-project/CategoricalTowers.jl'
+    if: github.event_name == 'push' && github.repository == 'homalg-project/{{ monorepo.target }}'
 {% endif %}
     steps:
       - name: Checkout repository
